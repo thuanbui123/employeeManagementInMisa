@@ -1,0 +1,16 @@
+E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Infrastructure\bin\Debug\net8.0\MISA.AMISDemo.Infrastructure.deps.json
+E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Infrastructure\bin\Debug\net8.0\MISA.AMISDemo.Infrastructure.dll
+E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Infrastructure\bin\Debug\net8.0\MISA.AMISDemo.Infrastructure.pdb
+E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Infrastructure\bin\Debug\net8.0\MISA.AMISDemo.Core.dll
+E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Infrastructure\bin\Debug\net8.0\MISA.AMISDemo.Core.pdb
+E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Infrastructure\obj\Debug\net8.0\MISA.AMISDemo.Infrastructure.csproj.AssemblyReference.cache
+E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Infrastructure\obj\Debug\net8.0\MISA.AMISDemo.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Infrastructure\obj\Debug\net8.0\MISA.AMISDemo.Infrastructure.AssemblyInfoInputs.cache
+E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Infrastructure\obj\Debug\net8.0\MISA.AMISDemo.Infrastructure.AssemblyInfo.cs
+E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Infrastructure\obj\Debug\net8.0\MISA.AMISDemo.Infrastructure.csproj.CoreCompileInputs.cache
+E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Infrastructure\obj\Debug\net8.0\MISA.AMISDemo.Infrastructure.sourcelink.json
+E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Infrastructure\obj\Debug\net8.0\MISA.AMI.59E4B3E1.Up2Date
+E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Infrastructure\obj\Debug\net8.0\MISA.AMISDemo.Infrastructure.dll
+E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Infrastructure\obj\Debug\net8.0\refint\MISA.AMISDemo.Infrastructure.dll
+E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Infrastructure\obj\Debug\net8.0\MISA.AMISDemo.Infrastructure.pdb
+E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Infrastructure\obj\Debug\net8.0\ref\MISA.AMISDemo.Infrastructure.dll

@@ -25,6 +25,29 @@ function fetchEmployeeData() {
             birthday: '10/08/2001',
             email: 'tranthib@gmail.com',
             address: 'Thanh Xuân, Hà Nội'
+        },{
+            employeeId: 'NV11',
+            name: 'Bùi Văn Thuân',
+            gender: 'Nam',
+            birthday: '01/01/2003',
+            email: 'Thuanbui31819@gmail.com',
+            address: 'Hoàng Mai, Hà Nội'
+        },
+        {
+            employeeId: 'NV12',
+            name: 'Nguyễn Văn A',
+            gender: 'Nam',
+            birthday: '05/05/2002',
+            email: 'nguyenvana@gmail.com',
+            address: 'Cầu Giấy, Hà Nội'
+        },
+        {
+            employeeId: 'NV13',
+            name: 'Trần Thị B',
+            gender: 'Nữ',
+            birthday: '10/08/2001',
+            email: 'tranthib@gmail.com',
+            address: 'Thanh Xuân, Hà Nội'
         },
     ];
 
@@ -60,11 +83,6 @@ function renderTable(data) {
 
         tableBody.appendChild(row);
     });
-}
-
-function deleteData (index) {
-    fakeData.splice(index, 1);
-    renderTable(fakeData);
 }
 
 function myFunction(index) {

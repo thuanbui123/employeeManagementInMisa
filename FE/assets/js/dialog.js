@@ -35,5 +35,11 @@ function showDialog (data ={}, index) {
     okBtn.addEventListener('click', function() {
         deleteData(index);
         dialogArea.classList.remove('open');
-    })
+    });
+
+    
+    function deleteData (index) {
+        fakeData.splice(index, 1);
+        renderTable(fakeData);
+    }
 }
