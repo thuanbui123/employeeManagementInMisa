@@ -12,14 +12,35 @@ namespace MISA.AMISDemo.Core.Services
 {
     public class EmployeeService : IEmployeeService
     {
+        private IEmployeeRepository _employeeRepository;
+        public EmployeeService(IEmployeeRepository repository)
+        {
+            _employeeRepository = repository;
+        }
         public object ImportService(IFormFile excelFile)
         {
             throw new NotImplementedException();
         }
 
-        public MISAServiceResult InsertService(Employee item)
+        public MISAServiceResult InsertService(Employee? item, EmployeeDTO? dto)
         {
-            throw new NotImplementedException();
+            string MaxCode = _employeeRepository.GetMaxCode();
+            return new MISAServiceResult
+            {
+                Susscess = true,
+                Data = MaxCode
+            };
+
+        }
+
+        public List<Employee> Search(string query)
+        {
+            List<Employee> Result = _employeeRepository.Get("employeeCode", query);
+            if (Result == null || Result.Count == 0)
+            {
+                Result = _employeeRepository.Get("fullName", query);
+            }
+            return Result;
         }
     }
 }

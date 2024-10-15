@@ -15,9 +15,10 @@ namespace MISA.AMISDemo.Infrastructure.Repository
             throw new NotImplementedException();
         }
 
-        public Employee Get(string id)
+        public bool ExistsByCode(string code)
         {
-            throw new NotImplementedException();
+            List<Employee> exists = base.Get("EmployeeCode", code);
+            return exists.Count > 0;
         }
 
         public List<Employee> GetAll()

@@ -6,15 +6,15 @@ function convertDate (date) {
 
 function getValueForm () {
     const employee = {
-        employeeId: document.getElementById('code').value,
-        name: document.getElementById('name').value,
-        birthday: document.getElementById('birthday').value.split('-').reverse().join('/'), // Chuyển đổi về định dạng dd/mm/yyyy
-        gender: document.querySelector('input[name="gender"]:checked').value,
+        employeeCode: document.getElementById('code').value,
+        fullName: document.getElementById('name').value,
+        dateOfBirth: document.getElementById('birthday').value.split('-').reverse().join('/'), // Chuyển đổi về định dạng dd/mm/yyyy
+        sex: document.querySelector('input[name="sex"]:checked').value,
         position: document.getElementById('position').value,
-        CMTND: document.getElementById('CMTND').value,
-        dateProvide: document.getElementById('dateProvide').value.split('-').reverse().join('/'),
+        identityNumber: document.getElementById('identityNumber').value,
+        identityDate: document.getElementById('identityDate').value.split('-').reverse().join('/'),
         department: document.getElementById('department').value,
-        placeOfIssue: document.getElementById('placeOfIssue').value,
+        identityPlace: document.getElementById('identityPlace').value,
         address: document.getElementById('address').value,
         numberPhone: document.getElementById('numberPhone').value,
         landline: document.getElementById('landline').value,
@@ -27,7 +27,7 @@ function getValueForm () {
 }
 
 function showPopup (data= {}) {
-    const gender = (data !==  null && data.gender !== undefined) ? data.gender : '';
+    const sex = (data !==  null && data.sex !== undefined) ? data.sex : '';
     const position = (data !==  null && data.position !== undefined) ? data.position : '';
     const department = (data !==  null && data.department !== undefined) ? data.department : '';
     const popupHtmL = `
@@ -46,7 +46,7 @@ function showPopup (data= {}) {
                                 <p>*</p>
                             </label>
                             <input tabindex="1" type="text" required oninvalid="this.setCustomValidity('Mã nhân viên không được để trống!')" oninput="setCustomValidity('')"
-                             id="code" name="code" value="${( data !==  null && data.employeeId !== undefined) ? data.employeeId : ''}"/>
+                             id="code" name="code" ${data.employeeCode&&'readonly'} value="${( data !==  null && data.employeeCode !== undefined) ? data.employeeCode : ''}"/>
                         </div>
                         <div class="form-group">
                             <label for="name">
@@ -54,20 +54,20 @@ function showPopup (data= {}) {
                                 <p>*</p>
                             </label>
                             <input tabindex="2" type="text" required oninvalid="this.setCustomValidity('Họ và tên không được để trống!')" oninput="setCustomValidity('')"
-                             id="name" name="name" value="${(data !==  null && data.name !== undefined) ? data.name : ''}"/>
+                             id="name" name="name" value="${(data !==  null && data.fullName !== undefined) ? data.fullName : ''}"/>
                         </div>
                         <div class="form-group">
                             <label for="birthday">Ngày sinh</label>
-                            <input tabindex="3" type="date" id="birthday" name="birthday" value="${(data !==  null && data.birthday !== undefined) ? convertDate(data.birthday) : ''}"/>
+                            <input tabindex="3" type="date" id="birthday" name="birthday" value="${(data !==  null && data.dateOfBirth !== undefined) ? convertDate(new Date(data.dateOfBirth).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' })) : ''}"/>
                         </div>
                         <div class="form-group">
                             <label>Giới tính</label>
                             <div class="option">
-                                <input tabindex="4" type="radio" id="male" name="gender" checked ${gender === "Nam" ? "checked" : ''} value="Nam">
+                                <input tabindex="4" type="radio" id="male" name="sex" checked ${sex === "Nam" ? "checked" : ''} value="Nam">
                                 <label for="male">Nam</label><br>
-                                <input tabindex="5" type="radio" id="female" name="gender" ${gender === "Nữ" ? "checked" : ''} value="Nữ">
+                                <input tabindex="5" type="radio" id="female" name="sex" ${sex === "Nữ" ? "checked" : ''} value="Nữ">
                                 <label for="female">Nữ</label><br>
-                                <input tabindex="6" type="radio" id="other" name="gender" ${gender === "Khác" ? "checked" : ''} value="Khác">
+                                <input tabindex="6" type="radio" id="other" name="sex" ${sex === "Khác" ? "checked" : ''} value="Khác">
                                 <label for="other">Khác</label>
                             </div>
                         </div>
@@ -77,19 +77,19 @@ function showPopup (data= {}) {
                             <label for="position">Vị trí</label>
                             <select tabindex="7" id="position" name="position">
                                 <option disabled selected></option>
-                                <option value="intern" ${position === "intern" ? "selected" : ""} >Intern</option>
-                                <option value="fresher" ${position === "fresher" ? "selected" : ""}>Fresher</option>
-                                <option value="junior" ${position === "junior" ? "selected" : ""}>Junior</option>
-                                <option value="project manager" ${position === "project manager" ? "selected" : ""}>Project Manager</option>
+                                <option value="Intern" ${position === "Intern" ? "selected" : ""} >Intern</option>
+                                <option value="Fresher" ${position === "Fresher" ? "selected" : ""}>Fresher</option>
+                                <option value="Junior" ${position === "Junior" ? "selected" : ""}>Junior</option>
+                                <option value="Project manager" ${position === "Project manager" ? "selected" : ""}>Project Manager</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="CMTND">Số CMTND</label>
-                            <input tabindex="8" type="text" id="CMTND" name="CMTND" value="${(data !==  null && data.CMTND !== undefined) ? data.CMTND : ""}" />
+                            <label for="IdentityNumber">Số identityNumber</label>
+                            <input tabindex="8" type="text" id="IdentityNumber" name="IdentityNumber" value="${(data !==  null && data.identityNumber !== undefined) ? data.identityNumber : ""}" />
                         </div>
                         <div class="form-group">
-                            <label for="dateProvide">Ngày cấp</label>
-                            <input tabindex="9" type="date" id="dateProvide" name="dateProvide" value='${(data !==  null && data.dateProvide !== undefined) ? convertDate(data.dateProvide) : ""}'/>
+                            <label for="IdentityDate">Ngày cấp</label>
+                            <input tabindex="9" type="date" id="IdentityDate" name="IdentityDate" value='${(data !==  null && data.identityDate !== undefined) ? convertDate(new Date(data.identityDate).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' })) : ""}'/>
                         </div>
                             
                     </div>
@@ -104,8 +104,8 @@ function showPopup (data= {}) {
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="placeOfIssue">Nơi cấp</label>
-                            <input tabindex="11" type="text" id="placeOfIssue" name="placeOfIssue" value="${(data !==  null && data.placeOfIssue !== undefined) ? data.placeOfIssue : ''}" />
+                            <label for="IdentityPlace">Nơi cấp</label>
+                            <input tabindex="11" type="text" id="IdentityPlace" name="IdentityPlace" value="${(data !==  null && data.identityPlace !== undefined) ? data.identityPlace : ''}" />
                         </div>
                     </div>
                     <div class="row">
@@ -117,7 +117,7 @@ function showPopup (data= {}) {
                     <div class="row">
                         <div class="form-group">
                             <label for="numberPhone">ĐT Di động</label>
-                            <input tabindex="13" type = "tel" id="numberPhone" name="numberPhone" value="${(data !==  null && data.numberPhone !== undefined) ? data.numberPhone : ''}" />
+                            <input tabindex="13" type = "tel" id="numberPhone" name="numberPhone" value="${(data !==  null && data.phoneNumber !== undefined) ? data.phoneNumber : ''}" />
                         </div>
                         <div class="form-group">
                             <label for="landline">ĐT Cố định</label>

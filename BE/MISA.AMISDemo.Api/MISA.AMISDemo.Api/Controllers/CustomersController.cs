@@ -28,7 +28,7 @@ namespace MISA.AMISDemo.Api.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(string id)
         {
-            var customers = _customerRepository.Get(id);
+            var customers = _customerRepository.Get("id", id);
             return StatusCode(200, customers);
         }
 

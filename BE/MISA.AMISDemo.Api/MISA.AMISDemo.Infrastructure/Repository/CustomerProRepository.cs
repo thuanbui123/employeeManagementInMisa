@@ -15,6 +15,11 @@ namespace MISA.AMISDemo.Infrastructure.Repository
             throw new NotImplementedException();
         }
 
+        public bool ExistsByCode(string code)
+        {
+            throw new NotImplementedException();
+        }
+
         public Customer Get(string id)
         {
             throw new NotImplementedException();

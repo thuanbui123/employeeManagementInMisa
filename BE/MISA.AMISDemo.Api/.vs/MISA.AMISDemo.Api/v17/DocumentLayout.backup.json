@@ -3,76 +3,60 @@
   "WorkspaceRootPath": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{F536B088-9DFB-46AF-A5CC-742F087E97F9}|MISA.AMISDemo.Core\\MISA.AMISDemo.Core.csproj|e:\\workspace\\projectinmisa\\employeemanagement\\be\\misa.amisdemo.api\\misa.amisdemo.core\\entities\\customer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F536B088-9DFB-46AF-A5CC-742F087E97F9}|MISA.AMISDemo.Core\\MISA.AMISDemo.Core.csproj|solutionrelative:misa.amisdemo.core\\entities\\customer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{ECF58FBD-26BF-4460-8EDD-A19D646B8559}|MISA.AMISDemo.Infrastructure\\MISA.AMISDemo.Infrastructure.csproj|e:\\workspace\\projectinmisa\\employeemanagement\\be\\misa.amisdemo.api\\misa.amisdemo.infrastructure\\repository\\customerprorepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{ECF58FBD-26BF-4460-8EDD-A19D646B8559}|MISA.AMISDemo.Infrastructure\\MISA.AMISDemo.Infrastructure.csproj|solutionrelative:misa.amisdemo.infrastructure\\repository\\customerprorepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{ECF58FBD-26BF-4460-8EDD-A19D646B8559}|MISA.AMISDemo.Infrastructure\\MISA.AMISDemo.Infrastructure.csproj|e:\\workspace\\projectinmisa\\employeemanagement\\be\\misa.amisdemo.api\\misa.amisdemo.infrastructure\\repository\\employeerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{ECF58FBD-26BF-4460-8EDD-A19D646B8559}|MISA.AMISDemo.Infrastructure\\MISA.AMISDemo.Infrastructure.csproj|solutionrelative:misa.amisdemo.infrastructure\\repository\\employeerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{415C8D51-4BB3-4FE1-8347-7D2A44FB8B12}|MISA.AMISDemo.Api\\MISA.AMISDemo.Api.csproj|e:\\workspace\\projectinmisa\\employeemanagement\\be\\misa.amisdemo.api\\misa.amisdemo.api\\controllers\\customerscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{415C8D51-4BB3-4FE1-8347-7D2A44FB8B12}|MISA.AMISDemo.Api\\MISA.AMISDemo.Api.csproj|solutionrelative:misa.amisdemo.api\\controllers\\customerscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F536B088-9DFB-46AF-A5CC-742F087E97F9}|MISA.AMISDemo.Core\\MISA.AMISDemo.Core.csproj|e:\\workspace\\projectinmisa\\employeemanagement\\be\\misa.amisdemo.api\\misa.amisdemo.core\\interfaces\\ibasereposity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F536B088-9DFB-46AF-A5CC-742F087E97F9}|MISA.AMISDemo.Core\\MISA.AMISDemo.Core.csproj|solutionrelative:misa.amisdemo.core\\interfaces\\ibasereposity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{F536B088-9DFB-46AF-A5CC-742F087E97F9}|MISA.AMISDemo.Core\\MISA.AMISDemo.Core.csproj|e:\\workspace\\projectinmisa\\employeemanagement\\be\\misa.amisdemo.api\\misa.amisdemo.core\\services\\employeeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F536B088-9DFB-46AF-A5CC-742F087E97F9}|MISA.AMISDemo.Core\\MISA.AMISDemo.Core.csproj|solutionrelative:misa.amisdemo.core\\services\\employeeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{ECF58FBD-26BF-4460-8EDD-A19D646B8559}|MISA.AMISDemo.Infrastructure\\MISA.AMISDemo.Infrastructure.csproj|e:\\workspace\\projectinmisa\\employeemanagement\\be\\misa.amisdemo.api\\misa.amisdemo.infrastructure\\repository\\misadbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{ECF58FBD-26BF-4460-8EDD-A19D646B8559}|MISA.AMISDemo.Infrastructure\\MISA.AMISDemo.Infrastructure.csproj|solutionrelative:misa.amisdemo.infrastructure\\repository\\misadbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{ECF58FBD-26BF-4460-8EDD-A19D646B8559}|MISA.AMISDemo.Infrastructure\\MISA.AMISDemo.Infrastructure.csproj|e:\\workspace\\projectinmisa\\employeemanagement\\be\\misa.amisdemo.api\\misa.amisdemo.infrastructure\\repository\\customerrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{ECF58FBD-26BF-4460-8EDD-A19D646B8559}|MISA.AMISDemo.Infrastructure\\MISA.AMISDemo.Infrastructure.csproj|solutionrelative:misa.amisdemo.infrastructure\\repository\\customerrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{ECF58FBD-26BF-4460-8EDD-A19D646B8559}|MISA.AMISDemo.Infrastructure\\MISA.AMISDemo.Infrastructure.csproj|e:\\workspace\\projectinmisa\\employeemanagement\\be\\misa.amisdemo.api\\misa.amisdemo.infrastructure\\repository\\employeerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{ECF58FBD-26BF-4460-8EDD-A19D646B8559}|MISA.AMISDemo.Infrastructure\\MISA.AMISDemo.Infrastructure.csproj|solutionrelative:misa.amisdemo.infrastructure\\repository\\employeerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{415C8D51-4BB3-4FE1-8347-7D2A44FB8B12}|MISA.AMISDemo.Api\\MISA.AMISDemo.Api.csproj|e:\\workspace\\projectinmisa\\employeemanagement\\be\\misa.amisdemo.api\\misa.amisdemo.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{415C8D51-4BB3-4FE1-8347-7D2A44FB8B12}|MISA.AMISDemo.Api\\MISA.AMISDemo.Api.csproj|solutionrelative:misa.amisdemo.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F536B088-9DFB-46AF-A5CC-742F087E97F9}|MISA.AMISDemo.Core\\MISA.AMISDemo.Core.csproj|e:\\workspace\\projectinmisa\\employeemanagement\\be\\misa.amisdemo.api\\misa.amisdemo.core\\interfaces\\icustomerrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F536B088-9DFB-46AF-A5CC-742F087E97F9}|MISA.AMISDemo.Core\\MISA.AMISDemo.Core.csproj|solutionrelative:misa.amisdemo.core\\interfaces\\icustomerrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F536B088-9DFB-46AF-A5CC-742F087E97F9}|MISA.AMISDemo.Core\\MISA.AMISDemo.Core.csproj|e:\\workspace\\projectinmisa\\employeemanagement\\be\\misa.amisdemo.api\\misa.amisdemo.core\\interfaces\\iemployeerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F536B088-9DFB-46AF-A5CC-742F087E97F9}|MISA.AMISDemo.Core\\MISA.AMISDemo.Core.csproj|solutionrelative:misa.amisdemo.core\\interfaces\\iemployeerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F536B088-9DFB-46AF-A5CC-742F087E97F9}|MISA.AMISDemo.Core\\MISA.AMISDemo.Core.csproj|e:\\workspace\\projectinmisa\\employeemanagement\\be\\misa.amisdemo.api\\misa.amisdemo.core\\interfaces\\ibaseservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F536B088-9DFB-46AF-A5CC-742F087E97F9}|MISA.AMISDemo.Core\\MISA.AMISDemo.Core.csproj|solutionrelative:misa.amisdemo.core\\interfaces\\ibaseservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F536B088-9DFB-46AF-A5CC-742F087E97F9}|MISA.AMISDemo.Core\\MISA.AMISDemo.Core.csproj|e:\\workspace\\projectinmisa\\employeemanagement\\be\\misa.amisdemo.api\\misa.amisdemo.core\\services\\customerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F536B088-9DFB-46AF-A5CC-742F087E97F9}|MISA.AMISDemo.Core\\MISA.AMISDemo.Core.csproj|solutionrelative:misa.amisdemo.core\\services\\customerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F536B088-9DFB-46AF-A5CC-742F087E97F9}|MISA.AMISDemo.Core\\MISA.AMISDemo.Core.csproj|e:\\workspace\\projectinmisa\\employeemanagement\\be\\misa.amisdemo.api\\misa.amisdemo.core\\services\\employeeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F536B088-9DFB-46AF-A5CC-742F087E97F9}|MISA.AMISDemo.Core\\MISA.AMISDemo.Core.csproj|solutionrelative:misa.amisdemo.core\\services\\employeeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F536B088-9DFB-46AF-A5CC-742F087E97F9}|MISA.AMISDemo.Core\\MISA.AMISDemo.Core.csproj|e:\\workspace\\projectinmisa\\employeemanagement\\be\\misa.amisdemo.api\\misa.amisdemo.core\\interfaces\\icustomerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F536B088-9DFB-46AF-A5CC-742F087E97F9}|MISA.AMISDemo.Core\\MISA.AMISDemo.Core.csproj|solutionrelative:misa.amisdemo.core\\interfaces\\icustomerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F536B088-9DFB-46AF-A5CC-742F087E97F9}|MISA.AMISDemo.Core\\MISA.AMISDemo.Core.csproj|e:\\workspace\\projectinmisa\\employeemanagement\\be\\misa.amisdemo.api\\misa.amisdemo.core\\dtos\\misaserviceresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F536B088-9DFB-46AF-A5CC-742F087E97F9}|MISA.AMISDemo.Core\\MISA.AMISDemo.Core.csproj|solutionrelative:misa.amisdemo.core\\dtos\\misaserviceresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{F536B088-9DFB-46AF-A5CC-742F087E97F9}|MISA.AMISDemo.Core\\MISA.AMISDemo.Core.csproj|e:\\workspace\\projectinmisa\\employeemanagement\\be\\misa.amisdemo.api\\misa.amisdemo.core\\interfaces\\ibasereposity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F536B088-9DFB-46AF-A5CC-742F087E97F9}|MISA.AMISDemo.Core\\MISA.AMISDemo.Core.csproj|solutionrelative:misa.amisdemo.core\\interfaces\\ibasereposity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{F536B088-9DFB-46AF-A5CC-742F087E97F9}|MISA.AMISDemo.Core\\MISA.AMISDemo.Core.csproj|e:\\workspace\\projectinmisa\\employeemanagement\\be\\misa.amisdemo.api\\misa.amisdemo.core\\interfaces\\iemployeeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F536B088-9DFB-46AF-A5CC-742F087E97F9}|MISA.AMISDemo.Core\\MISA.AMISDemo.Core.csproj|solutionrelative:misa.amisdemo.core\\interfaces\\iemployeeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F536B088-9DFB-46AF-A5CC-742F087E97F9}|MISA.AMISDemo.Core\\MISA.AMISDemo.Core.csproj|e:\\workspace\\projectinmisa\\employeemanagement\\be\\misa.amisdemo.api\\misa.amisdemo.core\\entities\\employee.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F536B088-9DFB-46AF-A5CC-742F087E97F9}|MISA.AMISDemo.Core\\MISA.AMISDemo.Core.csproj|solutionrelative:misa.amisdemo.core\\entities\\employee.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{415C8D51-4BB3-4FE1-8347-7D2A44FB8B12}|MISA.AMISDemo.Api\\MISA.AMISDemo.Api.csproj|e:\\workspace\\projectinmisa\\employeemanagement\\be\\misa.amisdemo.api\\misa.amisdemo.api\\controllers\\employeescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{415C8D51-4BB3-4FE1-8347-7D2A44FB8B12}|MISA.AMISDemo.Api\\MISA.AMISDemo.Api.csproj|solutionrelative:misa.amisdemo.api\\controllers\\employeescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F536B088-9DFB-46AF-A5CC-742F087E97F9}|MISA.AMISDemo.Core\\MISA.AMISDemo.Core.csproj|e:\\workspace\\projectinmisa\\employeemanagement\\be\\misa.amisdemo.api\\misa.amisdemo.core\\entities\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F536B088-9DFB-46AF-A5CC-742F087E97F9}|MISA.AMISDemo.Core\\MISA.AMISDemo.Core.csproj|solutionrelative:misa.amisdemo.core\\entities\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{415C8D51-4BB3-4FE1-8347-7D2A44FB8B12}|MISA.AMISDemo.Api\\MISA.AMISDemo.Api.csproj|e:\\workspace\\projectinmisa\\employeemanagement\\be\\misa.amisdemo.api\\misa.amisdemo.api\\controllers\\customerscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{415C8D51-4BB3-4FE1-8347-7D2A44FB8B12}|MISA.AMISDemo.Api\\MISA.AMISDemo.Api.csproj|solutionrelative:misa.amisdemo.api\\controllers\\customerscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{ECF58FBD-26BF-4460-8EDD-A19D646B8559}|MISA.AMISDemo.Infrastructure\\MISA.AMISDemo.Infrastructure.csproj|e:\\workspace\\projectinmisa\\employeemanagement\\be\\misa.amisdemo.api\\misa.amisdemo.infrastructure\\repository\\customerrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{ECF58FBD-26BF-4460-8EDD-A19D646B8559}|MISA.AMISDemo.Infrastructure\\MISA.AMISDemo.Infrastructure.csproj|solutionrelative:misa.amisdemo.infrastructure\\repository\\customerrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F536B088-9DFB-46AF-A5CC-742F087E97F9}|MISA.AMISDemo.Core\\MISA.AMISDemo.Core.csproj|e:\\workspace\\projectinmisa\\employeemanagement\\be\\misa.amisdemo.api\\misa.amisdemo.core\\interfaces\\ibaseservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F536B088-9DFB-46AF-A5CC-742F087E97F9}|MISA.AMISDemo.Core\\MISA.AMISDemo.Core.csproj|solutionrelative:misa.amisdemo.core\\interfaces\\ibaseservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{ECF58FBD-26BF-4460-8EDD-A19D646B8559}|MISA.AMISDemo.Infrastructure\\MISA.AMISDemo.Infrastructure.csproj|e:\\workspace\\projectinmisa\\employeemanagement\\be\\misa.amisdemo.api\\misa.amisdemo.infrastructure\\repository\\customerprorepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{ECF58FBD-26BF-4460-8EDD-A19D646B8559}|MISA.AMISDemo.Infrastructure\\MISA.AMISDemo.Infrastructure.csproj|solutionrelative:misa.amisdemo.infrastructure\\repository\\customerprorepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F536B088-9DFB-46AF-A5CC-742F087E97F9}|MISA.AMISDemo.Core\\MISA.AMISDemo.Core.csproj|e:\\workspace\\projectinmisa\\employeemanagement\\be\\misa.amisdemo.api\\misa.amisdemo.core\\interfaces\\icustomerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F536B088-9DFB-46AF-A5CC-742F087E97F9}|MISA.AMISDemo.Core\\MISA.AMISDemo.Core.csproj|solutionrelative:misa.amisdemo.core\\interfaces\\icustomerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F536B088-9DFB-46AF-A5CC-742F087E97F9}|MISA.AMISDemo.Core\\MISA.AMISDemo.Core.csproj|e:\\workspace\\projectinmisa\\employeemanagement\\be\\misa.amisdemo.api\\misa.amisdemo.core\\services\\customerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F536B088-9DFB-46AF-A5CC-742F087E97F9}|MISA.AMISDemo.Core\\MISA.AMISDemo.Core.csproj|solutionrelative:misa.amisdemo.core\\services\\customerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F536B088-9DFB-46AF-A5CC-742F087E97F9}|MISA.AMISDemo.Core\\MISA.AMISDemo.Core.csproj|e:\\workspace\\projectinmisa\\employeemanagement\\be\\misa.amisdemo.api\\misa.amisdemo.core\\dtos\\employeedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F536B088-9DFB-46AF-A5CC-742F087E97F9}|MISA.AMISDemo.Core\\MISA.AMISDemo.Core.csproj|solutionrelative:misa.amisdemo.core\\dtos\\employeedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F536B088-9DFB-46AF-A5CC-742F087E97F9}|MISA.AMISDemo.Core\\MISA.AMISDemo.Core.csproj|e:\\workspace\\projectinmisa\\employeemanagement\\be\\misa.amisdemo.api\\misa.amisdemo.core\\entities\\employee.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F536B088-9DFB-46AF-A5CC-742F087E97F9}|MISA.AMISDemo.Core\\MISA.AMISDemo.Core.csproj|solutionrelative:misa.amisdemo.core\\entities\\employee.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -82,32 +66,84 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 7,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Document",
               "DocumentIndex": 5,
-              "Title": "MISADbContext.cs",
-              "DocumentMoniker": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Infrastructure\\Repository\\MISADbContext.cs",
-              "RelativeDocumentMoniker": "MISA.AMISDemo.Infrastructure\\Repository\\MISADbContext.cs",
-              "ToolTip": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Infrastructure\\Repository\\MISADbContext.cs",
-              "RelativeToolTip": "MISA.AMISDemo.Infrastructure\\Repository\\MISADbContext.cs",
-              "ViewState": "AgIAAA4AAABgZmZmZmYswBsAAAArAAAAAAAAAA==",
+              "Title": "EmployeesController.cs",
+              "DocumentMoniker": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Api\\Controllers\\EmployeesController.cs",
+              "RelativeDocumentMoniker": "MISA.AMISDemo.Api\\Controllers\\EmployeesController.cs",
+              "ToolTip": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Api\\Controllers\\EmployeesController.cs",
+              "RelativeToolTip": "MISA.AMISDemo.Api\\Controllers\\EmployeesController.cs",
+              "ViewState": "AgIAABMAAAAAAAAAAAA9wCMAAAA0AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-14T09:23:45.66Z",
+              "WhenOpened": "2024-10-15T10:14:31.936Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 6,
+              "Title": "CustomersController.cs",
+              "DocumentMoniker": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Api\\Controllers\\CustomersController.cs",
+              "RelativeDocumentMoniker": "MISA.AMISDemo.Api\\Controllers\\CustomersController.cs",
+              "ToolTip": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Api\\Controllers\\CustomersController.cs",
+              "RelativeToolTip": "MISA.AMISDemo.Api\\Controllers\\CustomersController.cs",
+              "ViewState": "AgIAABcAAAAAMzMzMzMhwAwAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-15T10:11:05.671Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "IEmployeeService.cs",
+              "DocumentMoniker": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Core\\Interfaces\\IEmployeeService.cs",
+              "RelativeDocumentMoniker": "MISA.AMISDemo.Core\\Interfaces\\IEmployeeService.cs",
+              "ToolTip": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Core\\Interfaces\\IEmployeeService.cs",
+              "RelativeToolTip": "MISA.AMISDemo.Core\\Interfaces\\IEmployeeService.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAqwBAAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-15T09:38:12.181Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
               "Title": "CustomerRepository.cs",
               "DocumentMoniker": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Infrastructure\\Repository\\CustomerRepository.cs",
               "RelativeDocumentMoniker": "MISA.AMISDemo.Infrastructure\\Repository\\CustomerRepository.cs",
               "ToolTip": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Infrastructure\\Repository\\CustomerRepository.cs",
               "RelativeToolTip": "MISA.AMISDemo.Infrastructure\\Repository\\CustomerRepository.cs",
-              "ViewState": "AgIAAAYAAABAZmZmZmYjwBsAAAAmAAAAAAAAAA==",
+              "ViewState": "AgIAAAIAAAAAAAAAAIAwwA0AAAA/AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-14T03:37:40.417Z",
+              "WhenOpened": "2024-10-15T09:29:50.602Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "IBaseReposity.cs",
+              "DocumentMoniker": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Core\\Interfaces\\IBaseReposity.cs",
+              "RelativeDocumentMoniker": "MISA.AMISDemo.Core\\Interfaces\\IBaseReposity.cs",
+              "ToolTip": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Core\\Interfaces\\IBaseReposity.cs",
+              "RelativeToolTip": "MISA.AMISDemo.Core\\Interfaces\\IBaseReposity.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAiwA4AAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-15T09:46:29.236Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "EmployeeService.cs",
+              "DocumentMoniker": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Core\\Services\\EmployeeService.cs",
+              "RelativeDocumentMoniker": "MISA.AMISDemo.Core\\Services\\EmployeeService.cs",
+              "ToolTip": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Core\\Services\\EmployeeService.cs",
+              "RelativeToolTip": "MISA.AMISDemo.Core\\Services\\EmployeeService.cs",
+              "ViewState": "AgIAABYAAAAAzczMzMwuwBoAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-15T09:11:26.486Z",
               "EditorCaption": ""
             },
             {
@@ -118,113 +154,61 @@
               "RelativeDocumentMoniker": "MISA.AMISDemo.Infrastructure\\Repository\\EmployeeRepository.cs",
               "ToolTip": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Infrastructure\\Repository\\EmployeeRepository.cs",
               "RelativeToolTip": "MISA.AMISDemo.Infrastructure\\Repository\\EmployeeRepository.cs",
-              "ViewState": "AgIAAA4AAAAAMzMzMzPzvxUAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAABYAAACgmZmZmZkwwBcAAAAmAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-14T03:40:29.476Z",
+              "WhenOpened": "2024-10-15T09:31:55.054Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "CustomerProRepository.cs",
-              "DocumentMoniker": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Infrastructure\\Repository\\CustomerProRepository.cs",
-              "RelativeDocumentMoniker": "MISA.AMISDemo.Infrastructure\\Repository\\CustomerProRepository.cs",
-              "ToolTip": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Infrastructure\\Repository\\CustomerProRepository.cs",
-              "RelativeToolTip": "MISA.AMISDemo.Infrastructure\\Repository\\CustomerProRepository.cs",
-              "ViewState": "AgIAAAwAAAAAAAAAAAAAABYAAAAiAAAAAAAAAA==",
+              "Title": "MISADbContext.cs",
+              "DocumentMoniker": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Infrastructure\\Repository\\MISADbContext.cs",
+              "RelativeDocumentMoniker": "MISA.AMISDemo.Infrastructure\\Repository\\MISADbContext.cs",
+              "ToolTip": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Infrastructure\\Repository\\MISADbContext.cs",
+              "RelativeToolTip": "MISA.AMISDemo.Infrastructure\\Repository\\MISADbContext.cs",
+              "ViewState": "AgIAAC4AAAAAxMzMzMz8vzQAAAAtAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-14T03:46:26.411Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "Program.cs",
-              "DocumentMoniker": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Api\\Program.cs",
-              "RelativeDocumentMoniker": "MISA.AMISDemo.Api\\Program.cs",
-              "ToolTip": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Api\\Program.cs",
-              "RelativeToolTip": "MISA.AMISDemo.Api\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAA8AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-14T04:23:04.283Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "IBaseReposity.cs",
-              "DocumentMoniker": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Core\\Interfaces\\IBaseReposity.cs",
-              "RelativeDocumentMoniker": "MISA.AMISDemo.Core\\Interfaces\\IBaseReposity.cs",
-              "ToolTip": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Core\\Interfaces\\IBaseReposity.cs",
-              "RelativeToolTip": "MISA.AMISDemo.Core\\Interfaces\\IBaseReposity.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAkAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-14T07:51:04.543Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "CustomersController.cs",
-              "DocumentMoniker": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Api\\Controllers\\CustomersController.cs",
-              "RelativeDocumentMoniker": "MISA.AMISDemo.Api\\Controllers\\CustomersController.cs",
-              "ToolTip": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Api\\Controllers\\CustomersController.cs",
-              "RelativeToolTip": "MISA.AMISDemo.Api\\Controllers\\CustomersController.cs",
-              "ViewState": "AgIAAA0AAAAAAAAAAAApwBcAAAAwAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-14T03:54:16.48Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Customer.cs",
-              "DocumentMoniker": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Core\\Entities\\Customer.cs",
-              "RelativeDocumentMoniker": "MISA.AMISDemo.Core\\Entities\\Customer.cs",
-              "ToolTip": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Core\\Entities\\Customer.cs*",
-              "RelativeToolTip": "MISA.AMISDemo.Core\\Entities\\Customer.cs*",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAqwA4AAAA+AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-14T02:28:18.589Z",
+              "WhenOpened": "2024-10-15T08:22:43.881Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 8,
-              "Title": "ICustomerRepository.cs",
-              "DocumentMoniker": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Core\\Interfaces\\ICustomerRepository.cs",
-              "RelativeDocumentMoniker": "MISA.AMISDemo.Core\\Interfaces\\ICustomerRepository.cs",
-              "ToolTip": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Core\\Interfaces\\ICustomerRepository.cs",
-              "RelativeToolTip": "MISA.AMISDemo.Core\\Interfaces\\ICustomerRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAkAAAA2AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-14T03:03:44.782Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "IEmployeeRepository.cs",
-              "DocumentMoniker": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Core\\Interfaces\\IEmployeeRepository.cs",
-              "RelativeDocumentMoniker": "MISA.AMISDemo.Core\\Interfaces\\IEmployeeRepository.cs",
-              "ToolTip": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Core\\Interfaces\\IEmployeeRepository.cs",
-              "RelativeToolTip": "MISA.AMISDemo.Core\\Interfaces\\IEmployeeRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAASAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-14T03:04:50.786Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
               "Title": "IBaseService.cs",
               "DocumentMoniker": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Core\\Interfaces\\IBaseService.cs",
               "RelativeDocumentMoniker": "MISA.AMISDemo.Core\\Interfaces\\IBaseService.cs",
               "ToolTip": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Core\\Interfaces\\IBaseService.cs",
               "RelativeToolTip": "MISA.AMISDemo.Core\\Interfaces\\IBaseService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAqwA0AAAAZAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-14T03:25:46.067Z",
+              "WhenOpened": "2024-10-15T09:12:13.446Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "CustomerProRepository.cs",
+              "DocumentMoniker": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Infrastructure\\Repository\\CustomerProRepository.cs",
+              "RelativeDocumentMoniker": "MISA.AMISDemo.Infrastructure\\Repository\\CustomerProRepository.cs",
+              "ToolTip": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Infrastructure\\Repository\\CustomerProRepository.cs",
+              "RelativeToolTip": "MISA.AMISDemo.Infrastructure\\Repository\\CustomerProRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAABCAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-15T10:16:37.384Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "ICustomerService.cs",
+              "DocumentMoniker": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Core\\Interfaces\\ICustomerService.cs",
+              "RelativeDocumentMoniker": "MISA.AMISDemo.Core\\Interfaces\\ICustomerService.cs",
+              "ToolTip": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Core\\Interfaces\\ICustomerService.cs",
+              "RelativeToolTip": "MISA.AMISDemo.Core\\Interfaces\\ICustomerService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-15T10:11:33.357Z",
               "EditorCaption": ""
             },
             {
@@ -235,92 +219,36 @@
               "RelativeDocumentMoniker": "MISA.AMISDemo.Core\\Services\\CustomerService.cs",
               "ToolTip": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Core\\Services\\CustomerService.cs",
               "RelativeToolTip": "MISA.AMISDemo.Core\\Services\\CustomerService.cs",
-              "ViewState": "AgIAAA0AAACAmZmZmZkBwBoAAAAwAAAAAAAAAA==",
+              "ViewState": "AgIAAAsAAABAMzMzMzM7wAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-14T03:42:12.819Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "EmployeeService.cs",
-              "DocumentMoniker": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Core\\Services\\EmployeeService.cs",
-              "RelativeDocumentMoniker": "MISA.AMISDemo.Core\\Services\\EmployeeService.cs",
-              "ToolTip": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Core\\Services\\EmployeeService.cs",
-              "RelativeToolTip": "MISA.AMISDemo.Core\\Services\\EmployeeService.cs",
-              "ViewState": "AgIAAAcAAAAAAAAAAAAAABMAAAAgAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-14T03:42:53.291Z",
+              "WhenOpened": "2024-10-15T10:12:17.381Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 13,
-              "Title": "ICustomerService.cs",
-              "DocumentMoniker": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Core\\Interfaces\\ICustomerService.cs",
-              "RelativeDocumentMoniker": "MISA.AMISDemo.Core\\Interfaces\\ICustomerService.cs",
-              "ToolTip": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Core\\Interfaces\\ICustomerService.cs",
-              "RelativeToolTip": "MISA.AMISDemo.Core\\Interfaces\\ICustomerService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAkAAAAyAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-14T03:17:29.679Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "MISAServiceResult.cs",
-              "DocumentMoniker": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Core\\DTOs\\MISAServiceResult.cs",
-              "RelativeDocumentMoniker": "MISA.AMISDemo.Core\\DTOs\\MISAServiceResult.cs",
-              "ToolTip": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Core\\DTOs\\MISAServiceResult.cs",
-              "RelativeToolTip": "MISA.AMISDemo.Core\\DTOs\\MISAServiceResult.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAaAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-14T06:41:20.879Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
-              "Title": "IEmployeeService.cs",
-              "DocumentMoniker": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Core\\Interfaces\\IEmployeeService.cs",
-              "RelativeDocumentMoniker": "MISA.AMISDemo.Core\\Interfaces\\IEmployeeService.cs",
-              "ToolTip": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Core\\Interfaces\\IEmployeeService.cs",
-              "RelativeToolTip": "MISA.AMISDemo.Core\\Interfaces\\IEmployeeService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAIAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-14T03:18:00.324Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 17,
-              "Title": "Product.cs",
-              "DocumentMoniker": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Core\\Entities\\Product.cs",
-              "RelativeDocumentMoniker": "MISA.AMISDemo.Core\\Entities\\Product.cs",
-              "ToolTip": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Core\\Entities\\Product.cs",
-              "RelativeToolTip": "MISA.AMISDemo.Core\\Entities\\Product.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-14T02:29:07.133Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 16,
               "Title": "Employee.cs",
               "DocumentMoniker": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Core\\Entities\\Employee.cs",
               "RelativeDocumentMoniker": "MISA.AMISDemo.Core\\Entities\\Employee.cs",
               "ToolTip": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Core\\Entities\\Employee.cs",
               "RelativeToolTip": "MISA.AMISDemo.Core\\Entities\\Employee.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAABUAAAAdAAAAAAAAAA==",
+              "ViewState": "AgIAAAoAAAAAAAAAAAA1wBwAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-14T02:28:34.153Z",
+              "WhenOpened": "2024-10-15T08:51:44.283Z",
               "EditorCaption": ""
             },
             {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "EmployeeDTO.cs",
+              "DocumentMoniker": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Core\\DTOs\\EmployeeDTO.cs",
+              "RelativeDocumentMoniker": "MISA.AMISDemo.Core\\DTOs\\EmployeeDTO.cs",
+              "ToolTip": "E:\\workspace\\projectInMisa\\employeeManagement\\BE\\MISA.AMISDemo.Api\\MISA.AMISDemo.Core\\DTOs\\EmployeeDTO.cs",
+              "RelativeToolTip": "MISA.AMISDemo.Core\\DTOs\\EmployeeDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-15T08:50:52.694Z",
+              "EditorCaption": ""
             }
           ]
         }

@@ -25,15 +25,13 @@ function LoadContainer() {
             <div class="content__body">
                 <table class="table">
                     <thead class="header">
-                        <tr>
-                            <th>STT</th>
-                            <th>Mã nhân viên</th>
-                            <th>Họ và tên</th>
-                            <th>Giới tính</th>
-                            <th>Ngày sinh</th>
-                            <th>Địa chỉ email</th>
-                            <th>Địa chỉ</th>
-                        </tr>
+                        <th style="width: 5%;">STT</th>
+                        <th style="width: 10%;">Mã nhân viên</th>
+                        <th style="width: 15%;">Họ và tên</th>
+                        <th style="width: 8%;">Giới tính</th>
+                        <th style="width: 12%;">Ngày sinh</th>
+                        <th style="width: 20%;">Địa chỉ email</th>
+                        <th style="width: 30%;">Địa chỉ</th>
                     </thead>
                     <tbody class="body">
                     </tbody>
@@ -54,7 +52,32 @@ function LoadContainer() {
 
     // showPopup(addBtn)
     addBtn.addEventListener('click', function() {
-        showPopup({ code: '', name: '', gender: '', birthday: '', position: '', CMTND: '', dateProvide: '', department: '', placeOfIssue: '', address: '', numberPhone: '', landline: '', email: '', bankAccount: '', bankName: '', bankBranch: '' });
-    })
+        showPopup({});
+    });
+
+    let timeoutId;
+    function handleInputChange(event) {
+        const query = event.target.value;
+        if (timeoutId) {
+            clearTimeout(timeoutId)
+        }
+        timeoutId = setTimeout(() => {
+            searchEmployee(query)
+        }, 200)
+    }
+    document.getElementById('search').addEventListener('input', handleInputChange);
+
+    function searchEmployee (query) {
+        fetch('https://localhost:7004/api/v1/employees/'.concat(query))
+        .then(response => {
+            return response.json(); 
+        })
+        .then(data => {
+            renderTable(data);
+        })
+        .catch(error => {
+            console.log(error)
+        })
+    }
 }
 

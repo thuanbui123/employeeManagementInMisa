@@ -25,9 +25,17 @@ namespace MISA.AMISDemo.Core.Services
             //...
             //Sau khi hợp lệ thì thêm mới vào database
             var res = _customerRepository.Insert(item);
+            if (res == 1)
+            {
+                return new MISAServiceResult
+                {
+                    Susscess = true,
+                    Data = res
+                };
+            }
             return new MISAServiceResult
             {
-                Susscess = true,
+                Susscess = false,
                 Data = res
             };
         }

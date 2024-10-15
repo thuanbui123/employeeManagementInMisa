@@ -12,7 +12,7 @@ namespace MISA.AMISDemo.Core.Entities
         public Guid CustomerId { get; set; }
 
         [Required(ErrorMessage = "Không được để trống!")]
-        [MaxLength(100, ErrorMessage ="Độ dài không được quá 100!")]
+        [MaxLength(15, ErrorMessage ="Độ dài không được quá 100!")]
         public string CustomerCode { get; set; }
         public string FullName { get; set; }
         public DateTime? DateOfBirth { get; set; }
@@ -20,8 +20,8 @@ namespace MISA.AMISDemo.Core.Entities
         public string Email { get; set; }
         public string Address { get; set; }
         public string PhoneNumber { get; set; }
-        public string IndentityNumber { get; set; }
-        public string IndentityPlace { get; set; }
-        public DateTime? IndentityDate { get; set; }
+        public string IdentityNumber { get; set; }
+        public string IdentityPlace { get; set; }
+        public DateTime? IdentityDate { get; set; }
     }
 }
