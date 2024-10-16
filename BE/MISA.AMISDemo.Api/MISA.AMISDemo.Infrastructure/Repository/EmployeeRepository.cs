@@ -1,5 +1,7 @@
-﻿using MISA.AMISDemo.Core.Entities;
+﻿using Dapper;
+using MISA.AMISDemo.Core.Entities;
 using MISA.AMISDemo.Core.Interfaces;
+using MISA.AMISDemo.Infrastructure.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,30 +12,17 @@ namespace MISA.AMISDemo.Infrastructure.Repository
 {
     public class EmployeeRepository : MISADbContext<Employee>, IEmployeeRepository
     {
-        public int Delete(Employee item)
+        public EmployeeRepository(IMISADbContext context):base(context)
         {
-            throw new NotImplementedException();
+            
         }
-
-        public bool ExistsByCode(string code)
+        public bool CheckDuplicateCode(string code)
         {
-            List<Employee> exists = base.Get("EmployeeCode", code);
-            return exists.Count > 0;
-        }
-
-        public List<Employee> GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
-        public int Insert(Employee item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int Update(Employee item)
-        {
-            throw new NotImplementedException();
+            var sqlCheck = "SELECT EmployeeCode FROM Employee e WHERE e.EmployeeCode = @Code";
+            var parameters = new DynamicParameters();
+            parameters.Add("@Code", code);
+            var res = _dbContext.Connection.QueryFirstOrDefault<string>(sqlCheck, param: parameters);
+            return res != null;
         }
     }
 }

@@ -4,7 +4,7 @@ create table Employee (
 	EmployeeId char(36) primary key,
     EmployeeCode varchar(36),
     FullName varchar(100),
-    DateOfBirth datetime,
+    DateOfBirth employeedatetime,
     Sex varchar(5),
     Email varchar(255),
     Address varchar(255),
@@ -43,5 +43,6 @@ INSERT INTO Employee (
 ) VALUES 
 ('9c68f144-7eb7-44e2-9911-efb09f7ec9e2', 'EMP001', 'Nguyễn Văn A', '1990-01-01 00:00:00', 'Nam', 'nguyenvana@example.com', 'Hà Nội', 'Nhân sự', 'Intern', '0123456789', '0212345678', '123456789', 'Thành phố H', '2015-01-01 00:00:00', 10000000, '123456789012345', 'Ngân hàng ABC', 'Chi nhánh H'),
 ('a53d6b2c-2cf1-4bb5-9476-abbf8e9f0b47', 'EMP002', 'Trần Thị B', '1992-03-15 00:00:00', 'Nữ', 'tranthib@example.com', 'Thái Bình', 'Kinh doanh', 'Fresher', '0987654321', '0223456789', '234567890', 'Thành phố H', '2016-03-01 00:00:00', 12000000, '987654321012345', 'Ngân hàng XYZ', 'Chi nhánh H')
+SELECT EmployeeCode FROM Employee ORDER BY EmployeeCode DESC LIMIT 1
 
 select * from employee

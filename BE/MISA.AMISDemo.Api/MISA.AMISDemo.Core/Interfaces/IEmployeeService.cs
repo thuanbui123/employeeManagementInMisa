@@ -13,7 +13,7 @@ namespace MISA.AMISDemo.Core.Interfaces
     {
         object ImportService(IFormFile excelFile);
 
-        List<Employee> Search(string query);
+        IEnumerable<Employee>? Search(string query);
         MISAServiceResult InsertService(Employee? item, EmployeeDTO? dto);
     }
 }

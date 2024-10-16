@@ -8,35 +8,19 @@ using System.Threading.Tasks;
 using Dapper;
 using MySqlConnector;
 using System.Data;
+using MISA.AMISDemo.Infrastructure.Interface;
 
 namespace MISA.AMISDemo.Infrastructure.Repository
 {
-    public class CustomerRepository : MISADbContext<Customer>, ICustomerRepository, IDisposable
+    public class CustomerRepository : MISADbContext<Customer>, ICustomerRepository
     {
+        public CustomerRepository(IMISADbContext context) : base(context) 
+        {
+            
+        }
         public int Delete(Customer item)
         {
             throw new NotImplementedException();
         }
-
-        public void Dispose()
-        {
-            connection.Dispose();
-        }
-
-        public bool ExistsByCode(string code)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int Insert(Customer item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int Update(Customer item)
-        {
-            throw new NotImplementedException();
-        }
-
     }
 }

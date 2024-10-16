@@ -1,5 +1,9 @@
 ﻿using Dapper;
+using Microsoft.Extensions.Configuration;
+using MISA.AMISDemo.Core;
 using MISA.AMISDemo.Core.Entities;
+using MISA.AMISDemo.Core.Interfaces;
+using MISA.AMISDemo.Infrastructure.Interface;
 using MySqlConnector;
 using System;
 using System.Collections.Generic;
@@ -14,103 +18,64 @@ using System.Threading.Tasks;
 
 namespace MISA.AMISDemo.Infrastructure.Repository
 {
-    public class MISADbContext<T> where T : class
+    public class MISADbContext<T> : IBaseReposity<T>, IDisposable where T : class
     {
-        string ConnectString = "Host = localhost; " +
-                "Port = 3306; " +
-                "Database=MISA_CUkCuk_Demo; " +
-                "User Id = root; " +
-                "Password = Thuan0101#";
-        protected IDbConnection connection;
-        public MISADbContext()
+        protected IMISADbContext _dbContext;
+        protected string _className;
+        public MISADbContext(IMISADbContext context)
         {
-            connection = new MySqlConnection(ConnectString);
+            _dbContext = context;
+            _className = typeof(T).Name;
         }
 
-        public List<T> Get()
+        public void Dispose()
         {
-            var className = typeof(T).Name;
-            var sql = $"select * from {className}";
-            var data = connection.Query<T>(sql).ToList();
-            return data;
+            _dbContext.Connection.Dispose();
         }
 
-        public List<T> Get(string column, string value)
+        public IEnumerable<T> Get()
         {
-            var className = typeof(T).Name;
-            var sql = $"select * from {className} where {column} like @value";
-            var parametes = new DynamicParameters();
-            parametes.Add("@value", $"%{value}%");
-            var data = connection.Query<T>(sql, param:parametes).ToList();
-            return data;
+            return _dbContext.Get<T>();
         }
 
-        public string GetMaxCode()
+        public IEnumerable<T> Get(string column, string value)
         {
-            var className = typeof(T).Name;
-            var sql = $"SELECT EmployeeCode FROM Employee ORDER BY EmployeeCode DESC LIMIT 1";
-            var data = connection.QueryFirst(sql);
-            return data.EmployeeCode as string;
+            return _dbContext.Get<T>(column, value);
         }
 
-        public static string GenerateInsertSql<U>(T? obj, out DynamicParameters? parameters, U? dto) where U : class
+        public bool ExistsByCode(string code)
         {
-            Type? type = obj != null ? typeof(T) : typeof(U);
-            if (type == null)
-            {
-                parameters = null;
-                return string.Empty;
-            }
-
-            StringBuilder columns = new StringBuilder();
-            StringBuilder values = new StringBuilder();
-            PropertyInfo[] properties = type.GetProperties();
-            string tableName = type.Name.Replace("DTO", string.Empty);  // Lấy tên bảng là tên của class, có thể tùy chỉnh.
-
-            parameters = new DynamicParameters();
-            foreach (var prop in properties)
-            {
-                var value = obj != null ? prop.GetValue(obj, null) : prop.GetValue(dto, null);
-
-                if (value != null)
-                {
-                    string paramName = "@" + prop.Name;
-                    columns.Append(prop.Name + ",");
-                    values.Append(paramName + ",");
-
-                    // Thêm giá trị vào DynamicParameters
-                    parameters.Add(paramName, value);
-                }
-            }
-
-
-            if (columns.Length > 0 && values.Length > 0)
-            {
-                // Xóa dấu phẩy cuối cùng
-                columns.Remove(columns.Length - 1, 1);
-                values.Remove(values.Length - 1, 1);
-
-                return $"INSERT INTO {tableName} ({columns}) VALUES ({values});";
-            }
-
-            return string.Empty;
+            return _dbContext.ExistsByCode<T>(code);
         }
 
-        public int Insert<U> (T? entity, U? dto) where U : class
+        public string? GetMaxCode()
         {
-            string sqlQuery = GenerateInsertSql(entity, out DynamicParameters? parameters, dto);
-            if (!string.IsNullOrEmpty(sqlQuery))
-            {
-                try
-                {
-                    return connection.Execute(sqlQuery, parameters);
-                } catch (Exception ex)
-                {
-                    Console.WriteLine("Error inserting data: " + ex.Message);
-                    return 0;
-                }
-            }
-            return 0;
+            return _dbContext.GetMaxCode<T>();
+        }
+
+        public int Insert(T entity)
+        {
+            return _dbContext.Insert(entity);
+        }
+
+        public int Insert<K>(T? entity, K? dto) where K : class
+        {
+            return _dbContext.Insert<T, K>(entity, dto);
+        }
+
+        public int Update(T entity)
+        {
+            return _dbContext.Update(entity);
+        }
+
+        public int Delete(string id)
+        {
+            return _dbContext.Delete<T>(id);
+        }
+
+        public int DeleteAny(string[] ids)
+        {
+            return _dbContext.DeleteAny<T>(ids);
         }
     }
 }

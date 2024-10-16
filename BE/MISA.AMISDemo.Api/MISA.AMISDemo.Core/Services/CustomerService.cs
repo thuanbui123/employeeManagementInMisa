@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace MISA.AMISDemo.Core.Services
 {
-    public class CustomerService : ICustomerService
+    public class CustomerService : BaseService<Customer>, ICustomerService
     {
         ICustomerRepository _customerRepository;
 
-        public CustomerService(ICustomerRepository repository)
+        public CustomerService(ICustomerRepository repository):base(repository) 
         {
             _customerRepository = repository;
         }

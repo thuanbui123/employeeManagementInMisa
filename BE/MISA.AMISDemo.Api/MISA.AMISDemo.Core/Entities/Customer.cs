@@ -9,7 +9,7 @@ namespace MISA.AMISDemo.Core.Entities
 {
     public class Customer
     {
-        public Guid CustomerId { get; set; }
+        public Guid? CustomerId { get; set; }
 
         [Required(ErrorMessage = "Không được để trống!")]
         [MaxLength(15, ErrorMessage ="Độ dài không được quá 100!")]

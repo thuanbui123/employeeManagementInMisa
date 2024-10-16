@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using MISA.AMISDemo.Core.DTOs;
 using MISA.AMISDemo.Core.Entities;
+using MISA.AMISDemo.Core.Exceptions;
 using MISA.AMISDemo.Core.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -10,10 +11,10 @@ using System.Threading.Tasks;
 
 namespace MISA.AMISDemo.Core.Services
 {
-    public class EmployeeService : IEmployeeService
+    public class EmployeeService : BaseService<Employee>, IEmployeeService
     {
         private IEmployeeRepository _employeeRepository;
-        public EmployeeService(IEmployeeRepository repository)
+        public EmployeeService(IEmployeeRepository repository):base(repository) 
         {
             _employeeRepository = repository;
         }
@@ -24,7 +25,9 @@ namespace MISA.AMISDemo.Core.Services
 
         public MISAServiceResult InsertService(Employee? item, EmployeeDTO? dto)
         {
-            string MaxCode = _employeeRepository.GetMaxCode();
+            if (item != null) ValidateObject(item);
+            string? MaxCode = _employeeRepository.GetMaxCode();
+
             return new MISAServiceResult
             {
                 Susscess = true,
@@ -33,14 +36,23 @@ namespace MISA.AMISDemo.Core.Services
 
         }
 
-        public List<Employee> Search(string query)
+        protected override void ValidateObject(Employee entity)
         {
-            List<Employee> Result = _employeeRepository.Get("employeeCode", query);
-            if (Result == null || Result.Count == 0)
+            var isDuplicate = _employeeRepository.CheckDuplicateCode(entity.EmployeeCode);
+            if (isDuplicate )
             {
-                Result = _employeeRepository.Get("fullName", query);
+                throw new MISAValidateException("Mã nhân viên đã tồn tại trong hệ thống!");
             }
-            return Result;
+        }
+
+        public IEnumerable<Employee>? Search(string query)
+        {
+            IEnumerable<Employee> result = _employeeRepository.Get("employeeCode", query);
+            if (result == null || result.Count() == 0)
+            {
+                result = _employeeRepository.Get("fullName", query);
+            }
+            return result;
         }
     }
 }

@@ -8,12 +8,14 @@ namespace MISA.AMISDemo.Core.Interfaces
 {
     public interface IBaseReposity<T> where T : class
     {
-        List<T> Get();
-        List<T> Get(string column, string value);
+        IEnumerable<T> Get();
+        IEnumerable<T> Get(string column, string value);
         bool ExistsByCode(string code);
-        string GetMaxCode ();
-        int Insert(T item);
-        int Update(T item);
-        int Delete(T item);
+        string? GetMaxCode ();
+        int Insert(T entity);
+        int Insert <K>(T? entity, K? dto ) where K : class;
+        int Update(T entity);
+        int Delete(String id);
+        int DeleteAny (string[] ids);
     }
 }
