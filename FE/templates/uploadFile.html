@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nhập khẩu số liệu</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between; /* Align the two blocks on either side */
+            align-items: flex-start; /* Align the two sections at the top */
+            width: 100%; /* Ensure the container takes up the full width */
+            padding: 20px;
+        }
+
+        .steps {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            width: 100%;
+
+        }
+
+        .step {
+            width: 50%;
+            text-align: center;
+        }
+
+        .step.active {
+            color: #007bff;
+        }
+
+        .instructions {
+            border: 1px solid #d3d3d3;
+            padding: 15px;
+            margin-right: 20px;
+            flex: 1;
+            width: 400px;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .upload-section {
+            border: 2px dashed #d3d3d3;
+            padding: 30px;
+            text-align: center;
+            background-color: #f9f9f9;
+            position: absolute;
+            flex: 2;
+            top: 50%;
+            right: 50px;
+            width: 600px; 
+            transform: translateY(-50%);
+        }
+
+        .upload-section input[type="file"] {
+            display: none;
+        }
+
+        .upload-section label {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .error-message {
+            color: red;
+            margin-top: 10px;
+        }
+
+        .progress-bar {
+            margin-top: 20px;
+            width: 100%;
+            background-color: #e0e0e0;
+            height: 10px;
+            display: none;
+        }
+
+        .progress {
+            height: 10px;
+            background-color: #007bff;
+            width: 0;
+        }
+
+        .disabled-button {
+            background-color: #cccccc;
+            color: #ffffff;
+            padding: 10px 20px;
+            border: none;
+            cursor: not-allowed;
+            border-radius: 5px;
+        }
+
+        .button-active {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    
+    <div class="steps">
+        <div class="step active">1. Chọn tệp nguồn</div>
+        <div class="step">2. Kết quả nhập khẩu</div>
+    </div>
+    <div class="instructions">
+        <h3>Hướng dẫn</h3>
+        <div class="item-content">
+            <div class="item-icon">
+                
+            </div>
+        </div>
+        <p><strong>Bước 1:</strong> Tải tệp mẫu</p>
+        <p><strong>Bước 2:</strong> Chuẩn bị tệp theo đúng mẫu</p>
+        <p><strong>Bước 3:</strong> Đính kèm tệp lên chương trình</p>
+    </div>
+    <div class="upload-section">
+        <input type="file" id="file-upload" accept=".xls,.xlsx">
+        <label for="file-upload">Chọn tệp</label>
+        <p id="file-info">Chưa có file nào được chọn</p>
+        <div class="error-message" id="error-message"></div>
+        <div class="progress-bar" id="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+    </div>
+
+    <button class="disabled-button" id="upload-btn" disabled>Nhập dữ liệu</button>
+</div>
+
+<script>
+    const fileInput = document.getElementById('file-upload');
+    const fileInfo = document.getElementById('file-info');
+    const errorMessage = document.getElementById('error-message');
+    const uploadBtn = document.getElementById('upload-btn');
+    const progressBar = document.getElementById('progress-bar');
+    const progress = document.getElementById('progress');
+
+    fileInput.addEventListener('change', function() {
+        const file = fileInput.files[0];
+        
+        if (file) {
+            // Kiểm tra định dạng file
+            const allowedExtensions = ['xls', 'xlsx'];
+            const fileExtension = file.name.split('.').pop();
+
+            if (!allowedExtensions.includes(fileExtension)) {
+                errorMessage.textContent = 'Tệp tải lên không đúng mẫu của chương trình';
+                fileInfo.textContent = 'Chưa có file nào được chọn';
+                uploadBtn.disabled = true;
+                uploadBtn.classList.replace('button-active', 'disabled-button');
+                return;
+            }
+
+            // Hiển thị thông tin file và reset thông báo lỗi
+            fileInfo.textContent = `Tên tệp: ${file.name} - Kích thước: ${(file.size / 1024).toFixed(2)} KB`;
+            errorMessage.textContent = '';
+            
+            // Bật nút nhập dữ liệu
+            uploadBtn.disabled = false;
+            uploadBtn.classList.replace('disabled-button', 'button-active');
+        } else {
+            fileInfo.textContent = 'Chưa có file nào được chọn';
+            uploadBtn.disabled = true;
+            uploadBtn.classList.replace('button-active', 'disabled-button');
+        }
+    });
+
+    // Hàm mô phỏng quá trình upload file (chỉ mang tính minh họa)
+    uploadBtn.addEventListener('click', function() {
+        progressBar.style.display = 'block';
+
+        let progressValue = 0;
+        const interval = setInterval(function() {
+            if (progressValue >= 100) {
+                clearInterval(interval);
+                alert('Nhập dữ liệu thành công!');
+            } else {
+                progressValue += 10;
+                progress.style.width = `${progressValue}%`;
+            }
+        }, 500);
+    });
+</script>
+
+</body>
+</html>

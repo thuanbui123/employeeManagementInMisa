@@ -1,3 +1,5 @@
+let branch = "find-all";
+let branches = JSON.parse(localStorage.getItem('branches'));
 function loadHeader() {
     const headerHTML = `
         <ul class="header-left">
@@ -6,13 +8,19 @@ function loadHeader() {
             </li>
             <li><img class="logo-img" src="./assets/cukcuk-logo.png" /></li>
             <li class="menu">
-                <a>
-                    <p>Chi nhánh Hà Nội</p>
-                    <i class="icofont-curved-down"></i>
-                </a>
-                <ul class="subnav">
-                    <li>Chi nhánh TP. Hồ Chí Minh</li>
-                </ul>
+                <select class="subnav">
+                    ${
+                        branches.map((branch, index) => {
+                            return (`
+                                <option value="${branch.value}">
+                                    <p>Chi nhánh ${branch.value ==='find-all' ? 'tất cả chi nhánh' : branch.value}</p>
+                                    ${index === 0 ? `<i class="icofont-curved-down"></i>` : ''}
+                                </option>
+                                `
+                            )
+                        })
+                    }
+                </select>
             </li>
         </ul>
         <div class="header-right">
@@ -25,6 +33,13 @@ function loadHeader() {
     `;
 
     document.getElementById('header').innerHTML = headerHTML;
+
+    const subnav = document.getElementsByClassName('subnav')[0];
+    subnav.addEventListener('input', function() {
+        branch = subnav.value; 
+        currentPage = 0; 
+        paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${branch}&limit=${limit}&offset=0`);
+    });
 }
 
 document.addEventListener('DOMContentLoaded', loadHeader);

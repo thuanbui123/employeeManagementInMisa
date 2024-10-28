@@ -18,6 +18,10 @@ function loader () {
                 <p>Cài đặt</p>
             </li>
         </ul>
+        <button class= "shrink">
+            <i class="icofont-rounded-left icon"></i>
+            <span>Thu nhỏ</span>
+        </button>
     `;
 
     document.getElementById('sidebar').innerHTML = sidebarHTML;
@@ -37,18 +41,28 @@ document.addEventListener('DOMContentLoaded', () => {
             switch(page) {
                 case 'Employee': 
                     LoadContainer();
-                    fetchEmployeeData();
+                    branch = "Hà Nội"
+                    paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${branch}&limit=10&offset=0`);
                     break;
                 case 'Home': 
+                    previousApi = ''
                     container.innerHTML = `<h3>Trang chủ</h3>`
                     break;
                 case 'Report':
+                    previousApi = ''
                     container.innerHTML = `<h3>Trang báo cáo</h3>`
                     break;
                 case 'Setting': 
+                    previousApi = ''
                     container.innerHTML = `<h3>Trang cài đặt</h3>`
             }
             this.classList.add('active');
         });
     });
+
+    const shrinks = document.querySelector('.shrink');
+    shrinks.addEventListener('click', function() {
+        const sidebar = document.getElementById('sidebar');
+        sidebar.classList.toggle('close');
+    })
 });

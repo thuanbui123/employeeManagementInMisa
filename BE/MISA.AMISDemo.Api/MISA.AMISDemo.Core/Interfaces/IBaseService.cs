@@ -12,5 +12,6 @@ namespace MISA.AMISDemo.Core.Interfaces
     public interface IBaseService<T> where T : class
     {
         MISAServiceResult InsertService(T entity);
+        DateTime? ProcessDate(string? dateString);
     }
 }

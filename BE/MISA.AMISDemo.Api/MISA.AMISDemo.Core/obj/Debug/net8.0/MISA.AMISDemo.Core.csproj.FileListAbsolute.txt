@@ -11,3 +11,5 @@ E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo
 E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Core\obj\Debug\net8.0\refint\MISA.AMISDemo.Core.dll
 E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Core\obj\Debug\net8.0\MISA.AMISDemo.Core.pdb
 E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Core\obj\Debug\net8.0\ref\MISA.AMISDemo.Core.dll
+E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Core\obj\Debug\net8.0\MISA.AMISDemo.Core.Resource.Resource.resources
+E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Core\obj\Debug\net8.0\MISA.AMISDemo.Core.csproj.GenerateResource.cache

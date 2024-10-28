@@ -33,13 +33,39 @@ function showDialog (data ={}, index) {
 
     const okBtn = document.querySelector(".ok");
     okBtn.addEventListener('click', function() {
-        deleteData(index);
+        fetchDeleteData(index);
         dialogArea.classList.remove('open');
     });
 
-    
+    /**
+     * Xóa dữ liệu bằng js thường
+     * @param {*} index: Dòng dữ liệu cần xóa
+     */
     function deleteData (index) {
         fakeData.splice(index, 1);
         renderTable(fakeData);
+    }
+
+    /**
+     * Gọi api xóa dữ liệu từ server
+     * @param {*} index Dòn dữ liệu cần xóa
+     */
+    function fetchDeleteData (index) {
+        var code = Data[index].employeeCode;
+        $.ajax({
+            url: `https://localhost:7004/api/v1/employees/${code}`,  
+            method: 'DELETE',
+            contentType: 'application/json',  
+            success: function (response) {
+                if (response !== 1) {
+                    alert("Có lỗi khi xóa nhân viên")
+                }
+                alert('Xóa nhân viên thành công');
+                paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${branch}&limit=10&offset=0`);
+            },
+            error: function (error) {
+                alert('Xóa nhân viên thất bại: ' + error.responseText);
+            }
+        })
     }
 }

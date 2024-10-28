@@ -1,0 +1,9 @@
+@use '@/assets/styles/variables' as variables;
+@use '@/assets/styles/reset';
+
+.main-content {
+    position: relative;
+    top: variables.$header-height;
+    left: variables.$sidebar-width;
+    right: 20px;
+}

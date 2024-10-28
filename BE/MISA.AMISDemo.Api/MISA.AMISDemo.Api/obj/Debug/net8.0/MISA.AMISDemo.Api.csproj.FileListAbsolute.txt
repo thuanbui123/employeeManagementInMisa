@@ -38,3 +38,15 @@ E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo
 E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Api\bin\Debug\net8.0\Dapper.dll
 E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Api\bin\Debug\net8.0\MySqlConnector.dll
 E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Api\bin\Debug\net8.0\Newtonsoft.Json.dll
+E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Api\bin\Debug\net8.0\EPPlus.dll
+E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Api\bin\Debug\net8.0\EPPlus.Interfaces.dll
+E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Api\bin\Debug\net8.0\EPPlus.System.Drawing.dll
+E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Api\bin\Debug\net8.0\Microsoft.Extensions.Configuration.FileExtensions.dll
+E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Api\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Json.dll
+E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Api\bin\Debug\net8.0\Microsoft.IO.RecyclableMemoryStream.dll
+E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Api\bin\Debug\net8.0\Microsoft.Win32.SystemEvents.dll
+E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Api\bin\Debug\net8.0\System.Drawing.Common.dll
+E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Api\bin\Debug\net8.0\System.Security.Cryptography.Pkcs.dll
+E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Api\bin\Debug\net8.0\runtimes\win\lib\net7.0\Microsoft.Win32.SystemEvents.dll
+E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Api\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Drawing.Common.dll
+E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Api\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll

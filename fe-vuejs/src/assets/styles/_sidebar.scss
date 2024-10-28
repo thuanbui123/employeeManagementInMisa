@@ -1,0 +1,30 @@
+@use '@/assets/styles/variables' as variables;
+@use '@/assets/styles/reset';
+
+#sidebar {
+    width: variables.$sidebar-width;
+    background-color: variables.$sidebar-color;
+    position: fixed;
+    top: variables.$header-height;
+    bottom: 0;
+    left: 0;
+    padding: 16px 8px;
+}
+
+.item {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 0 8px;
+    border-radius: 8px;
+    padding: 10px 8px;
+    transition: all .3s ease;
+    & img {
+        filter: brightness(0) invert(1);
+    }
+    & p {
+        font-size: 18px;
+        margin-left: 16px;
+        color: #fff;
+    }
+}

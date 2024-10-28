@@ -1,0 +1,115 @@
+@use '@/assets/styles/variables.scss';
+@use '@/assets/styles/reset.scss';
+#header {
+    height: variables.$header-height;
+    line-height: variables.$header-height;
+    margin-bottom: variables.$margin;
+    padding: 0 20px;
+    background-color: variables.$header-color;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+}
+
+#header .header-left {
+    display: flex;
+    align-items: center;
+    flex: 2;
+    justify-content: flex-start;
+}
+
+#header .toggle-sidebar {
+    cursor: pointer;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    display: block;
+    height: 56px;
+}
+
+#header .header-left li {
+    display: block;
+    cursor: pointer;
+}
+
+
+#header .header-left .menu {
+    margin-left: 16px;
+    position: relative;
+}
+
+#header .header-left .menu a {
+    display: flex;
+    align-items: center;
+    padding: 0 4px;
+    transition: all .3s ease;
+}
+
+#header .header-left .menu a:hover {
+    background-color: #ccc;
+}
+
+#header .header-left .menu p {
+    margin-right: 4px;
+}
+
+#header .header-left .menu .subnav {
+    position: absolute;
+    background-color: #fff;
+    width: 200px;
+    display: none;
+    top: 100%;
+    left: 0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    list-style-type: none;
+    transition: all .3s ease;
+}
+
+#header .header-left .menu:hover .subnav {
+    display: block;
+}
+
+#header .header-left .menu .subnav:hover {
+    background-color: #ccc;
+}
+
+#header .logo-img {
+    display: block;
+    margin-left: 12px;
+    height: calc(variables.$header-height - 10px);
+    object-fit: cover;
+}
+
+#header .header-right {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex: 1;
+    height: 56px;
+    padding: 0 20px;
+}
+
+#header .header-right #avatar {
+    height: 46px;
+    width: 46px;
+    border-radius: 50%;
+    border: 1px solid #ccc;
+}
+
+#header .header-right .name {
+    font-size: 14px;
+    margin: 0 12px;
+}
+
+#header .header-right .option {
+    filter: brightness(0);
+    border: none;
+    outline: none;
+    cursor: pointer;
+    background-color: transparent;
+}

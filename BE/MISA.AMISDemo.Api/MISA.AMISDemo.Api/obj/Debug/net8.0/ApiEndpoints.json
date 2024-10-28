@@ -61,7 +61,7 @@
     "Parameters": [
       {
         "Name": "employee",
-        "Type": "MISA.AMISDemo.Core.Entities.Employee",
+        "Type": "MISA.AMISDemo.Core.DTOs.EmployeeDTO",
         "IsRequired": true
       }
     ],
@@ -69,18 +69,163 @@
   },
   {
     "ContainingType": "MISA.AMISDemo.Api.Controllers.EmployeesController",
-    "Method": "Get",
-    "RelativePath": "api/v1/employees/{query}",
+    "Method": "Update",
+    "RelativePath": "api/v1/employees",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "employee",
+        "Type": "MISA.AMISDemo.Core.DTOs.EmployeeDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MISA.AMISDemo.Api.Controllers.EmployeesController",
+    "Method": "Delete",
+    "RelativePath": "api/v1/employees/{code}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "code",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MISA.AMISDemo.Api.Controllers.EmployeesController",
+    "Method": "CheckFileImport",
+    "RelativePath": "api/v1/employees/check-file-import",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "file",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MISA.AMISDemo.Api.Controllers.EmployeesController",
+    "Method": "FilterByBranch",
+    "RelativePath": "api/v1/employees/filter-by-branch",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "query",
+        "Name": "branch",
         "Type": "System.String",
-        "IsRequired": true
+        "IsRequired": false
+      },
+      {
+        "Name": "limit",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "offset",
+        "Type": "System.Int32",
+        "IsRequired": false
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MISA.AMISDemo.Api.Controllers.EmployeesController",
+    "Method": "GenerateCode",
+    "RelativePath": "api/v1/employees/generate-code",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MISA.AMISDemo.Api.Controllers.EmployeesController",
+    "Method": "Import",
+    "RelativePath": "api/v1/employees/import",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MISA.AMISDemo.Api.Controllers.EmployeesController",
+    "Method": "Paginate",
+    "RelativePath": "api/v1/employees/paginate",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "branch",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "limit",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "offset",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MISA.AMISDemo.Api.Controllers.EmployeesController",
+    "Method": "Get",
+    "RelativePath": "api/v1/employees/search",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "value",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "branch",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "limit",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "offset",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MISA.AMISDemo.Api.Controllers.EmployeesController",
+    "Method": "GetSumRows",
+    "RelativePath": "api/v1/employees/sum-rows",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   },
   {

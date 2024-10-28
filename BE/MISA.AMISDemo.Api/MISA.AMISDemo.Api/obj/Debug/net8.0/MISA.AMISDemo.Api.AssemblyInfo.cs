@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MISA.AMISDemo.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ccf1d62da94e276d78a18839b7273c9f56751a99")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ace67a382167c6ef6bc13c4665d33341e34c6dd9")]
 [assembly: System.Reflection.AssemblyProductAttribute("MISA.AMISDemo.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MISA.AMISDemo.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -1,0 +1,8 @@
+@use '@/assets/styles/variables.scss';
+@use '@/assets/styles/reset.scss';
+
+.main-content {
+    margin-top: calc(variables.$header-height );
+    margin-left: calc(variables.$sidebar-width + 20px);
+    padding: 10px;
+}

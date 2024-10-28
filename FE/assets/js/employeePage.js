@@ -1,3 +1,4 @@
+
 function LoadContainer() {
     const containerHtml = `
         <div class="sub-header">
@@ -14,6 +15,10 @@ function LoadContainer() {
                     <img src="./assets/icon/search.png" alt="Tìm kiếm" />
                 </div>
                 <div class="header__right">
+                    <button class="import">
+                        <img src="./assets/icon/import.png" alt="import">
+                    </button>
+                    <input type="file" id="fileInput" style="display: none;">
                     <button class="export">
                         <img src="./assets/icon/export-excel-50.png" alt="export">
                     </button>
@@ -30,23 +35,69 @@ function LoadContainer() {
                         <th style="width: 15%;">Họ và tên</th>
                         <th style="width: 8%;">Giới tính</th>
                         <th style="width: 12%;">Ngày sinh</th>
-                        <th style="width: 20%;">Địa chỉ email</th>
-                        <th style="width: 30%;">Địa chỉ</th>
+                        <th style="width: 15%;">Chi nhánh</th>
+                        <th style="width: 35%;">Địa chỉ</th>
                     </thead>
-                    <tbody class="body">
+                    <tbody class="table__body">
                     </tbody>
+                    <tfoot class="table__footer">
+                        
+                    </tfoot>
                 </table>
             </div>
         </div>
         <div class="popup"></div>
         <div class="dialog-area"></div>
+        <div class="ie-wrapper"></div>
             
 `;
     document.getElementById('container').innerHTML = containerHtml;
     const refresh = document.getElementsByClassName('refresh')[0];
     refresh.addEventListener('click', function() {
-        window.location.reload();
+        paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${branch}&limit=10&offset=0`)
+        fetchSumRows ();
+    });
+
+    const importBtn = document.getElementsByClassName('import')[0];
+    // importBtn.addEventListener('click', function() {
+    //     document.getElementById('fileInput').click();
+    // });
+
+    importBtn.addEventListener('click', function() {
+        showImportEmployee()
     })
+
+    document.getElementById('fileInput').addEventListener('change', function(event) {
+        const file = event.target.files[0]; // Lấy file được chọn
+    
+        if (file) {
+            // Gọi API để gửi file
+            const formData = new FormData();
+            formData.append('file', file);
+    
+            fetch('https://localhost:7004/api/v1/employees/import', {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => response.json())
+            .then(data => {
+                var message = '';
+                data.map(item => {
+                    message += `${item.error} \n` 
+                })
+                alert(message)
+                fetchEmployeeData(10, 0);
+                fetchSumRows ();
+                event.target.value = '';
+            })
+            .catch((error) => {
+                alert(error)
+            });
+        } else {
+            alert('Vui lòng chọn file!');
+            event.target.value = '';
+        }
+    });
 
     const addBtn = document.getElementsByClassName('add')[0];
 
@@ -54,6 +105,8 @@ function LoadContainer() {
     addBtn.addEventListener('click', function() {
         showPopup({});
     });
+
+
 
     let timeoutId;
     function handleInputChange(event) {
@@ -68,16 +121,11 @@ function LoadContainer() {
     document.getElementById('search').addEventListener('input', handleInputChange);
 
     function searchEmployee (query) {
-        fetch('https://localhost:7004/api/v1/employees/'.concat(query))
-        .then(response => {
-            return response.json(); 
-        })
-        .then(data => {
-            renderTable(data);
-        })
-        .catch(error => {
-            console.log(error)
-        })
+        if (query != '') {
+            paginate(`https://localhost:7004/api/v1/employees/search?value=${query}&branch=${branch}&limit=${limit}&offset=0`);
+        } else {
+            paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${branch}&limit=10&offset=0`);
+        }
     }
 }
 

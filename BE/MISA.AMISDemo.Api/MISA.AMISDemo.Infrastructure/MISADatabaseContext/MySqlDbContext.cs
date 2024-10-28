@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Microsoft.Extensions.Configuration;
+using MISA.AMISDemo.Core.Exceptions;
 using MISA.AMISDemo.Infrastructure.Interface;
 using MySqlConnector;
 using System;
@@ -15,6 +16,7 @@ namespace MISA.AMISDemo.Infrastructure.MISADatabaseContext
     public class MySqlDbContext : IMISADbContext
     {
         public IDbConnection Connection { get;  }
+        public IDbTransaction Transaction { get; set; }
 
         public MySqlDbContext(IConfiguration config)
         {
@@ -24,7 +26,7 @@ namespace MISA.AMISDemo.Infrastructure.MISADatabaseContext
         public IEnumerable<T> Get<T>()
         {
             var _className = typeof(T).Name;
-            var sql = $"select * from {_className}";
+            var sql = $"select * from {_className} order by {_className}Code";
             var data = Connection.Query<T>(sql).ToList();
             return data;
         }
@@ -39,22 +41,17 @@ namespace MISA.AMISDemo.Infrastructure.MISADatabaseContext
             return data;
         }
 
-        public bool ExistsByCode<T>(string code)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string? GetMaxCode<T>()
+        public int? GetSumRow<T>()
         {
             var className = typeof(T).Name;
-            var sql = $"SELECT EmployeeCode FROM {className} ORDER BY {className}Code DESC LIMIT 1";
-            var data = Connection.QueryFirst<string>(sql);
+            var sql = $"SELECT Count(EmployeeCode) FROM {className}";
+            var data = Connection.QueryFirstOrDefault<int>(sql);
             return data;
         }
 
-        public static string GenerateInsertSql<T, U>(T? obj, out DynamicParameters? parameters, U? dto) where U : class
+        public string GenerateInsertSql<T>(T obj, out DynamicParameters? parameters) 
         {
-            Type? type = obj != null ? typeof(T) : typeof(U);
+            Type type = typeof(T);
             if (type == null)
             {
                 parameters = null;
@@ -69,11 +66,7 @@ namespace MISA.AMISDemo.Infrastructure.MISADatabaseContext
             parameters = new DynamicParameters();
             foreach (var prop in properties)
             {
-                var value = obj != null ? prop.GetValue(obj, null) : prop.GetValue(dto, null);
-                if (prop.Name == "EmployeeID" && (value == null || value.Equals(Guid.Empty)))
-                {
-                    value = Guid.NewGuid(); 
-                }
+                var value = prop.GetValue(obj, null);
                 if (value != null)
                 {
                     string paramName = "@" + prop.Name;
@@ -84,7 +77,6 @@ namespace MISA.AMISDemo.Infrastructure.MISADatabaseContext
                     parameters.Add(paramName, value);
                 }
             }
-
 
             if (columns.Length > 0 && values.Length > 0)
             {
@@ -98,27 +90,72 @@ namespace MISA.AMISDemo.Infrastructure.MISADatabaseContext
             return string.Empty;
         }
 
-        public int Insert<T, K>(T? entity, K? dto) where K : class
+        public string GenerateUpdateSql<T>(T obj, string primaryKeyColumn, out DynamicParameters? parameters)
         {
-            string sqlQuery = GenerateInsertSql(entity, out DynamicParameters? parameters, dto);
-            if (!string.IsNullOrEmpty(sqlQuery))
+            Type type = typeof(T);
+            if (type == null)
             {
-                try
+                parameters = null;
+                return string.Empty;
+            }
+
+            StringBuilder setClause = new StringBuilder();
+            PropertyInfo[] properties = type.GetProperties();
+            string tableName = type.Name.Replace("DTO", string.Empty);  // Lấy tên bảng là tên của class, có thể tùy chỉnh.
+
+            parameters = new DynamicParameters();
+            object? primaryKeyValue = null;
+
+            foreach (var prop in properties)
+            {
+                var value = prop.GetValue(obj, null);
+                if (value != null)
                 {
-                    return Connection.Execute(sqlQuery, parameters);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Error inserting data: " + ex.Message);
-                    return 0;
+                    string paramName = "@" + prop.Name;
+
+                    // Nếu là khóa chính thì bỏ qua, không cập nhật.
+                    if (prop.Name.Equals(primaryKeyColumn, StringComparison.OrdinalIgnoreCase))
+                    {
+                        primaryKeyValue = value;
+                        continue;
+                    }
+
+                    // Tạo câu lệnh SET cho từng cột
+                    setClause.Append($"{prop.Name} = {paramName},");
+
+                    // Thêm giá trị vào DynamicParameters
+                    parameters.Add(paramName, value);
                 }
             }
-            return 0;
+
+            // Đảm bảo khóa chính không null
+            if (primaryKeyValue == null)
+            {
+                return string.Empty;
+            }
+
+            // Xóa dấu phẩy cuối cùng trong câu lệnh SET
+            if (setClause.Length > 0)
+            {
+                setClause.Remove(setClause.Length - 1, 1);
+            }
+
+            // Thêm khóa chính vào tham số
+            parameters.Add($"@{primaryKeyColumn}", primaryKeyValue);
+
+            // Tạo câu lệnh UPDATE
+            return $"UPDATE {tableName} SET {setClause} WHERE {primaryKeyColumn} = @{primaryKeyColumn};";
         }
 
-        public int Insert<T>(T entity)
+
+        public int Insert<T>(T entity) 
         {
-            throw new NotImplementedException();
+            string sqlQuery = GenerateInsertSql(entity, out DynamicParameters? parameters);
+            if (!string.IsNullOrEmpty(sqlQuery))
+            {
+                return Connection.Execute(sqlQuery, param: parameters, transaction: Transaction);
+            }
+            return 0;
         }
 
         public int Delete<T>(string id)
@@ -148,9 +185,14 @@ namespace MISA.AMISDemo.Infrastructure.MISADatabaseContext
             return res;
         }
 
-        public int Update<T>(T entity)
+        public int Update<T>(T entity, string primaryKey)
         {
-            throw new NotImplementedException();
+            string updateSql = GenerateUpdateSql(entity, primaryKey, out DynamicParameters? parameters);
+            if (updateSql != null)
+            {
+                return Connection.Execute(updateSql, param: parameters);
+            }
+            return 0;
         }
     }
 }

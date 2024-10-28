@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MISA.AMISDemo.Core.Interfaces
 {
-    public interface ICustomerRepository:IBaseReposity<Customer>
+    public interface ICustomerRepository:IBaseRepository<Customer>
     {
     }
 }

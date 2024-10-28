@@ -11,9 +11,18 @@ namespace MISA.AMISDemo.Core.Interfaces
 {
     public interface IEmployeeService:IBaseService<Employee>
     {
-        object ImportService(IFormFile excelFile);
+        IEnumerable<Employee>? ImportService();
 
-        IEnumerable<Employee>? Search(string query);
-        MISAServiceResult InsertService(Employee? item, EmployeeDTO? dto);
+        EmployeeListResponseDTO? Search(string query, string branch, int limit, int offset);
+
+        int InsertByDTO(EmployeeDTO dto);
+
+        int UpdateByDTO(EmployeeDTO dto, string primaryKey);
+
+        int DeleteByCode(string code);
+
+        string GenerateNewCode ();
+
+        bool CheckFileImport(IFormFile fileImport);
     }
 }

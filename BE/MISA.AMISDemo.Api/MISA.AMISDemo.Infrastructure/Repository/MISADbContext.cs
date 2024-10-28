@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 
 namespace MISA.AMISDemo.Infrastructure.Repository
 {
-    public class MISADbContext<T> : IBaseReposity<T>, IDisposable where T : class
+    public class MISADbContext<T> : IBaseRepository<T>, IDisposable where T : class
     {
         protected IMISADbContext _dbContext;
         protected string _className;
@@ -30,7 +30,7 @@ namespace MISA.AMISDemo.Infrastructure.Repository
 
         public void Dispose()
         {
-            _dbContext.Connection.Dispose();
+            _dbContext.Connection.Close();
         }
 
         public IEnumerable<T> Get()
@@ -43,29 +43,15 @@ namespace MISA.AMISDemo.Infrastructure.Repository
             return _dbContext.Get<T>(column, value);
         }
 
-        public bool ExistsByCode(string code)
+        public int? GetSumRow()
         {
-            return _dbContext.ExistsByCode<T>(code);
-        }
-
-        public string? GetMaxCode()
-        {
-            return _dbContext.GetMaxCode<T>();
+            return _dbContext.GetSumRow<T>();
         }
 
         public int Insert(T entity)
         {
-            return _dbContext.Insert(entity);
-        }
-
-        public int Insert<K>(T? entity, K? dto) where K : class
-        {
-            return _dbContext.Insert<T, K>(entity, dto);
-        }
-
-        public int Update(T entity)
-        {
-            return _dbContext.Update(entity);
+            var res = _dbContext.Insert(entity);
+            return res;
         }
 
         public int Delete(string id)
@@ -76,6 +62,32 @@ namespace MISA.AMISDemo.Infrastructure.Repository
         public int DeleteAny(string[] ids)
         {
             return _dbContext.DeleteAny<T>(ids);
+        }
+
+        public string GenerateInsertSql<K>(K entity, out DynamicParameters? parameters)
+        {
+            return _dbContext.GenerateInsertSql<K>(entity, out parameters);
+        }
+
+        public string GenerateUpdateSql<K>(K obj, string primaryKeyColumn, out DynamicParameters? parameters)
+        {
+            return _dbContext.GenerateUpdateSql<K>(obj, primaryKeyColumn, out parameters);
+        }
+
+        public int Update(T entity, string primaryKey)
+        {
+            _dbContext.Connection.Open();
+            _dbContext.Transaction = _dbContext.Connection.BeginTransaction();
+            var transaction = _dbContext.Connection.BeginTransaction();
+            var res = _dbContext.Update(entity, primaryKey);
+            _dbContext.Transaction.Commit();
+            return res;
+        }
+
+        public int Import(T entity)
+        {
+            var res = _dbContext.Insert(entity);
+            return res;
         }
     }
 }

@@ -127,6 +127,10 @@
               "target": "Package",
               "version": "[2.1.35, )"
             },
+            "EPPlus": {
+              "target": "Package",
+              "version": "[7.4.1, )"
+            },
             "Microsoft.AspNetCore.Http.Abstractions": {
               "target": "Package",
               "version": "[2.2.0, )"
@@ -134,6 +138,10 @@
             "Microsoft.AspNetCore.Http.Features": {
               "target": "Package",
               "version": "[5.0.17, )"
+            },
+            "Microsoft.Extensions.Caching.Abstractions": {
+              "target": "Package",
+              "version": "[8.0.0, )"
             },
             "MySqlConnector": {
               "target": "Package",
