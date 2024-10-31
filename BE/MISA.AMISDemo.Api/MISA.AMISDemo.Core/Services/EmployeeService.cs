@@ -6,12 +6,7 @@ using MISA.AMISDemo.Core.Entities;
 using MISA.AMISDemo.Core.Exceptions;
 using MISA.AMISDemo.Core.Interfaces;
 using OfficeOpenXml;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace MISA.AMISDemo.Core.Services
 {
@@ -19,25 +14,31 @@ namespace MISA.AMISDemo.Core.Services
     {
         private readonly IMemoryCache _cache;
         private IEmployeeRepository _employeeRepository;
+        private IPositionRepository _positionRepository;
+        private IDepartmentRepository _departmentRepository;
         private IUnitOfWork _unitOfWork;
-        public EmployeeService(IMemoryCache cache, IEmployeeRepository employeeRepository, IUnitOfWork unitOfWork):base(reposity: employeeRepository)
+        public EmployeeService(IMemoryCache cache, IDepartmentRepository departmentRepository, IPositionRepository positionRepository, IEmployeeRepository employeeRepository, IUnitOfWork unitOfWork):base(reposity: employeeRepository)
         {
             _cache = cache;
             _employeeRepository = employeeRepository;
+            _positionRepository = positionRepository;
+            _departmentRepository = departmentRepository;
             _unitOfWork = unitOfWork;
         }
-        public IEnumerable<Employee>? ImportService()
+        public bool ImportService()
         {
             var cachedData = GetCachedEmployees();
             if (cachedData != null && cachedData.Count > 0)
             {
+                _unitOfWork.BeginTransaction();
                 foreach (var employee in cachedData)
                 {
-                    _employeeRepository.Insert(employee);
-
+                    _unitOfWork.EmployeeRepository.Insert(employee);
                 }
+                _unitOfWork.Commit();
+                _unitOfWork.Dispose();
             }
-            return cachedData;
+            return cachedData != null;
         }
 
         private bool IsValidEmail(string email)
@@ -81,6 +82,35 @@ namespace MISA.AMISDemo.Core.Services
         {
             return !string.IsNullOrWhiteSpace(bankAccount) &&
                 Regex.IsMatch(bankAccount, @"^\d{8,15}$", RegexOptions.IgnoreCase);
+        }
+
+        private string? IsValidPosition (string  position)
+        {
+            var isCheck = _positionRepository.CheckExists(position);
+            return isCheck;
+        }
+
+        private bool IsValidBranch (string branch)
+        {
+            if (branch == null || (branch != "Hà Nội" && branch != "TP. Hồ Chí Minh"))
+            {
+                return false;
+            }
+            return true;
+        }
+
+        private string? IsValidDepartment (string name)
+        {
+            var isCheck = _departmentRepository.CheckExists (name);
+            return isCheck;
+        }
+
+        private bool IsValidGender (string gender)
+        {
+            if (gender == null || (gender.ToLower() != "nam" && gender.ToLower() != "nữ" && gender.ToLower() != "khác")) {
+                return false;
+            }
+            return true;
         }
 
         protected override void ValidateObject(Employee entity)
@@ -145,6 +175,7 @@ namespace MISA.AMISDemo.Core.Services
             // Kiểm tra xem cache có dữ liệu không
             if (_cache.TryGetValue("employees", out List<Employee> employees))
             {
+                _cache.Remove("employees");
                 return employees; // Nếu có dữ liệu, trả về
             }
 
@@ -152,107 +183,185 @@ namespace MISA.AMISDemo.Core.Services
             return null; // Trả về null nếu cache không có dữ liệu
         }
 
-        public bool CheckFileImport(IFormFile fileImport)
+        public byte[]? CheckFileImport(IFormFile fileImport)
         {
             var employees = new List<Employee>();
-            var fileExtension = Path.GetExtension(fileImport.FileName).ToLower();
-            var fileSizeInBytes = fileImport.Length;
-            var maxFileSizeInBytes = 2 * 1024 * 1024; // 2MB
-            if (fileExtension != ".xlsx" && fileExtension != ".xls" || fileSizeInBytes > maxFileSizeInBytes)
+            var errorList = new List<(int RowNumber, string ErrorMessage)>();
+            
+            try
             {
-                return false;
-            }
-            using (var stream = new MemoryStream())
-            {
-                fileImport.CopyTo(stream);
-
-                using (var package = new ExcelPackage(stream))
+                using (var stream = new MemoryStream())
                 {
-                    ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
-                    if (worksheet == null)
+                    fileImport.CopyTo(stream);
+
+                    using (var package = new ExcelPackage(stream))
                     {
-                        return false; // Không thể đọc sheet
-                    }
+                        ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
+                        if (worksheet == null)
+                        {
+                            errorList.Add((0, "Không đọc được file excel trống!"));
+                        }
+                        else
+                        {
+                            var rowCount = worksheet.Dimension.Rows;
+                            var codes = _employeeRepository.GetListCode();
+                            for (int row = 4; row <= rowCount; row++)
+                            {
+                                try
+                                {
+                                    var dob = GetCellValue(worksheet, row, 5);
+                                    var identityDate = GetCellValue(worksheet, row, 10);
+                                    var employeeCode = GetCellValue(worksheet, row, 2);
+                                    var fullName = GetCellValue(worksheet, row, 3);
+                                    var email = GetCellValue(worksheet, row, 4);
+                                    var gender = GetCellValue(worksheet, row, 6);
+                                    var address = GetCellValue(worksheet, row, 7);
+                                    var position = GetCellValue(worksheet, row, 8);
+                                    var identityNumber = GetCellValue(worksheet, row, 9);
+                                    var department = GetCellValue(worksheet, row, 11);
+                                    var identityPlace = GetCellValue(worksheet, row, 12);
+                                    var salary = GetCellValue(worksheet, row, 13);
+                                    var phoneNumber = GetCellValue(worksheet, row, 14);
+                                    var landline = GetCellValue(worksheet, row, 15);
+                                    var bankAccount = GetCellValue(worksheet, row, 16);
+                                    var bankName = GetCellValue(worksheet, row, 17);
+                                    var branch = GetCellValue(worksheet, row, 18);
+                                    var departmentCode = IsValidDepartment(department);
+                                    var positionCode = IsValidPosition(position);
+                                    // Thực hiện các kiểm tra và trả về false nếu gặp lỗi
+                                    if (_employeeRepository.CheckDuplicateCode(employeeCode, codes))
+                                    {
+                                        errorList.Add((row, "Mã nhân viên đã tồn tại trong hệ thống!"));
+                                    }
+                                    if (!IsValidEmail(email?.Trim()))
+                                    {
+                                        errorList.Add((row, "Email không đúng định dạng!"));
+                                    }
+                                    if (!IsValidPhoneNumber(phoneNumber))
+                                    {
+                                        errorList.Add((row, "Số điện thoại di động không đúng định dạng!"));
+                                    }
+                                    if (!IsValidPhoneNumber(landline))
+                                    {
+                                        errorList.Add((row, "Số điện thoại bàn không đúng định dạng!"));
+                                    }
+                                    if (decimal.Parse(salary) < 0)
+                                    {
+                                        errorList.Add((row, "Tiền lương không đúng định dạng!"));
+                                    }
+                                    DateTime? dateOfBirth = ProcessDate(dob);
+                                    DateTime? identityDateTime = ProcessDate(identityDate);
+                                    if (dateOfBirth == null || dateOfBirth >= DateTime.Now || (DateTime.Now.Year - dateOfBirth.Value.Year) < 18)
+                                    {
+                                        errorList.Add((row, "Ngày sinh không đúng định dạng!"));
+                                    }
+                                    if (identityDateTime == null || identityDateTime >= DateTime.Now)
+                                    {
+                                        errorList.Add((row, "Ngày cấp CCCD không đúng định dạng!"));
+                                    }
+                                    if (!IsValidIdentityNumber(identityNumber))
+                                    {
+                                        errorList.Add((row, "Số CCCD không đúng định dạng!"));
+                                    }
+                                    if (!IsValidBankAccount(bankAccount))
+                                    {
+                                        errorList.Add((row, "Tài khoản ngân hàng không đúng định dạng!"));
+                                    }
+                                    if (!IsValidBranch(branch))
+                                    {
+                                        errorList.Add((row, "Tên chi nhánh không tồn tại!"));
+                                    }
+                                    if (!IsValidGender(gender))
+                                    {
+                                        errorList.Add((row, "Giới tính không tồn tại!"));
+                                    }
+                                    if (positionCode == null)
+                                    {
+                                        errorList.Add((row, "Chức vụ không tồn tại!"));
+                                    }
+                                    if (departmentCode == null)
+                                    {
+                                        errorList.Add((row, "Phòng ban không tồn tại!"));
+                                    }
+                                    // Nếu tất cả kiểm tra đều hợp lệ, tạo đối tượng Employee
+                                    var employee = new Employee
+                                    {
+                                        EmployeeId = Guid.NewGuid(),
+                                        EmployeeCode = employeeCode,
+                                        FullName = fullName,
+                                        Email = email,
+                                        DateOfBirth = dateOfBirth,
+                                        Gender = gender,
+                                        Address = address,
+                                        PositionCode = positionCode,
+                                        IdentityNumber = identityNumber,
+                                        IdentityDate = identityDateTime,
+                                        DepartmentCode = departmentCode,
+                                        IdentityPlace = identityPlace,
+                                        Salary = decimal.Parse(salary),
+                                        PhoneNumber = phoneNumber,
+                                        Landline = landline,
+                                        BankAccount = bankAccount,
+                                        BankName = bankName,
+                                        Branch = branch,
+                                    };
 
-                    var rowCount = worksheet.Dimension.Rows;
-
-                    for (int row = 4; row <= rowCount; row++)
-                    {
-                        var dob = worksheet.Cells[row, 5]?.Value?.ToString()?.Trim();
-                        var identityDate = worksheet.Cells[row, 10]?.Value?.ToString()?.Trim();
-
-                        // Thực hiện các kiểm tra và trả về false nếu gặp lỗi
-                        if (_employeeRepository.CheckDuplicateCode(worksheet.Cells[row, 2]?.Value?.ToString()?.Trim(), _unitOfWork.Transaction))
-                        {
-                            return false;
+                                    // Thêm employee vào danh sách kết quả
+                                    employees.Add(employee);
+                                } catch (Exception ex)
+                                {
+                                    errorList.Add((row, $"Lỗi khi xử lý dòng {row}: {ex.Message}"));
+                                }
+                            }
                         }
-                        if (!IsValidEmail(worksheet.Cells[row, 4]?.Value?.ToString()?.Trim()))
-                        {
-                            return false;
-                        }
-                        if (!IsValidPhoneNumber(worksheet.Cells[row, 14]?.Value?.ToString()?.Trim()))
-                        {
-                            return false;
-                        }
-                        if (!IsValidPhoneNumber(worksheet.Cells[row, 15]?.Value?.ToString()?.Trim()))
-                        {
-                            return false;
-                        }
-                        if (decimal.Parse(worksheet.Cells[row, 13]?.Value?.ToString().Trim()) < 0)
-                        {
-                            return false;
-                        }
-                        DateTime? dateOfBirth = ProcessDate(dob);
-                        DateTime? identityDateTime = ProcessDate(identityDate);
-                        if (dateOfBirth == null || dateOfBirth >= DateTime.Now || (DateTime.Now.Year - dateOfBirth.Value.Year) < 18)
-                        {
-                            return false;
-                        }
-                        if (identityDateTime == null || identityDateTime >= DateTime.Now)
-                        {
-                            return false;
-                        }
-                        if (!IsValidIdentityNumber(worksheet.Cells[row, 9]?.Value?.ToString()?.Trim()))
-                        {
-                            return false;
-                        }
-                        if (!IsValidBankAccount(worksheet.Cells[row, 16]?.Value?.ToString()?.Trim()))
-                        {
-                            return false;
-                        }
-
-                        // Nếu tất cả kiểm tra đều hợp lệ, tạo đối tượng Employee
-                        var employee = new Employee
-                        {
-                            EmployeeId = Guid.NewGuid(),
-                            EmployeeCode = worksheet.Cells[row, 2]?.Value?.ToString()?.Trim(),
-                            FullName = worksheet.Cells[row, 3]?.Value?.ToString()?.Trim(),
-                            Email = worksheet.Cells[row, 4]?.Value?.ToString()?.Trim(),
-                            DateOfBirth = dateOfBirth,
-                            Gender = worksheet.Cells[row, 6]?.Value?.ToString()?.Trim(),
-                            Address = worksheet.Cells[row, 7]?.Value?.ToString()?.Trim(),
-                            Position = worksheet.Cells[row, 8]?.Value?.ToString()?.Trim(),
-                            IdentityNumber = worksheet.Cells[row, 9]?.Value?.ToString()?.Trim(),
-                            IdentityDate = identityDateTime,
-                            Department = worksheet.Cells[row, 11]?.Value?.ToString()?.Trim(),
-                            IdentityPlace = worksheet.Cells[row, 12]?.Value?.ToString()?.Trim(),
-                            Salary = decimal.Parse(worksheet.Cells[row, 13]?.Value?.ToString().Trim()),
-                            PhoneNumber = worksheet.Cells[row, 14]?.Value?.ToString()?.Trim(),
-                            Landline = worksheet.Cells[row, 15]?.Value?.ToString()?.Trim(),
-                            BankAccount = worksheet.Cells[row, 16]?.Value?.ToString()?.Trim(),
-                            BankName = worksheet.Cells[row, 17]?.Value?.ToString()?.Trim(),
-                            Branch = worksheet.Cells[row, 18]?.Value?.ToString()?.Trim(),
-                        };
-
-                        // Thêm employee vào danh sách kết quả
-                        employees.Add(employee);
                     }
                 }
+            } catch (Exception ex)
+            {
+                errorList.Add((0, $"Lỗi khi đọc file: {ex.Message}"));
+            }
+
+
+            if (errorList.Any())
+            {
+                // Nếu có lỗi, tạo file Excel chứa danh sách lỗi
+                return WriteErrorLogToExcel(fileImport, errorList);
             }
 
             // Nếu không có lỗi, lưu danh sách employees vào cache và trả về true
             _cache.Set("employees", employees, TimeSpan.FromHours(1));
-            return true;
+            return null;
+        }
+
+        public byte[]? ExportExcelFile(string branch)
+        {
+            var headers = new List<string>
+            {
+                "Mã nhân viên",
+                "Họ và tên",
+                "Giới tính",
+                "Ngày sinh",
+                "Phòng ban",
+                "Vị trí",
+                "Địa chỉ",
+                "Lương",
+                "Số căn cước công dân",
+                "Ngày cấp",
+                "Nơi cấp",
+                "Số điện thoại",
+                "Điện thoại bàn",
+                "Email",
+                "Số tài khoản ngân hàng",
+                "Tên ngân hàng",
+                "Chi nhánh",
+            };
+            var data = _employeeRepository.GetEmployeeResponseByBranch(branch);
+
+            var nameSheet = "Danh sách nhân viên";
+
+            var res = ExportExcel(headers, data, nameSheet);
+
+            return res;
         }
     }
 }

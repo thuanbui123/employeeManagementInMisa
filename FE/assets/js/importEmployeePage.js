@@ -93,7 +93,7 @@ function showImportEmployee() {
                                     <div class="text">
                                         Kéo thả tệp vào đây hoặc 
                                         <a href="#" class="misa-link">bấm vào đây</a>
-                                        <input value="" type="file" class="drag-box" title="Chọn tệp">
+                                        <input value="" type="file" class="drag-box" title="Chọn tệp" accept=".xls,.xlsx" >
                                     </div>
                                 </div>
                             </div>
@@ -141,95 +141,157 @@ function showImportEmployee() {
     const cancelBtn = document.querySelector('.cancel-btn');
     const closeBtn = document.querySelector('.close-ie-popup');
 
-    closeBtn.addEventListener('click', function() {
+    closeBtn.addEventListener('click', function () {
         previousApi = '';
         paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${branch}&limit=10&offset=0`);
+        fetchNewCode();
         ieWrapper.classList.remove('open');
     })
 
-    titleBarClose.addEventListener('click', function() {
+    titleBarClose.addEventListener('click', function () {
         previousApi = '';
         paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${branch}&limit=10&offset=0`);
+        fetchNewCode();
         ieWrapper.classList.remove('open');
     });
 
-    cancelBtn.addEventListener('click', function() {
+    cancelBtn.addEventListener('click', function () {
         ieWrapper.classList.remove('open');
     });
 
+    // Thêm sự kiện 'dragover' để ngăn hành động mặc định của trình duyệt
     dropArea.addEventListener('dragover', (event) => {
-        event.preventDefault(); // Ngăn chặn hành động mặc định  
+        // Ngăn hành động mặc định để cho phép thả tệp vào khu vực này
+        event.preventDefault();
     });
 
+    // Thêm sự kiện 'drop' để xử lý khi tệp được thả vào khu vực 'dropArea'
     dropArea.addEventListener('drop', async (event) => {
         event.preventDefault();
 
-        const files = event.dataTransfer.files; // Lấy tệp từ sự kiện  
-        fileInput.files = files; // Gán các tệp vào input  
-        if (files.length > 0) { // Kiểm tra có tệp được kéo vào
-            let isCheck = await checkFileImport(files[0]);
-            if (isCheck) {
-                resultUpload.innerHTML = '';
-                importBtn.classList.remove('disable')
-                resultUpload.innerHTML = `
-                        <div class="result-item status-item status-success">
-                            <div class="status-icon">
-                                <i class="icofont-close-line-circled"></i>
-                            </div>
-                            <div class="text">Tải lên thành công</div>
-                            <div class="btn-delete-file">
-                                <i class="icofont-close-line"></i>
-                            </div>
-                        </div>
-                    `;
-                const btnDeleteFile = document.querySelector('.btn-delete-file');
-                btnDeleteFile.addEventListener('click', function () {
-                    fileInput.value = '';
-                    resultUpload.innerHTML = '';
-                })
-            } else {
-                resultUpload.innerHTML = '';
-                resultUpload.innerHTML = `
-                        <div class="result-item status-item status-fail">
-                            <div class="status-icon">
-                                <i class="icofont-close-line-circled"></i>
-                            </div>
-                            <div class="text">Tệp tải lên không đúng định dạng mẫu của chương trình</div>
-                            <div class="btn-delete-file">
-                                <i class="icofont-close-line"></i>
-                            </div>
-                        </div>
-                    `;
+        const files = event.dataTransfer.files;
+        if (files.length > 0) {
+            const file = files[0];
 
+            // Kiểm tra đuôi file
+            const validExtensions = ['.xls', '.xlsx'];
+            const isValidExtension = validExtensions.some(ext => file.name.toLowerCase().endsWith(ext));
+
+            // Kiểm tra kích thước file (giới hạn ở mức 2MB)
+            const maxSize = 2 * 1024 * 1024; // 2MB
+            const isValidSize = file.size <= maxSize;
+
+            if (isValidExtension && isValidSize) {
+                fileInput.files = files;
+
+                let response = await checkFileImport(fileInput.files[0]);
+
+                if (!response.hasError) {
+                    // Nếu không có lỗi, hiển thị thông báo thành công
+                    resultUpload.innerHTML = '';
+                    importBtn.classList.remove('disable');
+                    resultUpload.innerHTML = `
+                    <div class="result-item status-item status-success">
+                        <div class="status-icon">
+                            <i class="icofont-check-line"></i>
+                        </div>
+                        <div class="text">Tải lên thành công</div>
+                        <div class="btn-delete-file">
+                            <i class="icofont-close-line"></i>
+                        </div>
+                    </div>
+                `;
+
+                    const btnDeleteFile = document.querySelector('.btn-delete-file');
+                    btnDeleteFile.addEventListener('click', function () {
+                        fileInput.value = '';
+                        resultUpload.innerHTML = '';
+                        importBtn.classList.add('disable');
+                    });
+
+                } else {
+                    // Nếu có lỗi, hiển thị thông báo và nút tải file lỗi về
+                    resultUpload.innerHTML = '';
+                    resultUpload.innerHTML = `
+                    <div class="result-item status-item status-fail">
+                        <div class="status-icon">
+                            <i class="icofont-close-line-circled"></i>
+                        </div>
+                        <div class="text">Tệp tải lên không đúng định dạng mẫu của chương trình</div>
+                        <button class="btn-download-error">Tải file lỗi về</button>
+                        <div class="btn-delete-file">
+                            <i class="icofont-close-line"></i>
+                        </div>
+                    </div>
+                `;
+
+                    const btnDownloadError = document.querySelector('.btn-download-error');
+                    btnDownloadError.addEventListener('click', function () {
+                        const url = URL.createObjectURL(response.file);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = 'error_log.xlsx'; // Đặt tên cho file lỗi
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                    });
+
+                    const btnDeleteFile = document.querySelector('.btn-delete-file');
+                    btnDeleteFile.addEventListener('click', function () {
+                        fileInput.value = '';
+                        resultUpload.innerHTML = '';
+                        importBtn.classList.add('disable');
+                    });
+                }
+            } else {
+                let errorMessage = "Chỉ chấp nhận tệp định dạng Excel (.xls, .xlsx)";
+                if (!isValidSize) {
+                    errorMessage = "Kích thước tệp vượt quá giới hạn 5MB";
+                }
+                // Hiển thị thông báo lỗi
+                resultUpload.innerHTML = `
+                    <div class="result-item status-item status-fail">
+                        <div class="status-icon">
+                            <i class="icofont-close-line-circled"></i>
+                        </div>
+                        <div class="text">${errorMessage}</div>
+                        <div class="btn-delete-file">
+                            <i class="icofont-close-line"></i>
+                        </div>
+                    </div>
+                `;
                 const btnDeleteFile = document.querySelector('.btn-delete-file');
                 btnDeleteFile.addEventListener('click', function () {
                     fileInput.value = '';
                     resultUpload.innerHTML = '';
                     importBtn.classList.add('disable');
-                })
+                });
             }
-        } else {
-            alert("Chưa chọn file.");
         }
     });
 
+
     fileInput.addEventListener('change', async function () {
         if (fileInput.files.length > 0) {
-            let isCheck = await checkFileImport(fileInput.files[0]);
-            if (isCheck) {
+            let response = await checkFileImport(fileInput.files[0]);
+
+            if (!response.hasError) {
+                // Nếu không có lỗi, hiển thị thông báo thành công
                 resultUpload.innerHTML = '';
                 importBtn.classList.remove('disable');
                 resultUpload.innerHTML = `
-                        <div class="result-item status-item status-success">
-                            <div class="status-icon">
-                                <i class="icofont-close-line-circled"></i>
-                            </div>
-                            <div class="text">Tải lên thành công</div>
-                            <div class="btn-delete-file">
-                                <i class="icofont-close-line"></i>
-                            </div>
+                    <div class="result-item status-item status-success">
+                        <div class="status-icon">
+                            <i class="icofont-check-line"></i>
                         </div>
-                    `;
+                        <div class="text">Tải lên thành công</div>
+                        <div class="btn-delete-file">
+                            <i class="icofont-close-line"></i>
+                        </div>
+                    </div>
+                `;
+
                 const btnDeleteFile = document.querySelector('.btn-delete-file');
                 btnDeleteFile.addEventListener('click', function () {
                     fileInput.value = '';
@@ -238,28 +300,43 @@ function showImportEmployee() {
                 });
 
             } else {
+                // Nếu có lỗi, hiển thị thông báo và nút tải file lỗi về
                 resultUpload.innerHTML = '';
                 resultUpload.innerHTML = `
-                        <div class="result-item status-item status-fail">
-                            <div class="status-icon">
-                                <i class="icofont-close-line-circled"></i>
-                            </div>
-                            <div class="text">Tệp tải lên không đúng định dạng mẫu của chương trình</div>
-                            <div class="btn-delete-file">
-                                <i class="icofont-close-line"></i>
-                            </div>
+                    <div class="result-item status-item status-fail">
+                        <div class="status-icon">
+                            <i class="icofont-close-line-circled"></i>
                         </div>
-                    `;
+                        <div class="text">Tệp tải lên không đúng định dạng mẫu của chương trình</div>
+                        <button class="btn-download-error">Tải file lỗi về</button>
+                        <div class="btn-delete-file">
+                            <i class="icofont-close-line"></i>
+                        </div>
+                    </div>
+                `;
+
+                const btnDownloadError = document.querySelector('.btn-download-error');
+                btnDownloadError.addEventListener('click', function () {
+                    const url = URL.createObjectURL(response.file);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'error_log.xlsx'; // Đặt tên cho file lỗi
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                });
 
                 const btnDeleteFile = document.querySelector('.btn-delete-file');
                 btnDeleteFile.addEventListener('click', function () {
                     fileInput.value = '';
                     resultUpload.innerHTML = '';
                     importBtn.classList.add('disable');
-                })
+                });
             }
         }
-    })
+    });
+
 
     async function checkFileImport(file) {
         const formData = new FormData();
@@ -275,55 +352,68 @@ function showImportEmployee() {
                 throw new Error(`Error: ${response.status}`);
             }
 
-            const data = await response.text();
-            if (data == 'true') {
-                return true;
+            // Lấy dữ liệu trả về dưới dạng Blob
+            const blob = await response.blob();
+
+            // Kiểm tra nếu có lỗi
+            if (blob.size > 0) {
+                // Nếu có dữ liệu lỗi, trả về blob
+                return {
+                    hasError: true,
+                    file: blob
+                };
+            } else {
+                // Nếu không có dữ liệu lỗi
+                return {
+                    hasError: false,
+                    file: null
+                };
             }
-            return false;
         } catch (error) {
             alert(`Error: ${error.message}`);
-            return false;
+            return {
+                hasError: true,
+                file: null
+            }; // Giả sử không có file lỗi nếu có lỗi trong API
         }
     }
 
+
     importBtn.addEventListener('click', function () {
         fetch('https://localhost:7004/api/v1/employees/import', {
-            method: 'POST',
-        })
-        .then(response => response.json())
-        .then(data => {
-            
-            const stepContentItem1= document.querySelector('.step-content-item-1');
-            const stepContentItem2= document.querySelector('.step-content-item-2');
-            const stepNumber = document.querySelector('.step-number');
-            const stepItemActive = document.querySelector('.step-item.active');
-            const stepItem = document.querySelectorAll('.step-item')[1];
-            const stepItemContent1 = document.querySelectorAll('.step-item-content')[0];
+                method: 'POST',
+            })
+            .then(response => response.json())
+            .then(data => {
+                const stepContentItem1 = document.querySelector('.step-content-item-1');
+                const stepContentItem2 = document.querySelector('.step-content-item-2');
+                const stepNumber = document.querySelector('.step-number');
+                const stepItemActive = document.querySelector('.step-item.active');
+                const stepItem = document.querySelectorAll('.step-item')[1];
+                const stepItemContent1 = document.querySelectorAll('.step-item-content')[0];
 
-            stepItemContent1.style.border = '1px solid #2ea4f1';
-            stepItemContent1.style.color = '#2ea4f1'
+                stepItemContent1.style.border = '1px solid #2ea4f1';
+                stepItemContent1.style.color = '#2ea4f1'
 
-            const stepBorder = document.querySelector('.steps .step-item .step-border');
+                const stepBorder = document.querySelector('.steps .step-item .step-border');
 
-            // Sửa màu `border` bằng cách thay đổi giá trị biến CSS
-            stepBorder.style.setProperty('--step-border-color', '#2ea4f1');
+                // Sửa màu `border` bằng cách thay đổi giá trị biến CSS
+                stepBorder.style.setProperty('--step-border-color', '#2ea4f1');
 
-            stepItemActive.classList.remove('active');
-            stepItem.classList.add('active')
-            stepNumber.innerHTML = '';
-            stepNumber.innerHTML = '&#10003;';
+                stepItemActive.classList.remove('active');
+                stepItem.classList.add('active')
+                stepNumber.innerHTML = '';
+                stepNumber.innerHTML = '&#10003;';
 
-            closeBtn.classList.remove('hidden');
-            cancelBtn.classList.add('hidden');
-            importBtn.classList.add('hidden');
+                closeBtn.classList.remove('hidden');
+                cancelBtn.classList.add('hidden');
+                importBtn.classList.add('hidden');
 
-            stepContentItem1.classList.remove('active');
-            stepContentItem2.classList.add('active');
-
-            
-        })
-        .catch((error) => {
-            alert(error)
-        });
+                stepContentItem1.classList.remove('active');
+                stepContentItem2.classList.add('active');
+            })
+            .catch((error) => {
+                alert(error)
+            });
     })
 }

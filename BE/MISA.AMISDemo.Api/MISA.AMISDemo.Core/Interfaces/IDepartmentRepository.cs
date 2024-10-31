@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace MISA.AMISDemo.Core.Interfaces
 {
-    public interface ICustomerRepository:IBaseRepository<Customer>
+    public interface IDepartmentRepository : IBaseRepository<Department>
     {
+        string? CheckExists(string name);
     }
 }

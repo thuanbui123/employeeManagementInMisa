@@ -64,7 +64,7 @@ body {
     margin-left: 50px;
 }
 
-#header .header-left .menu .subnav  {
+#header .header-left .menu .subnav {
     border: none;
     outline: none;
     transition: all 0.3s ease;
@@ -157,12 +157,12 @@ body {
     margin: 0px 8px;
 }
 
-#sidebar.close ~ #container {
+#sidebar.close~#container {
     left: calc(var(--sidebar-width-close));
     margin-left: calc(var(--sidebar-width-close));
 }
 
-#sidebar.close .menu-sidebar li img{
+#sidebar.close .menu-sidebar li img {
     display: flex;
     justify-content: center;
     transform: translateX(-34%);
@@ -173,9 +173,9 @@ body {
 }
 
 #sidebar.close .item:hover::after {
-    content: attr(data-tooltip); 
+    content: attr(data-tooltip);
     position: absolute;
-    left: 70px; 
+    left: 70px;
     background-color: #333;
     color: #fff;
     padding: 5px 10px;
@@ -235,7 +235,7 @@ body {
     1 hoặc 100% sẽ đảo ngược hoàn toàn màu sắc. Màu đen thành màu trắng, màu trắng thành màu đen
     Các màu khác sẽ bị đảo ngược theo dải màu tương ứng
     */
-    filter: brightness(0) invert(1); 
+    filter: brightness(0) invert(1);
     margin-right: 12px;
 }
 
@@ -292,7 +292,7 @@ body {
     background-color: var(--container-color);
     margin-top: var(--margin);
     overflow-y: auto;
-    min-height: 50vh;
+    min-height: 65vh;
     transition: all .5s ease;
 }
 
@@ -364,76 +364,100 @@ body {
 
 thead th {
     background-color: #f4f4f4;
-    position: sticky; 
-    top: 0; 
+    position: sticky;
+    top: 0;
     z-index: 1;
 }
 
 tbody {
-    display: block; 
-    max-height: 300px; 
-    overflow-y: auto; 
+    display: block;
+    max-height: 300px;
+    overflow-y: auto;
     overflow-x: auto;
     width: 100%;
 }
 
-thead, tbody tr {
+thead,
+tbody tr {
     display: table;
     width: 100%;
-    table-layout: fixed; /* Đảm bảo kích thước các cột không bị thay đổi */
+    table-layout: fixed;
+    /* Đảm bảo kích thước các cột không bị thay đổi */
 }
 
 table {
     border: 1px solid #ccc;
 }
 
-th, table .row{
+th,
+table .row {
     border-bottom: 1px solid #ccc;
 }
 
-th, td {
+th,
+td {
     border-left: 1px solid #ccc;
 }
 
-th:first-child, td:first-child {
+th:first-child,
+td:first-child {
     border-left: none;
 }
 
-table th, table td {
+table th,
+table td {
     box-sizing: border-box;
 }
 
-table th:nth-child(1), table td:nth-child(1) {
-    width: 5%;    /* Cột STT */
+table th:nth-child(1),
+table td:nth-child(1) {
+    text-align: center;
+    width: 5%;
+    /* Cột STT */
 }
 
-table th:nth-child(2), table td:nth-child(2) {
-    width: 10%;   /* Cột Mã nhân viên */
+table th:nth-child(2),
+table td:nth-child(2) {
+    width: 10%;
+    /* Cột Mã nhân viên */
 }
 
-table th:nth-child(3), table td:nth-child(3) {
-    width: 15%;   /* Cột Họ và tên */
+table th:nth-child(3),
+table td:nth-child(3) {
+    width: 15%;
+    /* Cột Họ và tên */
 }
 
-table th:nth-child(4), table td:nth-child(4) {
-    width: 8%;    /* Cột Giới tính */
+table th:nth-child(4),
+table td:nth-child(4) {
+    text-align: center;
+    width: 8%;
+    /* Cột Giới tính */
 }
 
-table th:nth-child(5), table td:nth-child(5) {
-    width: 12%;   /* Cột Ngày sinh */
+table th:nth-child(5),
+table td:nth-child(5) {
+    text-align: center;
+    width: 12%;
+    /* Cột Ngày sinh */
 }
 
-table th:nth-child(6), table td:nth-child(6) {
-    width: 15%;   /* Cột Địa chỉ email */
+table th:nth-child(6),
+table td:nth-child(6) {
+    width: 15%;
+    /* Cột Địa chỉ email */
 }
 
-table th:nth-child(7), table td:nth-child(7) {
-    width: 35%;   /* Cột Địa chỉ */
+table th:nth-child(7),
+table td:nth-child(7) {
+    width: 35%;
+    /* Cột Địa chỉ */
 }
 
 tbody::-webkit-scrollbar {
     width: 0px;
-    height: 0px; /* Chiều cao thanh cuộn ngang */
+    height: 0px;
+    /* Chiều cao thanh cuộn ngang */
 }
 
 tbody::-webkit-scrollbar-thumb {
@@ -446,13 +470,13 @@ tbody::-webkit-scrollbar-thumb:hover {
 }
 
 td.actions {
-    display: flex;              
-    align-items: center;        
-    gap: 10px;                  
-    justify-content: space-between; 
-    padding: 8px;               
-    white-space: nowrap;      
-    position: relative;  
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: space-between;
+    padding: 8px;
+    white-space: nowrap;
+    position: relative;
 }
 
 td.actions .act {
@@ -485,7 +509,8 @@ table .row td:last-child .delete-btn img {
     height: 16px;
 }
 
-td, th {
+td,
+th {
     text-align: left;
     padding: 8px;
 }
@@ -557,6 +582,7 @@ table .row:hover {
     font-size: 20px;
     font-weight: bold;
 }
+
 .modal .modal__header img,
 .modal .modal__header button {
     background-color: #fff;
@@ -612,7 +638,7 @@ table .row:hover {
 .modal-footer .btnSave:hover::after,
 .row .delete-btn:hover::after,
 .row .edit-btn:hover::after {
-    content: attr(data-tooltip); 
+    content: attr(data-tooltip);
     position: absolute;
     top: 0px;
     background-color: #333;
@@ -626,7 +652,7 @@ table .row:hover {
 }
 
 .row .edit-btn:hover::after {
-    left: -80px; 
+    left: -80px;
 }
 
 .row .delete-btn:hover::after {
@@ -767,7 +793,7 @@ table .row:hover {
     margin-bottom: 12px;
 }
 
-.dialog__header p{
+.dialog__header p {
     font-weight: bold;
 }
 
@@ -819,6 +845,7 @@ table .row:hover {
 }
 
 .dialog__footer button:last-child {
+    color: #fff;
     margin-left: 8px;
     background-color: #28a745;
     border: 1px solid #28a745;
@@ -846,7 +873,7 @@ table .row:hover {
 }
 
 #sidebar .shrink i {
-    transition: all 0.5s ease;   
+    transition: all 0.5s ease;
 }
 
 .footer__content {
@@ -854,7 +881,7 @@ table .row:hover {
     align-items: center;
     justify-content: center;
     position: relative;
-    padding: 10px 20px;
+    padding: 20px 20px;
 }
 
 .footer__left {
@@ -881,13 +908,14 @@ table .row:hover {
 }
 
 .change-page {
-    margin-left: 12px;
+    margin-left: 16px;
 }
 
 .change-page button {
     width: 32px;
     height: 32px;
-    border: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
     cursor: pointer;
 }
 
@@ -967,7 +995,8 @@ table .row:hover {
     content: "";
     display: block;
     width: 125px;
-    border: 1px solid var(--step-border-color, #F5F5F5);;
+    border: 1px solid var(--step-border-color, #F5F5F5);
+    ;
 }
 
 .steps .step-item:last-child {
@@ -1008,7 +1037,7 @@ table .row:hover {
     position: relative;
 }
 
-.step-content-item .left-step-content{
+.step-content-item .left-step-content {
     border: 1px solid #ccc;
     padding: 20px 30px 20px 20px;
     width: 25%;
@@ -1127,11 +1156,23 @@ table .row:hover {
 }
 
 .drag-box::-webkit-file-upload-button {
-    visibility: hidden; /* Ẩn nút "Choose File" mặc định */
+    visibility: hidden;
+    /* Ẩn nút "Choose File" mặc định */
 }
 
 .result-item.status-fail {
     background-color: #FF3551;
+}
+
+.btn-download-error {
+    margin-left: 12px;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    font-family: 'Times New Roman', Times, serif;
 }
 
 .result-item.status-success {
@@ -1196,9 +1237,10 @@ table .row:hover {
 
 .close-ie-popup:hover,
 .cancel-btn:hover {
-    border-color:  #757575;
-    background-color:  #757575;
+    border-color: #757575;
+    background-color: #757575;
 }
+
 .import-btn {
     background-color: #1492e6;
     color: #fff;
@@ -1211,6 +1253,7 @@ table .row:hover {
     cursor: pointer;
     transition: all .3s;
 }
+
 .disable {
     cursor: auto;
     color: #ccc;
@@ -1272,3 +1315,31 @@ table .row:hover {
 /*
     end import employee
 */
+
+/* start report page */
+
+.report-container {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(200px, 1fr));
+    gap: 10px;
+    padding: 10px;
+}
+
+.title {
+    font-size: 18px;
+    text-align: center;
+}
+
+#ageChart {
+    width: 400px !important;
+    height: 400px !important;
+}
+
+.report-age {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* end report page */

@@ -1,19 +1,19 @@
-function convertDate (date) {
+function convertDate(date) {
     const parts = date.split("/");
     const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`
     return formattedDate;
 }
 
-function getValueForm () {
+function getValueForm() {
     const employee = {
         employeeCode: document.getElementById('code').value,
         fullName: document.getElementById('name').value,
         dateOfBirth: document.getElementById('birthday').value,
         gender: document.querySelector('input[name="sex"]:checked').value,
-        position: document.getElementById('position').value,
+        positionCode: document.getElementById('position').value,
         identityNumber: document.getElementById('identityNumber').value,
         identityDate: document.getElementById('identityDate').value,
-        department: document.getElementById('department').value,
+        departmentCode: document.getElementById('department').value,
         identityPlace: document.getElementById('identityPlace').value,
         address: document.getElementById('address').value,
         PhoneNumber: document.getElementById('numberPhone').value,
@@ -29,13 +29,41 @@ function getValueForm () {
 
 let newCode;
 
-function fetchNewCode () {
+function fetchNewCode() {
     fetch('https://localhost:7004/api/v1/employees/generate-code')
         .then(response => {
             return response.text();
         })
         .then(data => {
             newCode = data;
+        })
+        .catch(error => {
+            console.log(error)
+        })
+}
+let positions;
+let departments;
+
+function fetchPositions() {
+    fetch('https://localhost:7004/api/v1/positions')
+        .then(response => {
+            return response.json();
+        })
+        .then(data => {
+            positions = data;
+        })
+        .catch(error => {
+            console.log(error)
+        })
+}
+
+function fetchDepartments() {
+    fetch('https://localhost:7004/api/v1/departments')
+        .then(response => {
+            return response.json();
+        })
+        .then(data => {
+            departments = data;
         })
         .catch(error => {
             console.log(error)
@@ -48,32 +76,33 @@ let code;
 
 const validateEmail = (email) => {
     return String(email)
-      .toLowerCase()
-      .match(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    );
+        .toLowerCase()
+        .match(
+            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        );
 };
 
 function validateEmailInput(input) {
     const email = input.value;
-    
+
     // Kiểm tra nếu email không hợp lệ
     if (!validateEmail(email)) {
-      input.setCustomValidity('Email không hợp lệ!');
+        input.setCustomValidity('Email không hợp lệ!');
     } else {
-      input.setCustomValidity('');  // Nếu email hợp lệ, xóa thông báo lỗi
+        input.setCustomValidity(''); // Nếu email hợp lệ, xóa thông báo lỗi
     }
 }
 
-const positions = JSON.parse(localStorage.getItem('positions'));
+fetchPositions();
+fetchDepartments();
 const branchValues = JSON.parse(localStorage.getItem('branches'));
 
-function showPopup (data= {}) {
-    code = (data !==  null && data.employeeCode !== undefined) ? data.employeeCode : undefined;
-    const sex = (data !==  null && data.gender !== undefined) ? data.gender : '';
-    const position = (data !==  null && data.position !== undefined) ? data.position : '';
-    const department = (data !==  null && data.department !== undefined) ? data.department : '';
-    const branchSelected = (data !==  null && data.branch !== undefined) ? data.branch : '';
+function showPopup(data = {}) {
+    code = (data !== null && data.employeeCode !== undefined) ? data.employeeCode : undefined;
+    const sex = (data !== null && data.gender !== undefined) ? data.gender : '';
+    const position = (data !== null && data.positionCode !== undefined) ? data.positionCode : '';
+    const department = (data !== null && data.departmentCode !== undefined) ? data.departmentCode : '';
+    const branchSelected = (data !== null && data.branch !== undefined) ? data.branch : '';
     // Lấy ngày hiện tại
     const today = new Date().toISOString().split('T')[0];
     const popupHtmL = `
@@ -127,7 +156,7 @@ function showPopup (data= {}) {
                                     positions.map(item => {
                                         return (
                                             `
-                                                <option value="${item.value}" ${position === item.value ? "selected" : ""} >${item.value}</option>
+                                                <option value="${item.positionCode}" ${position === item.positionCode ? "selected" : ""} >${item.name}</option>
                                             `
                                         )
                                     })
@@ -148,9 +177,15 @@ function showPopup (data= {}) {
                             <label for="department">Phòng ban</label>
                             <select tabindex="10" id="department" name="department">
                                 <option disabled selected></option>
-                                <option value="Nhân sự" ${department === "Nhân sự" ?"selected" : ""}>Nhân sự</option>
-                                <option value="Sản xuất" ${department === "Sản xuất" ?"selected" : ""}>Sản xuất</option>
-                                <option value="Kinh doanh" ${department === "Kinh doanh" ?"selected" : ""}>Kinh doanh</option>
+                                ${
+                                    departments.map(item => {
+                                        return (
+                                            `
+                                                <option value="${item.departmentCode}" ${department === item.departmentCode ?"selected" : ""}>Phòng ${item.name}</option>
+                                            `
+                                        )
+                                    })
+                                }
                             </select>
                         </div>
                         <div class="form-group">
@@ -225,25 +260,25 @@ function showPopup (data= {}) {
     firstInput.focus();
     firstInput.select()
     close = document.querySelector(".close");
-    close.addEventListener('click', function() {
+    close.addEventListener('click', function () {
         popup.classList.remove('open')
     })
     btnClose = document.querySelector(".btnClose");
-    btnClose.addEventListener('click', function() {
+    btnClose.addEventListener('click', function () {
         popup.classList.remove('open')
     });
 
     const form = document.querySelector('.form');
 
-    document.onkeydown = function(e) {
-        if (e.ctrlKey && e.keyCode === 	119) {
+    document.onkeydown = function (e) {
+        if (e.ctrlKey && e.keyCode === 119) {
             e.preventDefault();
             // Gọi hàm submit của form để lưu thông tin
             form.dispatchEvent(new Event('submit'));
         }
     }
 
-    form.addEventListener('submit', function(e) {
+    form.addEventListener('submit', function (e) {
         e.preventDefault();
         const employee = getValueForm();
         // thêm thuần bằng js
@@ -254,21 +289,21 @@ function showPopup (data= {}) {
         //     fakeData.push(employee);
         // }
 
-        
+
 
         if (code === undefined) {
             $.ajax({
-                url: 'https://localhost:7004/api/v1/employees',  // Địa chỉ API
+                url: 'https://localhost:7004/api/v1/employees', // Địa chỉ API
                 method: 'POST',
-                contentType: 'application/json',  // Đảm bảo đúng Content-Type
-                data: JSON.stringify(employee),  // Chuyển đối tượng employee thành JSON
+                contentType: 'application/json', // Đảm bảo đúng Content-Type
+                data: JSON.stringify(employee), // Chuyển đối tượng employee thành JSON
                 success: function (response) {
                     if (response !== 1) {
                         alert("Có lỗi khi thêm nhân viên")
                     }
                     alert('Thêm nhân viên thành công');
-                    branch = employee.branch
-                    paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${branch}&limit=10&offset=0`);
+                    var offset = (currentPage) * limit;
+                    paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${branch}&limit=${limit}&offset=${offset}`);
                     fetchNewCode();
                 },
                 error: function (error) {
@@ -276,7 +311,7 @@ function showPopup (data= {}) {
                 }
             });
         } else {
-            $.ajax ({
+            $.ajax({
                 url: 'https://localhost:7004/api/v1/employees',
                 method: 'PUT',
                 contentType: 'application/json',
@@ -286,8 +321,13 @@ function showPopup (data= {}) {
                         alert("Có lỗi khi sửa nhân viên")
                     }
                     alert('Sửa nhân viên thành công');
-                    branch = employee.branch
-                    paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${branch}&limit=10&offset=0`);
+                    var valueSearch = document.getElementById('search').value;
+                    var offset = (currentPage) * limit;
+                    paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${branch}&limit=${limit}&offset=${offset}`);
+                    fetchNewCode();
+                    if (valueSearch) {
+                        searchEmployee(valueSearch)
+                    }
                 },
                 error: function (error) {
                     alert('Sửa nhân viên thất bại: ' + error.responseText);
@@ -295,5 +335,5 @@ function showPopup (data= {}) {
             })
         }
         popup.classList.remove('open');
-    }) 
+    })
 }

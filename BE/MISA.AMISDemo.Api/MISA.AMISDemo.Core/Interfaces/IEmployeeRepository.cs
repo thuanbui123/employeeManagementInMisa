@@ -20,7 +20,7 @@ namespace MISA.AMISDemo.Core.Interfaces
         /// Created by: BVThuan(16/10/2024)
         bool CheckDuplicateCode(string code);
 
-        bool CheckDuplicateCode(string code, IDbTransaction transaction);
+        bool CheckDuplicateCode(string code, List<string> codes);
 
         /// <summary>
         /// Lọc nhân viên theo chi nhánh
@@ -45,5 +45,9 @@ namespace MISA.AMISDemo.Core.Interfaces
         int InsertByDTO(EmployeeDTO dto);
         int UpdateByDTO(EmployeeDTO dto, string primaryKey);
         EmployeeListResponseDTO Search(string column, string value, string branchValue, int limit, int offset);
+        IEnumerable<Employee> GetEmployeeByBranch(string branch);
+        IEnumerable<EmployeeResponseDTO> GetEmployeeResponseByBranch(string branch);
+        List<string> GetListCode ();
+        IEnumerable<EmployeeStatisticsByAgeDTO> GetEmployeeStatisticsByAge();
     }
 }

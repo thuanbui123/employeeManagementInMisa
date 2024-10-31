@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Báo cáo</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            min-height: 100vh;
+            display: grid;
+            grid-column: 2;
+        }
+
+        /* .report-age {
+            flex: 1 1 300px; 
+            margin: 10px; 
+            display: flex;
+            flex-direction: column;
+            align-items: center; 
+        }  */
+       
+        .title {
+            text-align: center;
+        }
+        #Chart,
+        #myChart,
+        #Chart1 {
+            max-width: 100%;
+            width: 400px !important; 
+            height: 400px !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="report-age">
+            <div class="title">Cơ cấu nhân viên theo độ tuổi</div>
+            <canvas id="myChart"></canvas>
+        </div>
+        <div class="report-age">
+            <div class="title">Cơ cấu nhân viên theo độ tuổi</div>
+            <canvas id="Chart"></canvas>
+        </div>
+        <div class="report-age">
+            <div class="title">Cơ cấu nhân viên theo độ tuổi</div>
+            <canvas id="Chart1"></canvas>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('myChart');
+        const ctx1 = document.getElementById('Chart');
+        const ctx2 = document.getElementById('Chart1');
+        function createChart(ctx, chartType, labels, dataPoints, backgroundColors) {
+            const data = {
+                labels: labels,
+                datasets: [{
+                    label: 'My First Dataset',
+                    data: dataPoints,
+                    backgroundColor: backgroundColors,
+                    hoverOffset: 4
+                }]
+            };
+            const config = {
+                type: chartType,
+                data: data,
+            };
+            return new Chart(ctx, config);
+        }
+
+        // Dữ liệu cho biểu đồ
+        const labels = ['Red', 'Blue', 'Yellow'];
+        const dataPoints = [300, 50, 100];
+        const backgroundColors = [
+            'rgb(255, 99, 132)',
+            'rgb(54, 162, 235)',
+            'rgb(255, 205, 86)'
+        ];
+
+        // Tạo biểu đồ bằng cách gọi hàm createChart
+        createChart(ctx, 'doughnut', labels, dataPoints, backgroundColors);
+        createChart(ctx1, 'doughnut', labels, dataPoints, backgroundColors);
+        createChart(ctx2, 'doughnut', labels, dataPoints, backgroundColors);
+        new Chart(ctx1, config)
+    </script>
+</body>
+</html>

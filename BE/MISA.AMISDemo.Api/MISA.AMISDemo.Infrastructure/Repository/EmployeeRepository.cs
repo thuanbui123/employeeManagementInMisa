@@ -1,15 +1,9 @@
 ﻿using Dapper;
 using MISA.AMISDemo.Core.DTOs;
 using MISA.AMISDemo.Core.Entities;
-using MISA.AMISDemo.Core.Exceptions;
 using MISA.AMISDemo.Core.Interfaces;
 using MISA.AMISDemo.Infrastructure.Interface;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static Dapper.SqlMapper;
 
 namespace MISA.AMISDemo.Infrastructure.Repository
@@ -54,13 +48,11 @@ namespace MISA.AMISDemo.Infrastructure.Repository
             return res != null; 
         }
 
-        public bool CheckDuplicateCode(string code, IDbTransaction transaction)
+        public bool CheckDuplicateCode(string code, List<string>codes)
         {
-            var sqlCheck = "SELECT EmployeeCode FROM Employee e WHERE e.EmployeeCode = @Code";
-            var parameters = new DynamicParameters();
-            parameters.Add("@Code", code);
-            var res = _dbContext.Connection.QueryFirstOrDefault<string>(sqlCheck, param: parameters, transaction: transaction);
-            return res != null;
+            codes.Sort();
+            int index = codes.BinarySearch(code);
+            return index >= 0;
         }
 
         public EmployeeListResponseDTO FilterByBranch(string branch, int limit, int offset)
@@ -128,6 +120,59 @@ namespace MISA.AMISDemo.Infrastructure.Repository
             responseDTO.Employees = data;
             responseDTO.SumRows = sumRows;
             return responseDTO;
+        }
+
+        public IEnumerable<Employee> GetEmployeeByBranch(string branch)
+        {
+            var sql = $"SELECT * FROM Employee WHERE branch = @branchValue ORDER BY EmployeeCode";
+            if (branch == "find-all")
+            {
+                sql = $"SELECT * FROM Employee ORDER BY EmployeeCode";
+            }
+            var parameters = new DynamicParameters();
+            parameters.Add("@branchValue", branch);
+            var data = _dbContext.Connection.Query<Employee>(sql, parameters);
+            return data;
+        }
+
+        public IEnumerable<EmployeeResponseDTO> GetEmployeeResponseByBranch(string branch)
+        {
+            var sql = $"SELECT e.EmployeeCode, e.FullName, e.DateOfBirth, e.Gender, e.Email, e.Address, e.PhoneNumber, " +
+                $"e.Landline, e.IdentityNumber, e.IdentityPlace, e.IdentityDate, e.Salary, " +
+                $"e.BankAccount, e.BankName, e.Branch, d.name as Department, p.name as Position" +
+                $" FROM Employee e " +
+                $"INNER JOIN department d ON e.departmentCode = d.departmentcode " +
+                $"INNER JOIN  position p on e.positionCode = p.positioncode " +
+                $"where e.branch = @Branch " +
+                $"ORDER BY EmployeeCode";
+            if (branch == "find-all")
+            {
+                sql = $"SELECT e.EmployeeCode, e.FullName, e.DateOfBirth, e.Gender, e.Email, e.Address, e.PhoneNumber, " +
+                $"e.Landline, e.IdentityNumber, e.IdentityPlace, e.IdentityDate, e.Salary, " +
+                $"e.BankAccount, e.BankName, e.Branch, d.name as Department, p.name as Position" +
+                $" FROM Employee e " +
+                $"INNER JOIN department d ON e.departmentCode = d.departmentcode " +
+                $"INNER JOIN  position p on e.positionCode = p.positioncode " +
+                $"ORDER BY EmployeeCode";
+            }
+            var parameters = new DynamicParameters();
+            parameters.Add("@Branch", branch);
+            var data = _dbContext.Connection.Query<EmployeeResponseDTO>(sql, parameters);
+            return data;
+        }
+
+        public List<string> GetListCode ()
+        {
+            var sql = "SELECT EmployeeCode FROM Employee";
+            var data = _dbContext.Connection.Query<string>(sql);
+            return data.ToList();
+        }
+
+        public IEnumerable<EmployeeStatisticsByAgeDTO> GetEmployeeStatisticsByAge()
+        {
+            var sql = "select * from employee_statistics_by_age_view;";
+            var data = _dbContext.Connection.Query<EmployeeStatisticsByAgeDTO>(sql);
+            return data;
         }
     }
 }

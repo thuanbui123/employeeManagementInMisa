@@ -18,8 +18,8 @@ namespace MISA.AMISDemo.Core.Entities
         [Required(ErrorMessage = MISAConst.ERROR_EMPLOYEENAME_EMPTY)]
         public string? FullName { get; set; }
         public string? Gender { get; set; }
-        public string? Department { get; set; }
-        public string? Position { get; set; }
+        public string? DepartmentCode { get; set; }
+        public string? PositionCode { get; set; }
         public string? Landline { get; set; }
         public string? BankAccount { get; set; }
         public string? BankName { get; set; }

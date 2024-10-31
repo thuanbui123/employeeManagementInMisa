@@ -25,10 +25,10 @@ namespace MISA.AMISDemo.Core.DTOs
         public DateTime DateOfBirth { get; set; }
 
         [Required(ErrorMessage = MISAConst.ERROR_EMPLOYEEDEPARTMENT_EMPTY)]
-        public string? Department { get; set; }
+        public string? DepartmentCode { get; set; }
 
         [Required(ErrorMessage = MISAConst.ERROR_EMPLOYEEPOSITION_EMPTY)]
-        public string? Position { get; set; }
+        public string? PositionCode { get; set; }
 
         [Required(ErrorMessage = MISAConst.ERROR_EMPLOYEEADDRESS_EMPTY)]
         public string? Address { get; set; }

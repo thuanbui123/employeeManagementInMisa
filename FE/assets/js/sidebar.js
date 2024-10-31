@@ -1,4 +1,4 @@
-function loader () {
+function loader() {
     const sidebarHTML = `
         <ul class="menu-sidebar">
             <li class="item active" data-page="Home" data-tooltip="Trang chủ">
@@ -28,31 +28,37 @@ function loader () {
 }
 
 document.addEventListener('DOMContentLoaded', loader);
-document.addEventListener('DOMContentLoaded', () => document.getElementById('container').innerHTML=`<h3>Trang chủ</h3>`);
+document.addEventListener('DOMContentLoaded', () => document.getElementById('container').innerHTML = `<h3>Trang chủ</h3>`);
 
 document.addEventListener('DOMContentLoaded', () => {
-    const items = document.getElementsByClassName('item'); 
+    const items = document.getElementsByClassName('item');
     Array.from(items).forEach(item => {
-        item.addEventListener('click', function() {
-            
+        item.addEventListener('click', function () {
+
             Array.from(items).forEach(i => i.classList.remove('active'));
             const page = this.getAttribute('data-page');
             const container = document.getElementById('container');
-            switch(page) {
-                case 'Employee': 
+            switch (page) {
+                case 'Employee':
                     LoadContainer();
+                    previousApi = ''
+                    let limit;
+                    const savedLimit = Cookies.get('rowsPerPageLimit');
+                    if (savedLimit) {
+                        limit = parseInt(savedLimit);
+                    }
                     branch = "Hà Nội"
-                    paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${branch}&limit=10&offset=0`);
+                    paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${branch}&limit=${limit}&offset=0`);
                     break;
-                case 'Home': 
+                case 'Home':
                     previousApi = ''
                     container.innerHTML = `<h3>Trang chủ</h3>`
                     break;
                 case 'Report':
                     previousApi = ''
-                    container.innerHTML = `<h3>Trang báo cáo</h3>`
+                    renderReport();
                     break;
-                case 'Setting': 
+                case 'Setting':
                     previousApi = ''
                     container.innerHTML = `<h3>Trang cài đặt</h3>`
             }
@@ -61,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const shrinks = document.querySelector('.shrink');
-    shrinks.addEventListener('click', function() {
+    shrinks.addEventListener('click', function () {
         const sidebar = document.getElementById('sidebar');
         sidebar.classList.toggle('close');
     })

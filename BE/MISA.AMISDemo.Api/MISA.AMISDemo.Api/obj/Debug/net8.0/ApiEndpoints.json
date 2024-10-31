@@ -1,44 +1,12 @@
 [
   {
-    "ContainingType": "MISA.AMISDemo.Api.Controllers.CustomersController",
+    "ContainingType": "MISA.AMISDemo.Api.Controllers.DepartmentsController",
     "Method": "Get",
-    "RelativePath": "api/v1/customers",
+    "RelativePath": "api/v1/departments",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "MISA.AMISDemo.Api.Controllers.CustomersController",
-    "Method": "InsertCustomer",
-    "RelativePath": "api/v1/customers",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "customer",
-        "Type": "MISA.AMISDemo.Core.Entities.Customer",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "MISA.AMISDemo.Api.Controllers.CustomersController",
-    "Method": "Get",
-    "RelativePath": "api/v1/customers/{id}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.String",
-        "IsRequired": true
-      }
-    ],
     "ReturnTypes": []
   },
   {
@@ -110,6 +78,32 @@
       {
         "Name": "file",
         "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MISA.AMISDemo.Api.Controllers.EmployeesController",
+    "Method": "EmployeeStatisticsByAge",
+    "RelativePath": "api/v1/employees/employee-statistics-by-age",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MISA.AMISDemo.Api.Controllers.EmployeesController",
+    "Method": "ExportExcel",
+    "RelativePath": "api/v1/employees/export-excel",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "branch",
+        "Type": "System.String",
         "IsRequired": false
       }
     ],
@@ -222,6 +216,16 @@
     "ContainingType": "MISA.AMISDemo.Api.Controllers.EmployeesController",
     "Method": "GetSumRows",
     "RelativePath": "api/v1/employees/sum-rows",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MISA.AMISDemo.Api.Controllers.PositionsController",
+    "Method": "Get",
+    "RelativePath": "api/v1/positions",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,

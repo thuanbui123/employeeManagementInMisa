@@ -56,9 +56,8 @@ INSERT INTO Employee (
     Gender, 
     Email, 
     Address, 
-    Department, 
-    Position, 
-    WorkingStatus,
+    DepartmentCode, 
+    PositionCode, 
     PhoneNumber, 
     Landline, 
     IdentityNumber, 
@@ -73,11 +72,69 @@ INSERT INTO Employee (
 ('a53d6b2c-2cf1-4bb5-9476-abbf8e9f0b47', 'EMP2', 'Trần Thị B', '1992-03-15 00:00:00', 'Nữ', 'tranthib@example.com', 'Thái Bình', 'Kinh doanh', 'Fresher', 'Đã nghỉ', '0987654321', '0223456789', '234567890', 'Thành phố H', '2016-03-01 00:00:00', 12000000, '987654321012345', 'Ngân hàng XYZ', 'Chi nhánh H')
 SELECT EmployeeCode FROM Employee ORDER BY EmployeeCode DESC LIMIT 1
 
+
+
+SELECT * FROM Employee e WHERE e.Branch = 'Hà Nội' ORDER BY EmployeeCode LIMIT 10 OFFSET 10
 SELECT EmployeeCode
 FROM Employee
 ORDER BY CAST(SUBSTRING(EmployeeCode, 4, LENGTH(EmployeeCode)) AS UNSIGNED) DESC
 LIMIT 1;
 
 SELECT * FROM Employee ORDER BY EmployeeCode LIMIT 10 OFFSET 0 ;  
+select * from Employee where employeeCode like '%EMP52%' and branch='Hà Nội' ORDER BY EmployeeCode LIMIT 10 OFFSET 0;
 
-truncate employee
+SELECT 
+    CASE 
+        WHEN TIMESTAMPDIFF(YEAR, DateOfBirth, CURDATE()) < 30 THEN 'Dưới 30'
+        WHEN TIMESTAMPDIFF(YEAR, DateOfBirth, CURDATE()) BETWEEN 30 AND 40 THEN 'Từ 30 đến 40'
+        ELSE 'Trên 40'
+    END AS AgeGroup,
+    COUNT(*) AS EmployeeCount
+FROM 
+    Employee
+GROUP BY 
+    AgeGroup
+ORDER BY 
+    AgeGroup;
+
+create view employee_statistics_by_age_view as
+SELECT 
+    CASE 
+        WHEN TIMESTAMPDIFF(YEAR, DateOfBirth, CURDATE()) < 30 THEN 'Dưới 30'
+        WHEN TIMESTAMPDIFF(YEAR, DateOfBirth, CURDATE()) BETWEEN 30 AND 40 THEN 'Từ 30 đến 40'
+        ELSE 'Trên 40'
+    END AS AgeGroup,
+    COUNT(*) AS EmployeeCount
+FROM 
+    Employee
+GROUP BY 
+    AgeGroup
+ORDER BY 
+    AgeGroup;
+
+select * from employee_statistics_by_age_view;
+
+create table position (
+	id int auto_increment primary key,
+    positionCode varchar(50) unique,
+    name varchar(100)
+);
+
+insert into position (positionCode, name) values
+ ('POS1', 'Intern'), 
+ ('POS2', 'Fresher'), 
+ ('POS3', 'Junior'),
+ ('POS4', 'Senior'), 
+ ('POS5', 'Product Manager');
+ 
+ create table department (
+	id int auto_increment primary key,
+    departmentCode varchar(50) unique,
+    name varchar(255)
+ );
+ 
+ insert into department (departmentCode, name) 
+ values ('DPM1', 'Sản xuất'),
+ ('DPM2', 'Kinh doanh'),
+ ('DPM3', 'Nhân sự');
+ 

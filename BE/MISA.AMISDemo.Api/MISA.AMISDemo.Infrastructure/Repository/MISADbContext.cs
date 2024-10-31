@@ -1,20 +1,6 @@
 ﻿using Dapper;
-using Microsoft.Extensions.Configuration;
-using MISA.AMISDemo.Core;
-using MISA.AMISDemo.Core.Entities;
 using MISA.AMISDemo.Core.Interfaces;
 using MISA.AMISDemo.Infrastructure.Interface;
-using MySqlConnector;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Common;
-using System.Linq;
-//Thư viện cho phép truy cập các thông tin về các thuộc tính và phương thức của các class trong runtime
-using System.Reflection;
-//Thư viện hỗ trợ việc xây dựng chuỗi (string) hiệu quả hơn với StringBuilder
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MISA.AMISDemo.Infrastructure.Repository
 {

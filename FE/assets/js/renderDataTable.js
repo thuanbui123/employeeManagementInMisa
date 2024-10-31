@@ -2,7 +2,6 @@ let Data = []
 let currentPage = 0;
 let limit = 10;
 
-
 function createRowFooter (sumRows) {
     const rowFooter = document.createElement("tr");
     rowFooter.innerHTML = ''

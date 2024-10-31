@@ -18,9 +18,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddMemoryCache();
 
 //Config DI
-builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
-builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+builder.Services.AddScoped<IPositionRepository, PositionRepository>();
+builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IMISADbContext, MySqlDbContext>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();

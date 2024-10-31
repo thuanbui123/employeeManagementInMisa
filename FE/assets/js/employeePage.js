@@ -1,4 +1,3 @@
-
 function LoadContainer() {
     const containerHtml = `
         <div class="sub-header">
@@ -18,7 +17,6 @@ function LoadContainer() {
                     <button class="import">
                         <img src="./assets/icon/import.png" alt="import">
                     </button>
-                    <input type="file" id="fileInput" style="display: none;">
                     <button class="export">
                         <img src="./assets/icon/export-excel-50.png" alt="export">
                     </button>
@@ -48,14 +46,21 @@ function LoadContainer() {
         </div>
         <div class="popup"></div>
         <div class="dialog-area"></div>
-        <div class="ie-wrapper"></div>
-            
-`;
+        <div class="ie-wrapper"></div>        
+    `;
     document.getElementById('container').innerHTML = containerHtml;
     const refresh = document.getElementsByClassName('refresh')[0];
-    refresh.addEventListener('click', function() {
-        paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${branch}&limit=10&offset=0`)
-        fetchSumRows ();
+    refresh.addEventListener('click', function () {
+        let limit;
+        const savedLimit = Cookies.get('rowsPerPageLimit');
+        if (savedLimit) {
+            limit = parseInt(savedLimit);
+        }
+        const subnav = document.getElementsByClassName('subnav')[0];
+        subnav.value = "Hà Nội"
+        branch = "Hà Nội"
+        var offset = (currentPage)*limit;
+        paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${branch}&limit=${limit}&offset=${offset}`);
     });
 
     const importBtn = document.getElementsByClassName('import')[0];
@@ -63,52 +68,52 @@ function LoadContainer() {
     //     document.getElementById('fileInput').click();
     // });
 
-    importBtn.addEventListener('click', function() {
+    importBtn.addEventListener('click', function () {
         showImportEmployee()
     })
 
-    document.getElementById('fileInput').addEventListener('change', function(event) {
-        const file = event.target.files[0]; // Lấy file được chọn
-    
-        if (file) {
-            // Gọi API để gửi file
-            const formData = new FormData();
-            formData.append('file', file);
-    
-            fetch('https://localhost:7004/api/v1/employees/import', {
-                method: 'POST',
-                body: formData,
-            })
-            .then(response => response.json())
-            .then(data => {
-                var message = '';
-                data.map(item => {
-                    message += `${item.error} \n` 
-                })
-                alert(message)
-                fetchEmployeeData(10, 0);
-                fetchSumRows ();
-                event.target.value = '';
-            })
-            .catch((error) => {
-                alert(error)
+    const exportBtn = document.querySelector('.export');
+    exportBtn.addEventListener('click', async function () {
+        try {
+            const response = await fetch(`https://localhost:7004/api/v1/employees/export-excel?branch=${branch}`, {
+                method: "GET",
             });
-        } else {
-            alert('Vui lòng chọn file!');
-            event.target.value = '';
+            if (response.ok) {
+                //Đọc dữ liệu dưới dạng Blob
+                const blob = await response.blob();
+
+                // Tạo URL từ Blob để tải xuống
+                const url = window.URL.createObjectURL(blob);
+
+                // Tạo thẻ a để tải file
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = "ExportData.xlsx"; // Tên file
+                document.body.appendChild(a);
+                a.click();
+
+                // Xóa URL và thẻ a sau khi tải xuống
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            } else {
+                alert("Tải file không thành công");
+            }
+        } catch (error) {
+            alert('Lỗi: ', error);
         }
     });
 
     const addBtn = document.getElementsByClassName('add')[0];
 
     // showPopup(addBtn)
-    addBtn.addEventListener('click', function() {
+    addBtn.addEventListener('click', function () {
         showPopup({});
     });
 
 
 
     let timeoutId;
+
     function handleInputChange(event) {
         const query = event.target.value;
         if (timeoutId) {
@@ -119,13 +124,13 @@ function LoadContainer() {
         }, 200)
     }
     document.getElementById('search').addEventListener('input', handleInputChange);
-
-    function searchEmployee (query) {
-        if (query != '') {
-            paginate(`https://localhost:7004/api/v1/employees/search?value=${query}&branch=${branch}&limit=${limit}&offset=0`);
-        } else {
-            paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${branch}&limit=10&offset=0`);
-        }
-    }
 }
 
+function searchEmployee(query) {
+    var offset = 0*limit;
+    if (query != '') {
+        paginate(`https://localhost:7004/api/v1/employees/search?value=${query}&branch=${branch}&limit=${limit}&offset=${offset}`);
+    } else {
+        paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${branch}&limit=10&offset=${offset}`);
+    }
+}

@@ -61,7 +61,8 @@ function showDialog (data ={}, index) {
                     alert("Có lỗi khi xóa nhân viên")
                 }
                 alert('Xóa nhân viên thành công');
-                paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${branch}&limit=10&offset=0`);
+                var offset = (currentPage)*limit;
+                paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${branch}&limit=${limit}&offset=${offset}`);
             },
             error: function (error) {
                 alert('Xóa nhân viên thất bại: ' + error.responseText);
