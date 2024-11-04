@@ -3,7 +3,7 @@ function showDialog (data ={}, index) {
         <div class="dialog">
             <div class="dialog__header">
             <p>${data.title}</p>
-            <button class="close" tabindex="1">
+            <button class="close__dialog" tabindex="1">
                 <img src="./assets/icon/close-48.png"/>
             </button>
             </div>
@@ -21,7 +21,7 @@ function showDialog (data ={}, index) {
     dialogArea.innerHTML = dialogHTML;
     dialogArea.classList.add('open');
 
-    const closeDialog = document.querySelector(".close");
+    const closeDialog = document.querySelector(".close__dialog");
     closeDialog.addEventListener('click', function() {
         dialogArea.classList.remove('open');
     });

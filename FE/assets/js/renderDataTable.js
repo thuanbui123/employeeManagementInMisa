@@ -104,7 +104,7 @@ function renderTable(data) {
             <td>${new Date(employee.dateOfBirth).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' })}</td> 
             <td>${employee.email}</td> 
             <td class="actions">
-                <span class="${(employee.address !== 'null') ? '' : 'empty-address'}">
+                <span class="${(employee.address !== 'null' && employee.address !== null) ? '' : 'empty-address'}">
                     ${(employee.address !== 'null' && employee.address !== null) ? employee.address : ''}
                 </span>
                 <div class ='act'>
@@ -172,9 +172,8 @@ function myFunction(index) {
             showPopup(Data[index])
         } else if (e.ctrlKey && e.keyCode === 46) {
             e.preventDefault();
-            showDialog({title: 'Xác nhận xóa?', description: `Xóa nhân viên ${Data[index].fullName} ra khỏi hệ thống?`} ,index);
+            showDialog({title: 'Xác nhận xóa?', description: `Xóa nhân viên ${Data[index].employeeCode} ra khỏi hệ thống?`} ,index);
         } else if (e.ctrlKey && e.keyCode === 118) {
-            alert(1)
             const popup = document.querySelector('.popup');
             popup.classList.remove('open');
             const dialogArea = document.querySelector(".dialog-area");

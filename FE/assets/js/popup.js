@@ -305,7 +305,7 @@ function showPopup(data = {}) {
                         </div>
                         <div class="form-group">
                             <label for="landline">ĐT Cố định</label>
-                            <input tabindex="15" type = "tel" id="landline" name="landline" ${(data !==  null && data.landline !== undefined && data.landline !== 'null') ? `value=${data.landline}`: ''} />
+                            <input tabindex="15" type = "tel" id="landline" name="landline" ${(data !==  null && data.landline !== undefined && data.landline !== 'null' && data.landline !== null) ? `value=${data.landline}`: ''} />
                         </div>
                         <div class="form-group">
                             <label for="email">
@@ -323,7 +323,7 @@ function showPopup(data = {}) {
                         </div>
                         <div class="form-group">
                             <label for="bankName">Tên ngân hàng</label>
-                            <input tabindex="18" type = "text" id="bankName" name="bankName" value = "${(data !==  null && data.bankName !== undefined && data.bankName !== 'null') ? data.bankName : ''}"/>
+                            <input tabindex="18" type = "text" id="bankName" name="bankName" value = "${(data !==  null && data.bankName !== undefined && data.bankName !== 'null' && data.bankName !== null) ? data.bankName : ''}"/>
                         </div>
                         <div class="form-group">
                             <label for="branch">Chi nhánh</label>
@@ -358,7 +358,7 @@ function showPopup(data = {}) {
     const firstInput = document.querySelectorAll('.modal input')[0];
     firstInput.focus();
     firstInput.select()
-    close = document.querySelector(".close");
+    close = document.querySelector(".modal__header .close");
     close.addEventListener('click', function () {
         popup.classList.remove('open')
     })

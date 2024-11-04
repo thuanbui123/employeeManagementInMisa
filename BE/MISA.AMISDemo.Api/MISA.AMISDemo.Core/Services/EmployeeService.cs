@@ -56,6 +56,12 @@ namespace MISA.AMISDemo.Core.Services
                 Regex.IsMatch(phoneNumber, @"^(0(1[0-9]|9[0-9]|8[0-9]|7[0-9]|6[0-9]|5[0-9]|4[0-9]|3[0-9]|2[0-9]))\d{7}$", RegexOptions.IgnoreCase);  
         }
 
+        private bool IsValidLandLine(string landline)
+        {
+            return string.IsNullOrEmpty(landline) ||
+                Regex.IsMatch(landline, @"^(0(1[0-9]|9[0-9]|8[0-9]|7[0-9]|6[0-9]|5[0-9]|4[0-9]|3[0-9]|2[0-9]))\d{7}$", RegexOptions.IgnoreCase);
+        }
+
         /// <summary>
         /// Hàm kiểm tra định dạng số căn cước công dân
         /// </summary>
@@ -82,7 +88,7 @@ namespace MISA.AMISDemo.Core.Services
         /// created-by: BVThuan (23/10/2024)
         private bool IsValidBankAccount(string bankAccount)
         {
-            return !string.IsNullOrWhiteSpace(bankAccount) &&
+            return string.IsNullOrWhiteSpace(bankAccount) ||
                 Regex.IsMatch(bankAccount, @"^\d{8,15}$", RegexOptions.IgnoreCase);
         }
 
@@ -215,8 +221,9 @@ namespace MISA.AMISDemo.Core.Services
                                     var bankAccount = GetCellValue(worksheet, row, 16);
                                     var bankName = GetCellValue(worksheet, row, 17);
                                     var branch = GetCellValue(worksheet, row, 18);
-                                    var departmentCode = IsValidDepartment(department);
-                                    var positionCode = IsValidPosition(position);
+                                    var departmentCode = department;
+                                    var positionCode = position;
+                                    decimal? parsedSalary = null;
                                     // Thực hiện các kiểm tra và trả về false nếu gặp lỗi
                                     if (employeeCode == null)
                                     {
@@ -233,31 +240,44 @@ namespace MISA.AMISDemo.Core.Services
                                     {
                                         errorList.Add((row, "Email không đúng định dạng!"));
                                     }
+                                    if (!IsValidIdentityNumber(identityNumber))
+                                    {
+                                        errorList.Add((row, "Số CCCD không đúng định dạng!"));
+                                    }
                                     if (!IsValidPhoneNumber(phoneNumber))
                                     {
                                         errorList.Add((row, "Số điện thoại di động không đúng định dạng!"));
                                     }
-                                    if (!IsValidPhoneNumber(landline))
+                                    if (!IsValidLandLine(landline))
                                     {
                                         errorList.Add((row, "Số điện thoại bàn không đúng định dạng!"));
                                     }
-                                    if (decimal.Parse(salary) < 0)
+                                    if (!string.IsNullOrEmpty(salary))
                                     {
-                                        errorList.Add((row, "Tiền lương không đúng định dạng!"));
+                                        if (decimal.TryParse(salary, out var result) && result >= 0)
+                                        {
+                                            parsedSalary = result;
+                                        }
+                                        else
+                                        {
+                                            errorList.Add((row, "Tiền lương không đúng định dạng hoặc là số âm!"));
+                                        }
                                     }
                                     DateTime? dateOfBirth = ProcessDate(dob);
                                     DateTime? identityDateTime = ProcessDate(identityDate);
-                                    if (dateOfBirth == null || dateOfBirth >= DateTime.Now || (DateTime.Now.Year - dateOfBirth.Value.Year) < 18)
+                                    if (dateOfBirth != null)
                                     {
-                                        errorList.Add((row, "Ngày sinh không đúng định dạng!"));
+                                        if (dateOfBirth >= DateTime.Now || (DateTime.Now.Year - dateOfBirth.Value.Year) < 18)
+                                        {
+                                            errorList.Add((row, "Ngày sinh không đúng định dạng!"));
+                                        }
                                     }
-                                    if (identityDateTime == null || identityDateTime >= DateTime.Now)
+                                    if (identityDate != null)
                                     {
-                                        errorList.Add((row, "Ngày cấp CCCD không đúng định dạng!"));
-                                    }
-                                    if (!IsValidIdentityNumber(identityNumber))
-                                    {
-                                        errorList.Add((row, "Số CCCD không đúng định dạng!"));
+                                        if (identityDateTime >= DateTime.Now)
+                                        {
+                                            errorList.Add((row, "Ngày cấp CCCD không đúng định dạng!"));
+                                        }
                                     }
                                     if (!IsValidBankAccount(bankAccount))
                                     {
@@ -270,14 +290,6 @@ namespace MISA.AMISDemo.Core.Services
                                     if (!IsValidGender(gender))
                                     {
                                         errorList.Add((row, "Giới tính không tồn tại!"));
-                                    }
-                                    if (positionCode == null)
-                                    {
-                                        errorList.Add((row, "Chức vụ không tồn tại!"));
-                                    }
-                                    if (departmentCode == null)
-                                    {
-                                        errorList.Add((row, "Phòng ban không tồn tại!"));
                                     }
                                     // Nếu tất cả kiểm tra đều hợp lệ, tạo đối tượng Employee
                                     var employee = new Employee
@@ -294,7 +306,7 @@ namespace MISA.AMISDemo.Core.Services
                                         IdentityDate = identityDateTime,
                                         DepartmentCode = departmentCode,
                                         IdentityPlace = identityPlace,
-                                        Salary = decimal.Parse(salary),
+                                        Salary = parsedSalary ?? 0,
                                         PhoneNumber = phoneNumber,
                                         Landline = landline,
                                         BankAccount = bankAccount,
