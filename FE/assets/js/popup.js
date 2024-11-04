@@ -5,24 +5,35 @@ function convertDate(date) {
 }
 
 function getValueForm() {
+    let salary = document.getElementById('salary').value;
+    let branch = document.getElementById('branch').value;
+    let bankName = document.getElementById('bankName').value;
+    let bankAccount = document.getElementById('bankAccount').value;
+    let landline = document.getElementById('landline').value;
+    let dateOfBirth = document.getElementById('birthday').value;
+    let positionCode = document.getElementById('position').value;
+    let identityDate = document.getElementById('identityDate').value;
+    let departmentCode = document.getElementById('department').value;
+    let identityPlace = document.getElementById('identityPlace').value;
+    let address = document.getElementById('address').value;
     const employee = {
         employeeCode: document.getElementById('code').value,
         fullName: document.getElementById('name').value,
-        dateOfBirth: document.getElementById('birthday').value,
-        gender: document.querySelector('input[name="sex"]:checked').value,
-        positionCode: document.getElementById('position').value,
-        identityNumber: document.getElementById('identityNumber').value,
-        identityDate: document.getElementById('identityDate').value,
-        departmentCode: document.getElementById('department').value,
-        identityPlace: document.getElementById('identityPlace').value,
-        address: document.getElementById('address').value,
-        PhoneNumber: document.getElementById('numberPhone').value,
-        landline: document.getElementById('landline').value,
         email: document.getElementById('email').value,
-        bankAccount: document.getElementById('bankAccount').value,
-        bankName: document.getElementById('bankName').value,
-        branch: document.getElementById('branch').value,
-        salary: document.getElementById('salary').value
+        identityNumber: document.getElementById('identityNumber').value,
+        PhoneNumber: document.getElementById('numberPhone').value,
+        gender: document.querySelector('input[name="sex"]:checked').value,
+        ...(dateOfBirth !== '' && {dateOfBirth: dateOfBirth}),
+        ...(positionCode !== '' && {positionCode: positionCode}),
+        ...(identityDate !== '' && {identityDate: identityDate}),
+        ...(departmentCode !== '' && {departmentCode: departmentCode}),
+        ...(identityPlace !== '' && {identityPlace: identityPlace}),
+        ...(address !== '' && {address: address}),
+        ...(landline !== '' && {landline: landline}), //toán tử spread ... dùng để trải rộng một đối tượng vào đối tượng cha
+        ...(bankAccount !== '' && {bankAccount: bankAccount}),
+        ...(bankName !== '' && {bankName: bankName}),
+        ...(branch !== '' && {branch: branch}),
+        ...(salary !== '' && {salary: formatToNumber(salary)})
     };
     return employee;
 }
@@ -93,9 +104,87 @@ function validateEmailInput(input) {
     }
 }
 
+const validateNumberPhone = (numberPhone) => {
+    return String(numberPhone)
+        .toLowerCase()
+        .match(
+            /(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})$/
+        );
+};
+
+function validateNumberPhoneInput (input) {
+    const numberPhone = input.value;
+
+    if (!validateNumberPhone(numberPhone)) {
+        input.setCustomValidity('Số điện thoại không hợp lệ!')
+    } else {
+        input.setCustomValidity('')
+    }
+}
+
+const validateIdentityNumber = (identityNumber) => {
+    return String(identityNumber)
+        .toLowerCase()
+        .match(
+            /^\d{12}$|^(0[1-9]{1}[0-9]{0,3}[0-9]{5})$|^(0[1-9]{1}[0-9]{0,3}[0-9]{9})$/
+        );
+}
+
+function validateIdentityNumberInput (input) {
+    const identityNumber = input.value;
+
+    if (!validateIdentityNumber(identityNumber)) {
+        input.setCustomValidity('Số CMTND không hợp lệ!')
+    } else {
+        input.setCustomValidity('')
+    }
+}
+
+/**
+ * Kiểm tra xem chuỗi lương có hợp lệ hay không
+ * Một chuỗi lương được coi là hợp lệ nếu: 
+ * - Nó là một chuỗi
+ * - Nó có thể được chuyển đổi thành một số hợp lệ
+ * @param {*} salaryStr - chuỗi cần kiểm tra
+ * @returns 
+ * - true: nếu chuỗi hợp lệ
+ * - false: nếu chuỗi không hợp lệ
+ */
+const validateSalary = (salaryStr) => {
+    if (typeof salaryStr != 'string') return false;
+    const sanitizedSalary = salaryStr.replace(/\./g, '');
+    return !isNaN(sanitizedSalary) && !isNaN(parseInt(sanitizedSalary));
+}
+
+function validateSalaryInput (input) {
+    let value = input.value;
+    if (value === '') {
+        input.value = 0
+        input.setCustomValidity('')
+        return;
+    }
+    if (!validateSalary(value)) {
+        input.setCustomValidity('Lương không hợp lệ!');
+    } else {
+        input.setCustomValidity('')
+    }
+}
+
 fetchPositions();
 fetchDepartments();
 const branchValues = JSON.parse(localStorage.getItem('branches'));
+
+const formatToVND = (price) => {
+    const VND = new Intl.NumberFormat('vi-VN', {
+        minimumFractionDigits: 0 
+    });
+    return VND.format(price);
+}
+
+const formatToNumber = (value) => {
+    const formatNumber = value.replace(/\./g, '');
+    return formatNumber;
+}
 
 function showPopup(data = {}) {
     code = (data !== null && data.employeeCode !== undefined) ? data.employeeCode : undefined;
@@ -133,7 +222,7 @@ function showPopup(data = {}) {
                         </div>
                         <div class="form-group">
                             <label for="birthday">Ngày sinh</label>
-                            <input tabindex="3" type="date" id="birthday" max='${today}' name="birthday" value="${(data !==  null && data.dateOfBirth !== undefined) ? convertDate(new Date(data.dateOfBirth).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' })) : ''}"/>
+                            <input tabindex="3" type="date" id="birthday" max='${today}' name="birthday" ${(data !==  null && data.dateOfBirth !== undefined && data.dateOfBirth !== "1970-01-01T00:00:00" && data.dateOfBirth !== null) && `value="${convertDate(new Date(data.dateOfBirth).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' }))}"`}/>
                         </div>
                         <div class="form-group">
                             <label>Giới tính</label>
@@ -164,12 +253,15 @@ function showPopup(data = {}) {
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="identityNumber">Số identityNumber</label>
-                            <input tabindex="8" type="text" id="identityNumber" name="identityNumber" value="${(data !==  null && data.identityNumber !== undefined) ? data.identityNumber : ""}" />
+                            <label for="identityNumber">
+                                Số CMTND
+                                <p>*</p>    
+                            </label>
+                            <input tabindex="8" required oninvalid="this.setCustomValidity('Số CMTND không hợp lệ!')" oninput="validateIdentityNumberInput(this)" type="text" id="identityNumber" name="identityNumber" value="${(data !==  null && data.identityNumber !== undefined) ? data.identityNumber : ""}" />
                         </div>
                         <div class="form-group">
                             <label for="identityDate">Ngày cấp</label>
-                            <input tabindex="9" type="date" id="identityDate" max='${today}' name="identityDate" value='${(data !==  null && data.identityDate !== undefined) ? convertDate(new Date(data.identityDate).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' })) : ""}'/>
+                            <input tabindex="9" type="date" id="identityDate" max='${today}' name="identityDate" ${(data !==  null && data.identityDate !== undefined && data.identityDate !== "1970-01-01T00:00:00" && data.dateOfBirth !== null) && `value="${convertDate(new Date(data.identityDate).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' }))}"`}/>
                         </div>
                     </div>
                     <div class="row">
@@ -190,31 +282,37 @@ function showPopup(data = {}) {
                         </div>
                         <div class="form-group">
                             <label for="identityPlace">Nơi cấp</label>
-                            <input tabindex="11" type="text" id="identityPlace" name="identityPlace" value="${(data !==  null && data.identityPlace !== undefined) ? data.identityPlace : ''}" />
+                            <input tabindex="11" type="text" id="identityPlace" name="identityPlace" ${(data !== null && data.identityPlace !== undefined && data.identityPlace !== 'null' && data.identityPlace !== null) && `value="${data.identityPlace}"`}/>
                         </div>
                         <div class="form-group">
                             <label for="salary">Lương</label>
-                            <input tabindex="12" type="number" id="salary" name="salary" value='${(data !==  null && data.salary !== undefined) ? data.salary : ""}'/>
+                            <input tabindex="12" type="text" oninvalid="this.setCustomValidity('Vui lòng nhập tiền lương hợp lệ!')" oninput="validateSalaryInput(this)" id="salary" name="salary" ${(data !==  null && data.salary !== undefined && data.salary !== null)? `value="${formatToVND(data.salary)}"`: ''}/>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group">
                             <label for"address">Địa chỉ</label>
-                            <input tabindex="13" type = "text" id="address" name="address" value = "${(data !==  null && data.address !== undefined) ? data.address : ''}" />
+                            <input tabindex="13" type = "text" id="address" name="address" value = "${(data !==  null && data.address !== undefined && data.address !== null && data.address !== 'null') ? data.address : ''}" />
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group">
-                            <label for="numberPhone">ĐT Di động</label>
-                            <input tabindex="14" type = "tel" id="numberPhone" name="numberPhone" value="${(data !==  null && data.phoneNumber !== undefined) ? data.phoneNumber : ''}" />
+                            <label for="numberPhone">
+                                ĐT Di động
+                                <p>*</p>    
+                            </label>
+                            <input tabindex="14" required type = "tel" oninvalid="this.setCustomValidity('Vui lòng nhập số điện thoại hợp lệ!')" oninput="validateNumberPhoneInput(this)" id="numberPhone" name="numberPhone" value="${(data !==  null && data.phoneNumber !== undefined) ? data.phoneNumber : ''}" />
                         </div>
                         <div class="form-group">
                             <label for="landline">ĐT Cố định</label>
-                            <input tabindex="15" type = "tel" id="landline" name="landline" value="${(data !==  null && data.landline !== undefined) ? data.landline : ''}" />
+                            <input tabindex="15" type = "tel" id="landline" name="landline" ${(data !==  null && data.landline !== undefined && data.landline !== 'null') ? `value=${data.landline}`: ''} />
                         </div>
                         <div class="form-group">
-                            <label for="email">Email</label>
-                            <input tabindex="16" type = "email" oninvalid="this.setCustomValidity('Vui lòng nhập email hợp lệ!')" oninput="validateEmailInput(this)"
+                            <label for="email">
+                                Email
+                                <p>*</p>    
+                            </label>
+                            <input tabindex="16" required type = "email" oninvalid="this.setCustomValidity('Vui lòng nhập email hợp lệ!')" oninput="validateEmailInput(this)"
                              id="email" name="email" value="${(data !==  null && data.email !== undefined) ? data.email : ''}" />
                         </div>
                     </div>
@@ -225,7 +323,7 @@ function showPopup(data = {}) {
                         </div>
                         <div class="form-group">
                             <label for="bankName">Tên ngân hàng</label>
-                            <input tabindex="18" type = "text" id="bankName" name="bankName" value = "${(data !==  null && data.bankName !== undefined) ? data.bankName : ''}"/>
+                            <input tabindex="18" type = "text" id="bankName" name="bankName" value = "${(data !==  null && data.bankName !== undefined && data.bankName !== 'null') ? data.bankName : ''}"/>
                         </div>
                         <div class="form-group">
                             <label for="branch">Chi nhánh</label>
@@ -238,7 +336,7 @@ function showPopup(data = {}) {
                                                 `<option ${item.value === branchSelected ? 'selected' : ''} value="${item.value}">${item.value}</option>`
                                             );
                                         }
-                                        return ""; // Trả về một chuỗi rỗng nếu giá trị là "find-all"
+                                        return ""; 
                                     })
                                 }
                             </select>
@@ -254,6 +352,7 @@ function showPopup(data = {}) {
     `
 
     const popup = document.querySelector('.popup');
+    popup.innerHTML = ''
     popup.innerHTML = popupHtmL;
     popup.classList.add('open');
     const firstInput = document.querySelectorAll('.modal input')[0];
@@ -301,13 +400,27 @@ function showPopup(data = {}) {
                     if (response !== 1) {
                         alert("Có lỗi khi thêm nhân viên")
                     }
-                    alert('Thêm nhân viên thành công');
-                    var offset = (currentPage) * limit;
-                    paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${branch}&limit=${limit}&offset=${offset}`);
-                    fetchNewCode();
+                    toast({
+                        title: 'Thành công!', 
+                        message:'Thêm nhân viên thành công',
+                        type: 'success',
+                        duration: 3000,
+                        callback: () => {
+                            var offset = (currentPage) * limit;
+                            previousApi = ''
+                            paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${branch}&limit=${limit}&offset=${offset}`);
+                            fetchNewCode();
+                        }
+                    })
+
                 },
                 error: function (error) {
-                    alert('Thêm nhân viên mới thất bại: ' + error.responseText);
+                    toast({
+                        title: 'Thất bại!', 
+                        message:'Thêm nhân viên thất bại',
+                        type: 'error',
+                        duration: 3000
+                    })
                 }
             });
         } else {
@@ -320,17 +433,30 @@ function showPopup(data = {}) {
                     if (response !== 1) {
                         alert("Có lỗi khi sửa nhân viên")
                     }
-                    alert('Sửa nhân viên thành công');
-                    var valueSearch = document.getElementById('search').value;
-                    var offset = (currentPage) * limit;
-                    paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${branch}&limit=${limit}&offset=${offset}`);
-                    fetchNewCode();
-                    if (valueSearch) {
-                        searchEmployee(valueSearch)
-                    }
+                    toast({
+                        title: 'Thành công!', 
+                        message:'Sửa nhân viên thành công',
+                        type: 'success',
+                        duration: 3000,
+                        callback: () => {
+                            var valueSearch = document.getElementById('search').value;
+                            var offset = (currentPage) * limit;
+                            previousApi =''
+                            paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${branch}&limit=${limit}&offset=${offset}`);
+                            fetchNewCode();
+                            if (valueSearch) {
+                                searchEmployee(valueSearch)
+                            }
+                        }
+                    })
                 },
                 error: function (error) {
-                    alert('Sửa nhân viên thất bại: ' + error.responseText);
+                    toast({
+                        title: 'Thất bại!', 
+                        message:'Sửa nhân viên thất bại',
+                        type: 'error',
+                        duration: 3000
+                    })
                 }
             })
         }

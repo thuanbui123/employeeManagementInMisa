@@ -17,35 +17,31 @@ namespace MISA.AMISDemo.Core.DTOs
         [Required(ErrorMessage = MISAConst.ERROR_EMPLOYEENAME_EMPTY)]
         public string? FullName { get; set; }
 
-        [Required(ErrorMessage =MISAConst.ERROR_EMPLOYEEGENDER_EMPTY)]
         public string? Gender { get; set; }
 
-        [DateLessThanToday(ErrorMessage = MISAConst.ERROR_EMPLOYEEDATEOFBIRTH_GREATERTHANTODAY)]
-        [Required(ErrorMessage = MISAConst.ERROR_EMPLOYEEDATEOFBIRTH_EMPTY)]
-        public DateTime DateOfBirth { get; set; }
+        public DateTime? DateOfBirth { get; set; }
 
-        [Required(ErrorMessage = MISAConst.ERROR_EMPLOYEEDEPARTMENT_EMPTY)]
         public string? DepartmentCode { get; set; }
 
-        [Required(ErrorMessage = MISAConst.ERROR_EMPLOYEEPOSITION_EMPTY)]
         public string? PositionCode { get; set; }
 
-        [Required(ErrorMessage = MISAConst.ERROR_EMPLOYEEADDRESS_EMPTY)]
         public string? Address { get; set; }
 
-        [Required(ErrorMessage =MISAConst.ERROR_EMPLOYEESALARY_EMPTY)]
-        public decimal Salary { get; set; }
+        public decimal? Salary { get; set; } = null;
 
+        [Required(ErrorMessage = MISAConst.ERROR_EMPLOYEEIDENTITYNUMBER_EMPTY)]
         public string? IdentityNumber { get; set; }
 
-        public string? IdentityDate { get; set; }
+        public DateTime? IdentityDate { get; set; }
 
         public string? IdentityPlace { get; set; }
 
+        [Required(ErrorMessage = MISAConst.ERROR_EMPLOYEEPHONENUMBER_EMPTY)]
         public string? PhoneNumber { get; set; }
 
         public string? Landline { get; set; }
 
+        [Required(ErrorMessage = MISAConst.ERROR_EMPLOYEEEMAIL_EMPTY)]
         public string? Email { get; set; }
 
         public string? BankAccount { get; set; }

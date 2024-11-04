@@ -11,8 +11,8 @@ function showDialog (data ={}, index) {
                 <p>${data.description}</p>
             </div>
             <div class="dialog__footer">
-                <button class="cancel" tabindex="2">Đóng</button>
-                <button class="ok tabindex="3">Ok</button>
+                <button class="cancel" tabindex="2">Không</button>
+                <button class="ok tabindex="3">Có</button>
             </div>
         </div>
     `;
@@ -21,13 +21,13 @@ function showDialog (data ={}, index) {
     dialogArea.innerHTML = dialogHTML;
     dialogArea.classList.add('open');
 
-    const close = document.querySelector(".close");
-    close.addEventListener('click', function() {
+    const closeDialog = document.querySelector(".close");
+    closeDialog.addEventListener('click', function() {
         dialogArea.classList.remove('open');
     });
 
-    const cancel = document.querySelector('.cancel');
-    cancel.addEventListener('click', function() {
+    const cancelDialog = document.querySelector('.cancel');
+    cancelDialog.addEventListener('click', function() {
         dialogArea.classList.remove('open')
     });
 
@@ -60,12 +60,30 @@ function showDialog (data ={}, index) {
                 if (response !== 1) {
                     alert("Có lỗi khi xóa nhân viên")
                 }
-                alert('Xóa nhân viên thành công');
-                var offset = (currentPage)*limit;
-                paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${branch}&limit=${limit}&offset=${offset}`);
+                toast({
+                    title: 'Thành công!', 
+                    message:'Xóa nhân viên thành công',
+                    type: 'success',
+                    duration: 3000,
+                    callback: () => {
+                        var valueSearch = document.getElementById('search').value;
+                        var offset = (currentPage) * limit;
+                        previousApi =''
+                        paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${branch}&limit=${limit}&offset=${offset}`);
+                        fetchNewCode();
+                        if (valueSearch) {
+                            searchEmployee(valueSearch)
+                        }
+                    }
+                })
             },
             error: function (error) {
-                alert('Xóa nhân viên thất bại: ' + error.responseText);
+                toast({
+                    title: 'Thất bại!', 
+                    message:'Sửa nhân viên thất bại',
+                    type: 'error',
+                    duration: 3000
+                })
             }
         })
     }

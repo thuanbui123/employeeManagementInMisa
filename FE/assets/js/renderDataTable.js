@@ -102,9 +102,11 @@ function renderTable(data) {
             <td>${employee.fullName}</td> 
             <td>${employee.gender}</td> 
             <td>${new Date(employee.dateOfBirth).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' })}</td> 
-            <td>${employee.branch}</td> 
+            <td>${employee.email}</td> 
             <td class="actions">
-                <span>${employee.address}</span>
+                <span class="${(employee.address !== 'null') ? '' : 'empty-address'}">
+                    ${(employee.address !== 'null' && employee.address !== null) ? employee.address : ''}
+                </span>
                 <div class ='act'>
                     <button class="edit-btn" style="display: none;" data-tooltip="Ctrl + F2">
                         <img src="./assets/icon/info-48.png"/>
@@ -161,7 +163,7 @@ function myFunction(index) {
 
     const deleteBtn = document.getElementsByClassName('delete-btn')[index];
     deleteBtn.addEventListener('click', function() {
-        showDialog({title: 'Xác nhận xóa?', description: `Xóa nhân viên ${Data[index].fullName} ra khỏi hệ thống?`}, index);
+        showDialog({title: 'Xác nhận xóa?', description: `Bạn có chắc chắn muốn xóa nhân viên ${Data[index].employeeCode} không?`}, index);
     });
 
     document.onkeydown = function(e) {

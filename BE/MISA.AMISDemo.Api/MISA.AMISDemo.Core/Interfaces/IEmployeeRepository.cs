@@ -20,6 +20,15 @@ namespace MISA.AMISDemo.Core.Interfaces
         /// Created by: BVThuan(16/10/2024)
         bool CheckDuplicateCode(string code);
 
+        /// <summary>
+        /// Hàm kiểm tra xem mã nhân viên đã tồn tại trong hệ thống hay chưa
+        /// </summary>
+        /// <param name="code">Mã nhân viên cần kiểm tra</param>
+        /// <param name="codes">Danh sách mã nhân viên đã tồn tại trong hệ thống</param>
+        /// <returns>
+        ///     true - mã nhân viên đã tồn tại trong hệ thống
+        ///     false - mã nhân viên chưa có trong hệ thống
+        /// </returns>
         bool CheckDuplicateCode(string code, List<string> codes);
 
         /// <summary>

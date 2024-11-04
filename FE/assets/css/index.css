@@ -268,9 +268,9 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid #28a745;
+    border: 1px solid #8433FF;
+    background-color: #8433FF;
     outline: none;
-    background-color: #28a745;
     padding: 10px;
     border-radius: 8px;
     cursor: pointer;
@@ -278,7 +278,8 @@ body {
 }
 
 #container .sub-header .add:hover {
-    background-color: #0e6923;
+    background-color: #C199FF;
+    border-color: #C199FF;
 }
 
 #container .sub-header .add p {
@@ -444,14 +445,22 @@ table td:nth-child(5) {
 
 table th:nth-child(6),
 table td:nth-child(6) {
-    width: 15%;
+    width: 20%;
+    overflow: hidden;
+    border-right: 1px solid #ccc;
     /* Cột Địa chỉ email */
 }
 
 table th:nth-child(7),
 table td:nth-child(7) {
-    width: 35%;
+    width: 30%;
+    border-left: none;
     /* Cột Địa chỉ */
+}
+
+.empty-address {
+    height: 13px; 
+    border-left: none;
 }
 
 tbody::-webkit-scrollbar {
@@ -744,14 +753,15 @@ table .row:hover {
 
 .modal-footer input:last-child {
     border: none;
-    background-color: #28a745;
-    color: #fff;
+    background-color: #8433FF;
+    color: #F0E6FF;
     transition: all .3s ease;
 }
 
 
 .modal-footer input:last-child:hover {
-    background-color: #0e6923;
+    background-color: #C199FF;
+    border-color: #C199FF;
 }
 
 .dialog-area {
@@ -835,24 +845,26 @@ table .row:hover {
 }
 
 .dialog__footer button:first-child {
-    background-color: #ccc;
+    background-color: #fff;
     border: 1px solid #ccc;
     transition: all .3s ease;
 }
 
 .dialog__footer button:first-child:hover {
-    background-color: #9b9a9a;
+    background-color: #ccc;
 }
 
 .dialog__footer button:last-child {
-    color: #fff;
+    color: #F0E6FF;
     margin-left: 8px;
-    background-color: #28a745;
-    border: 1px solid #28a745;
+    background-color: #8433FF;
+    border: 1px solid #8433FF;
+    transition: all .3s ease;
 }
 
 .dialog__footer button:last-child:hover {
-    background-color: #0e6923;
+    background-color: #C199FF;
+    border-color: #C199FF;
 }
 
 .table__footer {

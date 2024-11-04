@@ -15,7 +15,8 @@ namespace MISA.AMISDemo.Core.Const
         public const string ERROR_EMPLOYEEGENDER_EMPTY = "Giới tính không được để trống";
         public const string ERROR_EMPLOYEEDEPARTMENT_EMPTY = "Phòng ban không được để trống";
         public const string ERROR_EMPLOYEEPOSITION_EMPTY = "Chức vụ không được để trống";
-        public const string ERROR_EMPLOYEEADDRESS_EMPTY = "Địa chỉ không được để trống";
-        public const string ERROR_EMPLOYEESALARY_EMPTY = "Lương không được để trống";
+        public const string ERROR_EMPLOYEEPHONENUMBER_EMPTY = "Số điện thoại di động không được để trống";
+        public const string ERROR_EMPLOYEEEMAIL_EMPTY = "Địa chỉ email không được để trống";
+        public const string ERROR_EMPLOYEEIDENTITYNUMBER_EMPTY = "Số chứng minh thư nhân dân không được để trống";
     }
 }

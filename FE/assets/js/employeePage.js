@@ -33,8 +33,8 @@ function LoadContainer() {
                         <th style="width: 15%;">Họ và tên</th>
                         <th style="width: 8%;">Giới tính</th>
                         <th style="width: 12%;">Ngày sinh</th>
-                        <th style="width: 15%;">Chi nhánh</th>
-                        <th style="width: 35%;">Địa chỉ</th>
+                        <th style="width: 20%;">Địa chỉ email</th>
+                        <th style="width: 30%;">Địa chỉ</th>
                     </thead>
                     <tbody class="table__body">
                     </tbody>

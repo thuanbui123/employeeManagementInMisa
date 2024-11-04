@@ -129,8 +129,15 @@ namespace MISA.AMISDemo.Api.Controllers
         [HttpPost("check-file-import")]
         public IActionResult CheckFileImport (IFormFile file)
         {
-            byte[]? errorLogFile = _employeeService.CheckFileImport(file);
-            return errorLogFile != null ? File(errorLogFile, "application/octet-stream", "ExportedData.xlsx") : NoContent();
+            object? errorLogFile = _employeeService.CheckFileImport(file);
+
+            if (errorLogFile is byte[] fileBytes)
+            {
+                return File(fileBytes, "application/octet-stream", "LogError.xlsx");
+            } else
+            {
+                return StatusCode(201, errorLogFile);
+            }
         }
 
         /// <summary>
@@ -199,9 +206,9 @@ namespace MISA.AMISDemo.Api.Controllers
         /// false - nhập khẩu thất bại
         /// </returns>
         [HttpPost("import")]
-        public IActionResult Import()
+        public IActionResult Import([FromQuery(Name ="key-code")]string keyCode)
         {
-            var res = _employeeService.ImportService();
+            var res = _employeeService.ImportService(keyCode);
             return StatusCode(200, res);
         }
     }

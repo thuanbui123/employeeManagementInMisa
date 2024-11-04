@@ -13,8 +13,7 @@ function loadHeader() {
                         branches.map((branch, index) => {
                             return (`
                                 <option value="${branch.value}">
-                                    <p>Chi nhánh ${branch.value ==='find-all' ? 'tất cả chi nhánh' : branch.value}</p>
-                                    ${index === 0 ? `<i class="icofont-curved-down"></i>` : ''}
+                                    Chi nhánh ${branch.value ==='find-all' ? 'tất cả chi nhánh' : branch.value}
                                 </option>
                                 `
                             )

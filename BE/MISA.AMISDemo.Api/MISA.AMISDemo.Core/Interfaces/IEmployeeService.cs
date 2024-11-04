@@ -11,7 +11,7 @@ namespace MISA.AMISDemo.Core.Interfaces
 {
     public interface IEmployeeService:IBaseService<Employee>
     {
-        bool ImportService();
+        bool ImportService(string cacheKey);
 
         EmployeeListResponseDTO? Search(string query, string branch, int limit, int offset);
 
@@ -30,7 +30,7 @@ namespace MISA.AMISDemo.Core.Interfaces
         /// Trả về mảng byte[] chứa file nhật ký lưu lỗi
         /// Trả về null nếu dữ liệu trong file nhập khẩu đúng định dạng
         /// </returns>
-        byte[]? CheckFileImport(IFormFile fileImport);
+        object? CheckFileImport(IFormFile fileImport);
 
         byte[]? ExportExcelFile (string branch); 
     }

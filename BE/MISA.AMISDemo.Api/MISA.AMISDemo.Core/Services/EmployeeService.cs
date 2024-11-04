@@ -12,12 +12,12 @@ namespace MISA.AMISDemo.Core.Services
 {
     public class EmployeeService : BaseService<Employee>, IEmployeeService
     {
-        private readonly IMemoryCache _cache;
+        private ICacheManager _cache;
         private IEmployeeRepository _employeeRepository;
         private IPositionRepository _positionRepository;
         private IDepartmentRepository _departmentRepository;
         private IUnitOfWork _unitOfWork;
-        public EmployeeService(IMemoryCache cache, IDepartmentRepository departmentRepository, IPositionRepository positionRepository, IEmployeeRepository employeeRepository, IUnitOfWork unitOfWork):base(reposity: employeeRepository)
+        public EmployeeService(ICacheManager cache, IDepartmentRepository departmentRepository, IPositionRepository positionRepository, IEmployeeRepository employeeRepository, IUnitOfWork unitOfWork):base(reposity: employeeRepository)
         {
             _cache = cache;
             _employeeRepository = employeeRepository;
@@ -25,10 +25,11 @@ namespace MISA.AMISDemo.Core.Services
             _departmentRepository = departmentRepository;
             _unitOfWork = unitOfWork;
         }
-        public bool ImportService()
+
+        public bool ImportService(string keyCache)
         {
-            var cachedData = GetCachedEmployees();
-            if (cachedData != null && cachedData.Count > 0)
+            var cachedData = _cache.GetFromCache(keyCache) as IEnumerable<Employee>;
+            if (cachedData != null)
             {
                 _unitOfWork.BeginTransaction();
                 foreach (var employee in cachedData)
@@ -37,6 +38,7 @@ namespace MISA.AMISDemo.Core.Services
                 }
                 _unitOfWork.Commit();
                 _unitOfWork.Dispose();
+                _cache.RemoveFromCache(keyCache);
             }
             return cachedData != null;
         }
@@ -170,20 +172,7 @@ namespace MISA.AMISDemo.Core.Services
             return res;
         }
 
-        public List<Employee> GetCachedEmployees()
-        {
-            // Kiểm tra xem cache có dữ liệu không
-            if (_cache.TryGetValue("employees", out List<Employee> employees))
-            {
-                _cache.Remove("employees");
-                return employees; // Nếu có dữ liệu, trả về
-            }
-
-            // Nếu không có dữ liệu trong cache, trả về null
-            return null; // Trả về null nếu cache không có dữ liệu
-        }
-
-        public byte[]? CheckFileImport(IFormFile fileImport)
+        public object? CheckFileImport(IFormFile fileImport)
         {
             var employees = new List<Employee>();
             var errorList = new List<(int RowNumber, string ErrorMessage)>();
@@ -229,9 +218,16 @@ namespace MISA.AMISDemo.Core.Services
                                     var departmentCode = IsValidDepartment(department);
                                     var positionCode = IsValidPosition(position);
                                     // Thực hiện các kiểm tra và trả về false nếu gặp lỗi
-                                    if (_employeeRepository.CheckDuplicateCode(employeeCode, codes))
+                                    if (employeeCode == null)
+                                    {
+                                        errorList.Add((row, "Mã nhân viên không được để trống!"));
+                                    } else if (_employeeRepository.CheckDuplicateCode(employeeCode, codes))
                                     {
                                         errorList.Add((row, "Mã nhân viên đã tồn tại trong hệ thống!"));
+                                    }
+                                    if (fullName == null)
+                                    {
+                                        errorList.Add((row, "Họ và tên không được để trống!"));
                                     }
                                     if (!IsValidEmail(email?.Trim()))
                                     {
@@ -329,8 +325,8 @@ namespace MISA.AMISDemo.Core.Services
             }
 
             // Nếu không có lỗi, lưu danh sách employees vào cache và trả về true
-            _cache.Set("employees", employees, TimeSpan.FromHours(1));
-            return null;
+            var _keyCache = _cache.AddToCache(employees);
+            return _keyCache;
         }
 
         public byte[]? ExportExcelFile(string branch)

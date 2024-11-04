@@ -3,6 +3,7 @@ using MISA.AMISDemo.Core.Entities;
 using MISA.AMISDemo.Core.Exceptions;
 using MISA.AMISDemo.Core.Interfaces;
 using MISA.AMISDemo.Core.Services;
+using MISA.AMISDemo.Infrastructure.Cache;
 using MISA.AMISDemo.Infrastructure.Interface;
 using MISA.AMISDemo.Infrastructure.MISADatabaseContext;
 using MISA.AMISDemo.Infrastructure.Repository;
@@ -26,6 +27,7 @@ builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IMISADbContext, MySqlDbContext>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IBaseRepository<Employee>, EmployeeRepository>();
+builder.Services.AddScoped<ICacheManager, CacheManager>();
 
 builder.Services.AddScoped(typeof(IBaseService<>), typeof(BaseService<>));
 

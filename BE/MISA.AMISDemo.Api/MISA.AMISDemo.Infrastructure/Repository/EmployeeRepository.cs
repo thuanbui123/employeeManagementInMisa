@@ -50,6 +50,10 @@ namespace MISA.AMISDemo.Infrastructure.Repository
 
         public bool CheckDuplicateCode(string code, List<string>codes)
         {
+            if (codes == null)
+            {
+                return false;
+            }
             codes.Sort();
             int index = codes.BinarySearch(code);
             return index >= 0;
