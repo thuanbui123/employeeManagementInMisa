@@ -1,5 +1,9 @@
 let branch = "find-all";
 let branches = JSON.parse(localStorage.getItem('branches'));
+
+/**
+ * Hàm hiển thị giao diện của header với các thành phần như logo website, bộ lọc theo chi nhánh,...
+ */
 function loadHeader() {
     const headerHTML = `
         <ul class="header-left">
@@ -43,6 +47,11 @@ function loadHeader() {
 
 document.addEventListener('DOMContentLoaded', loadHeader);
 
+/**
+ * Hàm xử lý khi nội dung HTML được tải xong. 
+ * Hàm này thiết lập các sự kiện để thu gọn / mở rộng sidebar
+ * khi người dùng nhấn vào nút 'toggle-sidebar'
+ */
 document.addEventListener('DOMContentLoaded', () => {
     const toggleSidebar = document.getElementsByClassName('toggle-sidebar')[0]; 
     const sidebar = document.getElementById('sidebar');

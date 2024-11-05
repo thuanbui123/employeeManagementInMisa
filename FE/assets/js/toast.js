@@ -1,4 +1,12 @@
-// Toast function
+/**
+ * Hàm tạo toast message để hiển thị thông báo
+ * @param {*} param0 chứa các thông tin cần thiết cho toast message như:
+ * title: tiêu đề của toast
+ * message: nội dung thông báo
+ * type: loại của toast message được tạo
+ * duration: thời gian hiển thị của toast message
+ * callback: hàm đươc gọi sau khi toast message ẩn
+ */
 function toast({ title = "", message = "", type = "info", duration = 3000, callback }) {
   const main = document.getElementById("toast");
   if (main) {

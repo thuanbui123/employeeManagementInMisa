@@ -2,6 +2,10 @@ let Data = []
 let currentPage = 0;
 let limit = 10;
 
+/**
+ * Hàm hiển thị footer cho bảng dữ liệu nhân viên
+ * @param {*} sumRows tổng số bản ghi hiện có để hiển thị trong footer
+ */
 function createRowFooter (sumRows) {
     const rowFooter = document.createElement("tr");
     rowFooter.innerHTML = ''
@@ -88,6 +92,10 @@ function createRowFooter (sumRows) {
     })
 }
 
+/**
+ * Hàm hiển thị dữ liệu được lấy từ backend ra để hiển thị trên bảng
+ * @param {*} data Dữ liệu về danh sách nhân viên cần hiển thị
+ */
 function renderTable(data) {
 
     const tableBody = document.querySelector('.table__body');
@@ -126,6 +134,13 @@ function renderTable(data) {
     });
 }
 
+/**
+ * Xử lý các hành động cho hàng trong bảng dựa trên chỉ số hàng đã cho
+ * Hiển thị nút chỉnh sửa và xóa cho hàng đã chọn, đồng thời ẩn các nút cho các hàng khác
+ * Đánh dấu hàng đang được chọn và thiết lập sự kiện cho các nút
+ * Để thực hiện hành động sửa hoặc xóa
+ * @param {*} index 
+ */
 function myFunction(index) {
     const rows = document.getElementsByClassName('row');
     

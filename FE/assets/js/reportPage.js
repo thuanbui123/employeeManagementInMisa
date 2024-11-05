@@ -1,3 +1,18 @@
+
+let dataAge;
+
+
+/**
+ * Tạo biểu đồ dựa vào các thông số được cung cấp
+ * @param {*} ctx - nơi biểu đồ sẽ được vẽ
+ * @param {*} chartType - loại biểu đồ
+ * @param {*} labels - Mảng chứa các nhãn cho từng phần tử trong dataset
+ * @param {*} label - Nhã cho dataset
+ * @param {*} dataPoints - Mảng chứa các giá trị dữ liệu tương ứng với từng phần tử trong dataset
+ * @param {*} backgroundColors - Mảng chứa màu nền cho từng phần tử trong dataset
+ * @returns - trả về đối tượng biểu đồ đã được tạo
+ */
+
 function createChart(ctx, chartType, labels, label, dataPoints, backgroundColors) {
     const data = {
         labels: labels, // Mỗi label tương ứng với phần tử của dataset
@@ -15,8 +30,6 @@ function createChart(ctx, chartType, labels, label, dataPoints, backgroundColors
     return new Chart(ctx, config);
 }
 
-let dataAge;
-
 function fetchAgeStatistics () {
     fetch('https://localhost:7004/api/v1/employees/employee-statistics-by-age')
         .then(response => {
@@ -32,6 +45,9 @@ function fetchAgeStatistics () {
 
 fetchAgeStatistics()
 
+/**
+ * Tạo báo cáo thống kê nhân viên theo độ tuổi lên giao diện
+ */
 function renderReport() {
     const html = `<div class="report-container">
             <div class="report-age">

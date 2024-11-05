@@ -1,3 +1,7 @@
+
+/**
+ * Hàm hiển thị sidebar với các mục điều hướng
+ */
 function loader() {
     const sidebarHTML = `
         <ul class="menu-sidebar">
@@ -30,11 +34,14 @@ function loader() {
 document.addEventListener('DOMContentLoaded', loader);
 document.addEventListener('DOMContentLoaded', () => document.getElementById('container').innerHTML = `<h3>Trang chủ</h3>`);
 
+/**
+ * Khi dom được tải xong, thiết lập các sự kiện click cho các mục trong sidebar
+ */
 document.addEventListener('DOMContentLoaded', () => {
     const items = document.getElementsByClassName('item');
     Array.from(items).forEach(item => {
         item.addEventListener('click', function () {
-
+            //Thêm sự kiện click cho từng mục
             Array.from(items).forEach(i => i.classList.remove('active'));
             const page = this.getAttribute('data-page');
             const container = document.getElementById('container');
@@ -66,6 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Thiết lập sự kiện click cho nút thu nhỏ sidebar
     const shrinks = document.querySelector('.shrink');
     shrinks.addEventListener('click', function () {
         const sidebar = document.getElementById('sidebar');

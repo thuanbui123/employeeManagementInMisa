@@ -1,3 +1,10 @@
+let timeoutId;
+
+/**
+ * Hàm hiển thị giao diện quản lý nhân viên, bao gồm các phần tử giao diện như
+ * tiêu đề, bảng dữ liệu và các nút chức năng(Thêm mới, refresh, nhập khẩu, xuất khẩu nhân viên)
+ * Đồng thời hàm cũng thêm các sự kiện cho các nút này để xử lý các thao tác tương ứng
+ */
 function LoadContainer() {
     const containerHtml = `
         <div class="sub-header">
@@ -109,10 +116,6 @@ function LoadContainer() {
     addBtn.addEventListener('click', function () {
         showPopup({});
     });
-
-
-
-    let timeoutId;
 
     function handleInputChange(event) {
         const query = event.target.value;

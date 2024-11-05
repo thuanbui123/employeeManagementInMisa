@@ -1,5 +1,9 @@
 let previousApi = null;
 
+/**
+ * Hàm phân trang để lấy dữ liệu từ api và cập nhật giao diện
+ * @param {*} api Địa chỉ api để lấy dữ liệu
+ */
 const paginate = (api) => {
     if (api !== previousApi) {
         previousApi = api;
@@ -17,6 +21,9 @@ const paginate = (api) => {
     }
 };
 
+/**
+ * Mảng chí các phần tử trong bộ lọc chi nhánh
+ */
 const branchOptions = [
     {
         value: 'Hà Nội'
@@ -29,21 +36,6 @@ const branchOptions = [
     }
 ]
 
+//Lưu các các phần tử chi nhánh vào localStorage
 localStorage.setItem('branches', JSON.stringify(branchOptions));
 
-const positionOptions = [
-    {
-        value: "Intern"
-    },
-    {
-        value: 'Fresher'
-    }, 
-    {
-        value: 'Junior'
-    },
-    {
-        value: 'Product Manager'
-    }
-]
-
-localStorage.setItem('positions', JSON.stringify(positionOptions));

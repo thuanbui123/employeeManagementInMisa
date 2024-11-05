@@ -1,3 +1,10 @@
+/**
+ * Hiển thị một hộp thoại xác nhận và xử lý các thao tác người dùng tương tác với hộp thoại
+ * Hộp thoại bao gồm tiêu đề, mô tả và các nút "Có" và "Không" để xác nhận hành động
+ * Khi nhấn có, hộp thoại sẽ thực hiện xóa dữ liệu qua api
+ * @param {*} data Dữ liệu để hiển thị trên hộp thoại bao gồm title và description
+ * @param {*} index Chỉ mục của dữ liệu cần xóa
+ */
 function showDialog (data ={}, index) {
     const dialogHTML = `
         <div class="dialog">
@@ -17,10 +24,12 @@ function showDialog (data ={}, index) {
         </div>
     `;
 
+    //Thêm hộp thoại vào vùng hiển thị và mở hộp thoại
     const dialogArea = document.querySelector(".dialog-area");
     dialogArea.innerHTML = dialogHTML;
     dialogArea.classList.add('open');
 
+    //Xử lý đóng hộp thoại khi ấn nút đóng hoặc hủy
     const closeDialog = document.querySelector(".close__dialog");
     closeDialog.addEventListener('click', function() {
         dialogArea.classList.remove('open');
@@ -31,6 +40,7 @@ function showDialog (data ={}, index) {
         dialogArea.classList.remove('open')
     });
 
+    // Xử lý khi nhấn "OK" để xóa dữ liệu và đóng hộp thoại
     const okBtn = document.querySelector(".ok");
     okBtn.addEventListener('click', function() {
         fetchDeleteData(index);

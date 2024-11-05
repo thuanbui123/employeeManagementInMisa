@@ -1,5 +1,8 @@
 let keyCache;
 
+/**
+ * Hàm tạo ra html để hiện thị trang nhập khẩu nhân viên
+ */
 function showImportEmployee() {
     const importEmployeeHtml = `
         <div class="title-bar">
@@ -270,22 +273,48 @@ function showImportEmployee() {
         }
     });
 
+    /**
+     * Hàm xử lí việc xóa file trong input type='file' khi người dùng tải file lên
+     */
     function handleDeleteFile () {
         fileInput.value = '';
         resultUpload.innerHTML = '';
         importBtn.classList.add('disable');
     }
 
+    /**
+     * Xử lý tải file xuống trong trường hợp có lỗi
+     * Nó tạo một phần tử thẻ liên kết tạm thời, thiết lập url và tên file 
+     * Sau đó kích hoạt tải xuống bằng cách mô phỏng một cú click chuột vào phần tử này
+     * Cuối cùng hàm sẽ dọn dẹp bằng cách xóa thẻ liên kết khỏi DOM và hủy URL để giải phóng bộ nhớ
+     * @param {*} url URL của file cần tải xuống
+     * @param {*} fileName Tên muốn đặt cho file tải xuống
+     */
     function handleDownloadFileError (url, fileName) {
+        //B1: Tạo thẻ liên kết tạm thời
         const a = document.createElement('a');
+
+        //B2: Thiết lập url và tên file tải xuống
         a.href = url;
         a.download = fileName; // Đặt tên cho file lỗi
+
+        //B3: Thêm thẻ liên kết tạm thời vào body và kích hoạt click để tải xuống
         document.body.appendChild(a);
         a.click();
+
+        //B4: Xóa thẻ liên kết khỏi DOM sau khi tải xuống
         document.body.removeChild(a);
+
+        //B5: Hủy URL để giải phóng bộ nhớ
         URL.revokeObjectURL(url);
     }
 
+    /**
+     * Hàm tạo html lỗi cho việc hiển thị thông báo lỗi và tải file lỗi
+     * @param {*} errorMessage - Thông báo lỗi 
+     * @param {*} isFile - Có cho hiển thị chức năng tải file lỗi xuống hay không
+     * @returns trả về html cho việc hiển thị thông báo lỗi
+     */
     const errorHtml = (errorMessage, isFile) => {
         return `
             <div class="result-item status-item status-fail">
@@ -303,6 +332,10 @@ function showImportEmployee() {
         `
     }
 
+    /**
+     * Tạo html cho việc hiển thị thông báo thành công
+     * @returns trả về html cho việc hiển thị thông báo lỗi
+     */
     const successHtml = () => {
         return `
             <div class="result-item status-item status-success">
@@ -394,7 +427,10 @@ function showImportEmployee() {
         });
     }
 
-
+    /**
+     * Bắt sự kiện cho button nhập khẩu nhân viên
+     * Gọi đến api nhập khẩu nhân viên bên back end
+     */
     importBtn.addEventListener('click', function () {
         fetch('https://localhost:7004/api/v1/employees/import?key-code='+keyCache, {
                 method: 'POST',
@@ -434,10 +470,8 @@ function showImportEmployee() {
                     importBtn.classList.add('disable');
                     const btnDeleteFile = document.querySelector('.btn-delete-file');
                     btnDeleteFile.addEventListener('click', function () {
-                    fileInput.value = '';
-                    resultUpload.innerHTML = '';
-                    importBtn.classList.add('disable');
-                });
+                        handleDeleteFile()
+                    });
                 }
             })
             .catch((error) => {
@@ -446,6 +480,10 @@ function showImportEmployee() {
     })
 }
 
+
+/**
+ * Đặt lại các giá trị của thanh tiến trình về trạng thái ban đầu 
+ */
 function resetProgress () {
     const progressContainer = document.getElementById('progress-container');
     progressContainer.style.display = 'block';

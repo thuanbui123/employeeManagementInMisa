@@ -1,9 +1,22 @@
+let positions;
+let departments;
+let code;
+let newCode;
+
+/**
+ * Chuyển đổi định dạng ngày từ 'dd/MM/yyyy' sang 'yyyy-MM-dd'
+ * @param {*} date Ngày với định dạng 'dd/MM/yyyy'
+ * @returns Ngày với định dạng 'yyyy-MM-dd'
+ */
 function convertDate(date) {
     const parts = date.split("/");
-    const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`
-    return formattedDate;
+    return `${parts[2]}-${parts[1]}-${parts[0]}`;
 }
 
+/**
+ * Lấy giá trị từ form nhập dữ liệu và tạo đối tượng nhân viên chứa các thông tin
+ * @returns đối tượng nhân viên chứa thông tin từ form 
+ */
 function getValueForm() {
     let salary = document.getElementById('salary').value;
     let branch = document.getElementById('branch').value;
@@ -38,8 +51,9 @@ function getValueForm() {
     return employee;
 }
 
-let newCode;
-
+/**
+ * Gọi api để lấy mã nhân viên mới từ backend
+ */
 function fetchNewCode() {
     fetch('https://localhost:7004/api/v1/employees/generate-code')
         .then(response => {
@@ -53,39 +67,38 @@ function fetchNewCode() {
         })
 }
 
-let positions;
-let departments;
-
-function fetchPositions() {
-    fetch('https://localhost:7004/api/v1/positions')
-        .then(response => {
-            return response.json();
-        })
-        .then(data => {
-            positions = data;
-        })
-        .catch(error => {
-            console.log(error)
-        })
+/**
+ * Gọi api để lấy dữ liệu từ backend
+ * @param {*} url Địa chỉ url của Api
+ * @returns Dữ liệu Json trả về từ api
+ */
+async function fetchData (url) {
+    try {
+        const response = await fetch(url);
+        return await response.json();
+    } catch (error) {
+        return console.log(error);
+    }
 }
 
-function fetchDepartments() {
-    fetch('https://localhost:7004/api/v1/departments')
-        .then(response => {
-            return response.json();
-        })
-        .then(data => {
-            departments = data;
-        })
-        .catch(error => {
-            console.log(error)
-        })
+/**
+ * Khởi tạo trang bằng cách gọi các api để lấy dữ liệu cho chức vụ, phòng ban và mã nhân viên mới từ backend
+ */
+function initPage () {
+    fetchData('https://localhost:7004/api/v1/positions')
+        .then(data => positions = data);
+    fetchData('https://localhost:7004/api/v1/departments')
+        .then(data => departments = data);
+    fetchNewCode();
 }
 
-fetchNewCode()
+initPage();
 
-let code;
-
+/**
+ * Kiểm tra tính hợp lệ của email
+ * @param {*} email email cần kiểm tra
+ * @returns true nếu email hợp lệ, ngược lại trả về false
+ */
 const validateEmail = (email) => {
     return String(email)
         .toLowerCase()
@@ -94,6 +107,10 @@ const validateEmail = (email) => {
         );
 };
 
+/**
+ * Kiểm tra dữ liệu đầu vào của email mà người dùng nhập
+ * @param {*} input thẻ input chứa dữ liệu email mà người dùng nhập vào
+ */
 function validateEmailInput(input) {
     const email = input.value;
 
@@ -105,6 +122,11 @@ function validateEmailInput(input) {
     }
 }
 
+/**
+ * Kiểm tra tính hợp lệ của số điện thoại
+ * @param {*} numberPhone Số điện thoại cần kiểm tra
+ * @returns true - nếu số điện thoại hợp lệ, ngược lại trả về false
+ */
 const validateNumberPhone = (numberPhone) => {
     return String(numberPhone)
         .toLowerCase()
@@ -113,6 +135,10 @@ const validateNumberPhone = (numberPhone) => {
         );
 };
 
+/**
+ * Kiểm tra dữ liệu đầu vào của số điện thoại
+ * @param {*} input thẻ input chứa dữ liệu số điện thoại mà người dùng nhập
+ */
 function validateNumberPhoneInput (input) {
     const numberPhone = input.value;
 
@@ -123,6 +149,11 @@ function validateNumberPhoneInput (input) {
     }
 }
 
+/**
+ * Kiểm tra tính hợp lệ của số căn cước công dân
+ * @param {*} identityNumber Số căn cước công dân cần kiểm tra
+ * @returns true - nếu số CCCD hợp lệ, ngược lại trả về false
+ */
 const validateIdentityNumber = (identityNumber) => {
     return String(identityNumber)
         .toLowerCase()
@@ -131,6 +162,10 @@ const validateIdentityNumber = (identityNumber) => {
         );
 }
 
+/**
+ * Kiểm tra dữ liệu đầu vào của số CCCD 
+ * @param {*} input thẻ input chứa dữ liệu về số CCCD mà người dùng nhập
+ */
 function validateIdentityNumberInput (input) {
     const identityNumber = input.value;
 
@@ -157,6 +192,11 @@ const validateSalary = (salaryStr) => {
     return !isNaN(sanitizedSalary) && !isNaN(parseInt(sanitizedSalary));
 }
 
+/**
+ * Kiểm tra dữ liệu đầu vào của lương
+ * @param {*} input thẻ input chứa dữ liệu đầu vào của lương mà người dùng nhập
+ * @returns 
+ */
 function validateSalaryInput (input) {
     let value = input.value;
     if (value === '') {
@@ -171,10 +211,13 @@ function validateSalaryInput (input) {
     }
 }
 
-fetchPositions();
-fetchDepartments();
 const branchValues = JSON.parse(localStorage.getItem('branches'));
 
+/**
+ * Định dạng số thành kiểu định dạng tiền tệ VNĐ 
+ * @param {*} price Giá trị số cần định dạng
+ * @returns Chuỗi định dạng giá trị VNĐ
+ */
 const formatToVND = (price) => {
     const VND = new Intl.NumberFormat('vi-VN', {
         minimumFractionDigits: 0 
@@ -182,11 +225,20 @@ const formatToVND = (price) => {
     return VND.format(price);
 }
 
+/**
+ * Định dạng giá trị chuỗi thành số
+ * @param {*} value Chuỗi cần định dạng
+ * @returns Chuỗi số không chứa dấu (.) phân cách
+ */
 const formatToNumber = (value) => {
     const formatNumber = value.replace(/\./g, '');
     return formatNumber;
 }
 
+/**
+ * Tạo ra một poup để hiển thị khi thêm hoặc sửa dữ liệu
+ * @param {*} data dữ liệu truyền vào để hiển thị khi sửa dữ liệu
+ */
 function showPopup(data = {}) {
     code = (data !== null && data.employeeCode !== undefined) ? data.employeeCode : undefined;
     const sex = (data !== null && data.gender !== undefined) ? data.gender : '';
