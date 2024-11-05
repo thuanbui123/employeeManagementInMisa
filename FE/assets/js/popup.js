@@ -52,6 +52,7 @@ function fetchNewCode() {
             console.log(error)
         })
 }
+
 let positions;
 let departments;
 

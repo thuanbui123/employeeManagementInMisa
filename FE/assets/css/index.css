@@ -1139,10 +1139,29 @@ table .row:hover {
     padding-bottom: 10px;
     font-size: 15px;
 }
-
+#progress-container,
 .right-step-content .import-content .result-upload {
     overflow-x: hidden;
     overflow-y: auto;
+}
+
+#progress-container {
+    background-color: #9fd7fc;
+    position: relative;
+}
+
+#progress-bar {
+  height: 20px;
+  background-color: #2ea4f1;
+  width: 0;
+}
+
+#progress-text {
+    color: #fff;
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
 }
 
 .drag-container {

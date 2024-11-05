@@ -85,6 +85,10 @@ function showImportEmployee() {
                                 Dung lượng tối đa 2MB
                             </div>
                             <div class="import-content">
+                                <div id="progress-container" style="display: none;">
+                                    <div id="progress-bar" style="width: 0%; height: 20px; background-color: #2ea4f1;"></div>
+                                    <p id="progress-text">0%</p>
+                                </div>
                                 <div class="result-upload">
                                     
                                 </div>
@@ -186,6 +190,7 @@ function showImportEmployee() {
             if (isValidExtension && isValidSize) {
                 fileInput.files = files;
 
+                resetProgress();
                 let response = await checkFileImport(fileInput.files[0]);
 
                 if (!response.hasError) {
@@ -197,9 +202,7 @@ function showImportEmployee() {
 
                     const btnDeleteFile = document.querySelector('.btn-delete-file');
                     btnDeleteFile.addEventListener('click', function () {
-                        fileInput.value = '';
-                        resultUpload.innerHTML = '';
-                        importBtn.classList.add('disable');
+                        handleDeleteFile();
                     });
 
                 } else {
@@ -209,21 +212,12 @@ function showImportEmployee() {
 
                     const btnDownloadError = document.querySelector('.btn-download-error');
                     btnDownloadError.addEventListener('click', function () {
-                        const url = response.data;
-                        const a = document.createElement('a');
-                        a.href = url;
-                        a.download = 'error_log.xlsx'; // Đặt tên cho file lỗi
-                        document.body.appendChild(a);
-                        a.click();
-                        document.body.removeChild(a);
-                        URL.revokeObjectURL(url);
+                        handleDownloadFileError(response.data, 'error_log.xlsx')
                     });
 
                     const btnDeleteFile = document.querySelector('.btn-delete-file');
                     btnDeleteFile.addEventListener('click', function () {
-                        fileInput.value = '';
-                        resultUpload.innerHTML = '';
-                        importBtn.classList.add('disable');
+                        handleDeleteFile();
                     });
                 }
             } else {
@@ -235,9 +229,7 @@ function showImportEmployee() {
                 resultUpload.innerHTML = errorHtml(errorMessage, false);
                 const btnDeleteFile = document.querySelector('.btn-delete-file');
                 btnDeleteFile.addEventListener('click', function () {
-                    fileInput.value = '';
-                    resultUpload.innerHTML = '';
-                    importBtn.classList.add('disable');
+                    handleDeleteFile();
                 });
             }
         }
@@ -246,6 +238,7 @@ function showImportEmployee() {
 
     fileInput.addEventListener('change', async function () {
         if (fileInput.files.length > 0) {
+            resetProgress();
             let response = await checkFileImport(fileInput.files[0]);
             if (!response.hasError) {
                 keyCache = response.data;
@@ -256,9 +249,7 @@ function showImportEmployee() {
 
                 const btnDeleteFile = document.querySelector('.btn-delete-file');
                 btnDeleteFile.addEventListener('click', function () {
-                    fileInput.value = '';
-                    resultUpload.innerHTML = '';
-                    importBtn.classList.add('disable');
+                    handleDeleteFile();
                 });
 
             } else {
@@ -268,25 +259,32 @@ function showImportEmployee() {
 
                 const btnDownloadError = document.querySelector('.btn-download-error');
                 btnDownloadError.addEventListener('click', function () {
-                    const url = response.data;
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = 'error_log.xlsx'; // Đặt tên cho file lỗi
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    URL.revokeObjectURL(url);
+                    handleDownloadFileError(response.data, 'error_log.xlsx')
                 });
 
                 const btnDeleteFile = document.querySelector('.btn-delete-file');
                 btnDeleteFile.addEventListener('click', function () {
-                    fileInput.value = '';
-                    resultUpload.innerHTML = '';
-                    importBtn.classList.add('disable');
+                    handleDeleteFile();
                 });
             }
         }
     });
+
+    function handleDeleteFile () {
+        fileInput.value = '';
+        resultUpload.innerHTML = '';
+        importBtn.classList.add('disable');
+    }
+
+    function handleDownloadFileError (url, fileName) {
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = fileName; // Đặt tên cho file lỗi
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
 
     const errorHtml = (errorMessage, isFile) => {
         return `
@@ -319,76 +317,82 @@ function showImportEmployee() {
         `
     }
 
+
+    /**
+     * Promise là một đối tượng trong JS để xử lý bất đồng bộ. 
+     * Cho phép thực hiện các hành động mà không làm tắc nghẽn luồng thực thi chính của ứng dụng
+     * Promise có 3 trạng thái:
+     * - Pending (đang chờ): Trạng thái ban đầu, nghĩa là chưa có kết quả
+     * - Fulfilled(Đã hoàn thành): Trạng thái cho biết rằng tác vụ bất đồng bộ đã hoàn thành thành công và có giá trị kết quả
+     * - Rejected (Đã bị từ chối): Trạng thái cho biết rằng tác vụ bất đồng bộ đã thất bại và có lý do
+     */
+
+    /**
+     * Kiểm tra tệp nhập khẩu bằng cách gửi tệp tới một api
+     * @param {*} file tệp cần kiểm tra
+     * @returns một promise chứa kết quả kiểm tra
+     */
     async function checkFileImport(file) {
         const url = 'https://localhost:7004/api/v1/employees/check-file-import'; 
         const formData = new FormData();
         formData.append('file', file); 
     
-        try {
-            const response = await fetch(url, {
-                method: 'POST',
-                body: formData,
-            });
+        return new Promise((resolve) => {
+            const xhr = new XMLHttpRequest();
     
-            if (response.status === 201) {
-                const data = await response.text();
-                return { hasError: false, data: data };
-            } else if (response.status === 200) {
-                const blob = await response.blob();
-                const fileUrl = window.URL.createObjectURL(blob);
+            // Cập nhật tiến trình tải tệp
+            xhr.upload.onprogress = function (event) {
+                if (event.lengthComputable) {
+                    const percentComplete = (event.loaded / event.total) * 100;
+                    const progressBar = document.getElementById('progress-bar');
+                    const progressText = document.getElementById('progress-text');
+                    
+                    // Cập nhật thanh tiến trình
+                    progressBar.style.width = `${percentComplete}%`;
+                    progressText.innerText = ''
+                    progressText.innerText = `${Math.round(percentComplete)}%`; 
+
+                    // Ẩn thanh tiến trình khi đạt 100%
+                    if (percentComplete === 100) {
+                        setTimeout(() => {
+                            resetProgress();
+                            const progressContainer = document.getElementById('progress-container');
+                            progressContainer.style.display = 'none'; 
+                            resultUpload.style.display = 'block'
+                        }, 500); //Đợi 500ms trước khi thực hiện
+                    }
+                }
+            };
     
-                return { hasError: true, data: fileUrl };
-            } else {
-                console.error('Lỗi không xác định:', response.status);
-                return { hasError: true, data: 'Lỗi không xác định xảy ra' };
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            return { hasError: true, data: 'Lỗi kết nối với máy chủ' };
-        }
+            xhr.open('POST', url, true); // Mở kết nối POST tới URL đã chỉ định
+    
+            // Đặt loại phản hồi là arraybuffer để nhận dữ liệu nhị phân
+            xhr.responseType = 'arraybuffer';
+            
+            // Xử lý khi yêu cầu hoàn thành
+            xhr.onload = function () {
+                if (xhr.status === 201) {
+                    const data = xhr.response;
+                    resolve({ hasError: false, data: data });
+                } else if (xhr.status === 200) {
+                    const blob = new Blob([xhr.response], { type: 'application/octet-stream' });
+                    const fileUrl = window.URL.createObjectURL(blob); // Tạo url cho blob
+                    resolve({ hasError: true, data: fileUrl }); //Trả về url blob cho lỗi
+                } else {
+                    console.error('Lỗi không xác định:', xhr.status);
+                    resolve({ hasError: true, data: 'Lỗi không xác định xảy ra' });
+                }
+            };
+    
+            xhr.onerror = function () {
+                console.error('Error:', xhr.status);
+                resolve({ hasError: true, data: 'Lỗi kết nối với máy chủ' });
+            };
+    
+            // Gửi yêu cầu với dữ liệu đã chuẩn bị
+            xhr.send(formData);
+        });
     }
-    
-    
-
-    // async function checkFileImport(file) {
-    //     const formData = new FormData();
-    //     formData.append('file', file);
-
-    //     try {
-    //         const response = await fetch('https://localhost:7004/api/v1/employees/check-file-import', {
-    //             method: 'POST',
-    //             body: formData,
-    //         });
-
-    //         if (!response.ok) {
-    //             throw new Error(`Error: ${response.status}`);
-    //         }
-
-    //         // Lấy dữ liệu trả về dưới dạng Blob
-    //         const blob = await response.blob();
-
-    //         // Kiểm tra nếu có lỗi
-    //         if (blob.size > 0) {
-    //             // Nếu có dữ liệu lỗi, trả về blob
-    //             return {
-    //                 hasError: true,
-    //                 file: blob
-    //             };
-    //         } else {
-    //             // Nếu không có dữ liệu lỗi
-    //             return {
-    //                 hasError: false,
-    //                 file: response.text()
-    //             };
-    //         }
-    //     } catch (error) {
-    //         alert(`Error: ${error.message}`);
-    //         return {
-    //             hasError: true,
-    //             file: null
-    //         }; // Giả sử không có file lỗi nếu có lỗi trong API
-    //     }
-    // }
 
 
     importBtn.addEventListener('click', function () {
@@ -440,4 +444,20 @@ function showImportEmployee() {
                 alert(error)
             });
     })
+}
+
+function resetProgress () {
+    const progressContainer = document.getElementById('progress-container');
+    progressContainer.style.display = 'block';
+
+    // Đặt lại tiến trình về 0
+    const progressBar = document.getElementById('progress-bar');
+    const progressText = document.getElementById('progress-text');
+    progressBar.style.width = '0%';
+    progressText.innerText = '';
+    progressText.innerText = '0%';
+
+    // Ẩn thanh kết quả
+    const resultContainer = document.querySelector('.result-upload');
+    resultContainer.style.display = 'none';
 }
