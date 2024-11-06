@@ -1,3 +1,10 @@
+import { searchEmployee } from "./employeePage.js";
+import { getBranch } from "./header.js";
+import { getCurrentPage, getLimit } from "./renderDataTable.js";
+import { getPreviousApi, paginate, setPreviousApi } from "./service.js";
+import { toast } from "./toast.js";
+import { validateIdentityNumberInput, validateEmailInput, validateNumberPhoneInput, validateSalaryInput } from "./service.js";
+
 let positions;
 let departments;
 let code;
@@ -8,7 +15,7 @@ let newCode;
  * @param {*} date Ngày với định dạng 'dd/MM/yyyy'
  * @returns Ngày với định dạng 'yyyy-MM-dd'
  */
-function convertDate(date) {
+export function convertDate(date) {
     const parts = date.split("/");
     return `${parts[2]}-${parts[1]}-${parts[0]}`;
 }
@@ -54,7 +61,7 @@ function getValueForm() {
 /**
  * Gọi api để lấy mã nhân viên mới từ backend
  */
-function fetchNewCode() {
+export function fetchNewCode() {
     fetch('https://localhost:7004/api/v1/employees/generate-code')
         .then(response => {
             return response.text();
@@ -94,123 +101,6 @@ function initPage () {
 
 initPage();
 
-/**
- * Kiểm tra tính hợp lệ của email
- * @param {*} email email cần kiểm tra
- * @returns true nếu email hợp lệ, ngược lại trả về false
- */
-const validateEmail = (email) => {
-    return String(email)
-        .toLowerCase()
-        .match(
-            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-        );
-};
-
-/**
- * Kiểm tra dữ liệu đầu vào của email mà người dùng nhập
- * @param {*} input thẻ input chứa dữ liệu email mà người dùng nhập vào
- */
-function validateEmailInput(input) {
-    const email = input.value;
-
-    // Kiểm tra nếu email không hợp lệ
-    if (!validateEmail(email)) {
-        input.setCustomValidity('Email không hợp lệ!');
-    } else {
-        input.setCustomValidity(''); // Nếu email hợp lệ, xóa thông báo lỗi
-    }
-}
-
-/**
- * Kiểm tra tính hợp lệ của số điện thoại
- * @param {*} numberPhone Số điện thoại cần kiểm tra
- * @returns true - nếu số điện thoại hợp lệ, ngược lại trả về false
- */
-const validateNumberPhone = (numberPhone) => {
-    return String(numberPhone)
-        .toLowerCase()
-        .match(
-            /(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})$/
-        );
-};
-
-/**
- * Kiểm tra dữ liệu đầu vào của số điện thoại
- * @param {*} input thẻ input chứa dữ liệu số điện thoại mà người dùng nhập
- */
-function validateNumberPhoneInput (input) {
-    const numberPhone = input.value;
-
-    if (!validateNumberPhone(numberPhone)) {
-        input.setCustomValidity('Số điện thoại không hợp lệ!')
-    } else {
-        input.setCustomValidity('')
-    }
-}
-
-/**
- * Kiểm tra tính hợp lệ của số căn cước công dân
- * @param {*} identityNumber Số căn cước công dân cần kiểm tra
- * @returns true - nếu số CCCD hợp lệ, ngược lại trả về false
- */
-const validateIdentityNumber = (identityNumber) => {
-    return String(identityNumber)
-        .toLowerCase()
-        .match(
-            /^\d{12}$|^(0[1-9]{1}[0-9]{0,3}[0-9]{5})$|^(0[1-9]{1}[0-9]{0,3}[0-9]{9})$/
-        );
-}
-
-/**
- * Kiểm tra dữ liệu đầu vào của số CCCD 
- * @param {*} input thẻ input chứa dữ liệu về số CCCD mà người dùng nhập
- */
-function validateIdentityNumberInput (input) {
-    const identityNumber = input.value;
-
-    if (!validateIdentityNumber(identityNumber)) {
-        input.setCustomValidity('Số CMTND không hợp lệ!')
-    } else {
-        input.setCustomValidity('')
-    }
-}
-
-/**
- * Kiểm tra xem chuỗi lương có hợp lệ hay không
- * Một chuỗi lương được coi là hợp lệ nếu: 
- * - Nó là một chuỗi
- * - Nó có thể được chuyển đổi thành một số hợp lệ
- * @param {*} salaryStr - chuỗi cần kiểm tra
- * @returns 
- * - true: nếu chuỗi hợp lệ
- * - false: nếu chuỗi không hợp lệ
- */
-const validateSalary = (salaryStr) => {
-    if (typeof salaryStr != 'string') return false;
-    const sanitizedSalary = salaryStr.replace(/\./g, '');
-    return !isNaN(sanitizedSalary) && !isNaN(parseInt(sanitizedSalary));
-}
-
-/**
- * Kiểm tra dữ liệu đầu vào của lương
- * @param {*} input thẻ input chứa dữ liệu đầu vào của lương mà người dùng nhập
- * @returns 
- */
-function validateSalaryInput (input) {
-    let value = input.value;
-    if (value === '') {
-        input.value = 0
-        input.setCustomValidity('')
-        return;
-    }
-    if (!validateSalary(value)) {
-        input.setCustomValidity('Lương không hợp lệ!');
-    } else {
-        input.setCustomValidity('')
-    }
-}
-
 const branchValues = JSON.parse(localStorage.getItem('branches'));
 
 /**
@@ -239,7 +129,7 @@ const formatToNumber = (value) => {
  * Tạo ra một poup để hiển thị khi thêm hoặc sửa dữ liệu
  * @param {*} data dữ liệu truyền vào để hiển thị khi sửa dữ liệu
  */
-function showPopup(data = {}) {
+export function showPopup(data = {}) {
     code = (data !== null && data.employeeCode !== undefined) ? data.employeeCode : undefined;
     const sex = (data !== null && data.gender !== undefined) ? data.gender : '';
     const position = (data !== null && data.positionCode !== undefined) ? data.positionCode : '';
@@ -310,7 +200,12 @@ function showPopup(data = {}) {
                                 Số CMTND
                                 <p>*</p>    
                             </label>
-                            <input tabindex="8" required oninvalid="this.setCustomValidity('Số CMTND không hợp lệ!')" oninput="validateIdentityNumberInput(this)" type="text" id="identityNumber" name="identityNumber" value="${(data !==  null && data.identityNumber !== undefined) ? data.identityNumber : ""}" />
+                            <input tabindex="8" type="text" 
+                                required
+                                oninvalid="this.setCustomValidity('Số CMTND không hợp lệ!')"
+                                id="identityNumber" name="identityNumber"
+                                ${(data !==  null && data.identityNumber !== undefined) ? `value="${data.identityNumber}"` : ""}
+                            />
                         </div>
                         <div class="form-group">
                             <label for="identityDate">Ngày cấp</label>
@@ -339,12 +234,16 @@ function showPopup(data = {}) {
                         </div>
                         <div class="form-group">
                             <label for="salary">Lương</label>
-                            <input tabindex="12" type="text" oninvalid="this.setCustomValidity('Vui lòng nhập tiền lương hợp lệ!')" oninput="validateSalaryInput(this)" id="salary" name="salary" ${(data !==  null && data.salary !== undefined && data.salary !== null)? `value="${formatToVND(data.salary)}"`: ''}/>
+                            <input tabindex="12" type="text"
+                                oninvalid="this.setCustomValidity('Tiền lương hợp lệ!')" 
+                                oninput="validateSalaryInput(this)" id="salary" name="salary" 
+                                ${(data !==  null && data.salary !== undefined && data.salary !== null)? `value="${formatToVND(data.salary)}"`: ''}
+                            />
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group">
-                            <label for"address">Địa chỉ</label>
+                            <label for="address">Địa chỉ</label>
                             <input tabindex="13" type = "text" id="address" name="address" value = "${(data !==  null && data.address !== undefined && data.address !== null && data.address !== 'null') ? data.address : ''}" />
                         </div>
                     </div>
@@ -354,7 +253,12 @@ function showPopup(data = {}) {
                                 ĐT Di động
                                 <p>*</p>    
                             </label>
-                            <input tabindex="14" required type = "tel" oninvalid="this.setCustomValidity('Vui lòng nhập số điện thoại hợp lệ!')" oninput="validateNumberPhoneInput(this)" id="numberPhone" name="numberPhone" value="${(data !==  null && data.phoneNumber !== undefined) ? data.phoneNumber : ''}" />
+                            <input tabindex="14" type = "tel"
+                                required
+                                oninvalid="this.setCustomValidity('Vui lòng nhập số điện thoại hợp lệ!')"
+                                id="numberPhone" name="numberPhone" 
+                                value="${(data !==  null && data.phoneNumber !== undefined) ? data.phoneNumber : ''}" 
+                            />
                         </div>
                         <div class="form-group">
                             <label for="landline">ĐT Cố định</label>
@@ -365,8 +269,12 @@ function showPopup(data = {}) {
                                 Email
                                 <p>*</p>    
                             </label>
-                            <input tabindex="16" required type = "email" oninvalid="this.setCustomValidity('Vui lòng nhập email hợp lệ!')" oninput="validateEmailInput(this)"
-                             id="email" name="email" value="${(data !==  null && data.email !== undefined) ? data.email : ''}" />
+                            <input tabindex="16" type = "email"
+                                required
+                                oninvalid="this.setCustomValidity('Vui lòng nhập email hợp lệ!')" 
+                                oninput="validateEmailInput(this)"
+                                id="email" name="email" value="${(data !==  null && data.email !== undefined) ? data.email : ''}" 
+                            />
                         </div>
                     </div>
                     <div class="row">
@@ -415,10 +323,25 @@ function showPopup(data = {}) {
     close.addEventListener('click', function () {
         popup.classList.remove('open')
     })
-    btnClose = document.querySelector(".btnClose");
+    const btnClose = document.querySelector(".btnClose");
     btnClose.addEventListener('click', function () {
         popup.classList.remove('open')
     });
+
+    const identityNumber = document.getElementById('identityNumber');
+    identityNumber.oninput = function() {
+        validateIdentityNumberInput(identityNumber)
+    }
+
+    const numberPhone = document.getElementById('numberPhone');
+    numberPhone.oninput = function() {
+        validateNumberPhoneInput(numberPhone);
+    }
+
+    const email = document.getElementById('email');
+    email.oninput = function() {
+        validateEmailInput(email);
+    }
 
     const form = document.querySelector('.form');
 
@@ -459,9 +382,9 @@ function showPopup(data = {}) {
                         type: 'success',
                         duration: 3000,
                         callback: () => {
-                            var offset = (currentPage) * limit;
-                            previousApi = ''
-                            paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${branch}&limit=${limit}&offset=${offset}`);
+                            var offset = (getCurrentPage()) * getLimit();
+                            setPreviousApi('')
+                            paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${getBranch()}&limit=${getLimit()}&offset=${offset}`);
                             fetchNewCode();
                         }
                     })
@@ -493,9 +416,9 @@ function showPopup(data = {}) {
                         duration: 3000,
                         callback: () => {
                             var valueSearch = document.getElementById('search').value;
-                            var offset = (currentPage) * limit;
-                            previousApi =''
-                            paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${branch}&limit=${limit}&offset=${offset}`);
+                            var offset = (getCurrentPage()) * getLimit();
+                            getPreviousApi('')
+                            paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${getBranch()}&limit=${getLimit()}&offset=${offset}`);
                             fetchNewCode();
                             if (valueSearch) {
                                 searchEmployee(valueSearch)

@@ -1,8 +1,11 @@
+import { LoadContainer } from "./employeePage.js";
+import { setPreviousApi, paginate } from "./service.js";
+import { setBranch, getBranch } from "./header.js";
 
 /**
  * Hàm hiển thị sidebar với các mục điều hướng
  */
-function loader() {
+export function loader() {
     const sidebarHTML = `
         <ul class="menu-sidebar">
             <li class="item active" data-page="Home" data-tooltip="Trang chủ">
@@ -48,25 +51,24 @@ document.addEventListener('DOMContentLoaded', () => {
             switch (page) {
                 case 'Employee':
                     LoadContainer();
-                    previousApi = ''
+                    setPreviousApi('')
                     let limit;
                     const savedLimit = Cookies.get('rowsPerPageLimit');
                     if (savedLimit) {
                         limit = parseInt(savedLimit);
                     }
-                    branch = "Hà Nội"
-                    paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${branch}&limit=${limit}&offset=0`);
+                    paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${getBranch()}&limit=${limit}&offset=0`);
                     break;
                 case 'Home':
-                    previousApi = ''
+                    setPreviousApi('')
                     container.innerHTML = `<h3>Trang chủ</h3>`
                     break;
                 case 'Report':
-                    previousApi = ''
+                    setPreviousApi('')
                     renderReport();
                     break;
                 case 'Setting':
-                    previousApi = ''
+                    setPreviousApi('')
                     container.innerHTML = `<h3>Trang cài đặt</h3>`
             }
             this.classList.add('active');

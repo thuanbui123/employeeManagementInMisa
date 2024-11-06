@@ -7,7 +7,7 @@
  * duration: thời gian hiển thị của toast message
  * callback: hàm đươc gọi sau khi toast message ẩn
  */
-function toast({ title = "", message = "", type = "info", duration = 3000, callback }) {
+export function toast({ title = "", message = "", type = "info", duration = 3000, callback }) {
   const main = document.getElementById("toast");
   if (main) {
     const toast = document.createElement("div");
@@ -35,7 +35,9 @@ function toast({ title = "", message = "", type = "info", duration = 3000, callb
     const delay = (duration / 1000).toFixed(2);
 
     setTimeout(() => {
-      callback();
+      if (typeof callback === 'function'){
+        callback();
+      }
     }, duration)
 
     toast.classList.add("toast", `toast--${type}`);

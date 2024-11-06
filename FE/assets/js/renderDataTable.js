@@ -1,12 +1,52 @@
-let Data = []
-let currentPage = 0;
-let limit = 10;
+import { showDialog } from "./dialog.js";
+import { getBranch } from "./header.js";
+import { convertDate, showPopup } from "./popup.js";
+import { paginate } from "./service.js";
 
+let Data = [];
+const savedLimit = Cookies.get('rowsPerPageLimit');
+const state = {
+    currentPage: 0,
+    limit: savedLimit,
+    sumRows: ''
+}
+
+export const setData = (value) => {
+    Data = value
+}
+export const getData = () => {
+    return Data;
+}
+export const setCurrentPage = (value) => {
+    state.currentPage = value;
+}
+
+export const getCurrentPage = () => {
+    return state.currentPage;
+}
+
+export const setLimit = (value) => {
+    state.limit = value;
+}
+
+export const getLimit = () => {
+    return state.limit;
+}
+
+export const setSumRows = (value) => {
+    state.sumRows = value;
+}
+
+export const getSumRows = () => {
+    return state.sumRows;
+}
 /**
  * Hàm hiển thị footer cho bảng dữ liệu nhân viên
  * @param {*} sumRows tổng số bản ghi hiện có để hiển thị trong footer
  */
-function createRowFooter (sumRows) {
+export function createRowFooter (sumRows) {
+    let branch = getBranch();
+    let limit = getLimit();
     const rowFooter = document.createElement("tr");
     rowFooter.innerHTML = ''
     rowFooter.innerHTML = `
@@ -19,9 +59,9 @@ function createRowFooter (sumRows) {
                 <div class="footer__right">
                     <span>Số bản ghi/trang</span>
                     <select id="rowsPerPage">
-                        <option value="10">10</option>
-                        <option value="15">15</option>
-                        <option value="20">20</option>
+                        <option ${getLimit() === 10 ? 'selected': ''} value="10">10</option>
+                        <option ${getLimit() === 15 ? 'selected': ''} value="15">15</option>
+                        <option ${getLimit() === 20 ? 'selected': ''} value="20">20</option>
                     </select>
                     <div class="change-page">
                         <button class='prev-page'>
@@ -49,44 +89,44 @@ function createRowFooter (sumRows) {
     };
 
     prevPage.addEventListener('click', function () {
-        currentPage--;
-        if (currentPage >= 0) {
-            var offset = currentPage * limit;
+        setCurrentPage(getCurrentPage() - 1);
+        if (getCurrentPage() >= 0) {
+            var offset = getCurrentPage() * limit;
             const updatedApi = updateApiWithParams('https://localhost:7004/api/v1/employees/paginate', branch, offset, limit);
             paginate(updatedApi);
         } else {
-            currentPage = 0;
+            setCurrentPage(0);
         }
     });
     
     // Xử lý khi bấm nút 'Next'
     document.querySelector('.next-page').addEventListener('click', function () {
-        var totalPage = Math.ceil(sumRows / limit);
-        currentPage++;
-        if (currentPage < totalPage) {
-            var offset = currentPage * limit;
+        var totalPage = Math.ceil(getSumRows() / limit);
+        setCurrentPage(getCurrentPage() + 1);
+        if (getCurrentPage() < totalPage) {
+            var offset = getCurrentPage() * limit;
             const updatedApi = updateApiWithParams('https://localhost:7004/api/v1/employees/paginate', branch, offset, limit);
             paginate(updatedApi);
         } else {
-            currentPage = totalPage - 1;
+            setCurrentPage(totalPage - 1);
         }
     });
 
     const rowsPerPage = document.querySelector('#rowsPerPage');
-
-    const savedLimit = Cookies.get('rowsPerPageLimit');
+    
+    Cookies.get('rowsPerPageLimit');
     if (savedLimit) {
         limit = parseInt(savedLimit);
     }
 
     // Thiết lập giá trị cho select dựa trên cookie
-    rowsPerPage.value = limit;
+    rowsPerPage.value = getLimit();
 
     rowsPerPage.addEventListener('change', function() {
         limit = rowsPerPage.value;
         Cookies.set('rowsPerPageLimit', limit, { expires: 7 }); // Lưu vào cookie với thời gian hết hạn là 7 ngày
         // localStorage.setItem('rowsPerPageLimit', limit);
-        var offset = (currentPage)*limit;
+        var offset = (getCurrentPage())*limit;
         const updatedApi = updateApiWithParams('https://localhost:7004/api/v1/employees/paginate', branch, offset, limit);
         paginate(updatedApi)
     })
@@ -96,7 +136,7 @@ function createRowFooter (sumRows) {
  * Hàm hiển thị dữ liệu được lấy từ backend ra để hiển thị trên bảng
  * @param {*} data Dữ liệu về danh sách nhân viên cần hiển thị
  */
-function renderTable(data) {
+export function renderTable(data) {
 
     const tableBody = document.querySelector('.table__body');
     tableBody.innerHTML = '';
@@ -109,7 +149,7 @@ function renderTable(data) {
             <td>${employee.employeeCode}</td> 
             <td>${employee.fullName}</td> 
             <td>${employee.gender}</td> 
-            <td>${new Date(employee.dateOfBirth).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' })}</td> 
+            <td>${(employee.dateOfBirth !== "1970-01-01T00:00:00") ? new Date(employee.dateOfBirth).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' }) : ''}</td> 
             <td>${employee.email}</td> 
             <td class="actions">
                 <span class="${(employee.address !== 'null' && employee.address !== null) ? '' : 'empty-address'}">

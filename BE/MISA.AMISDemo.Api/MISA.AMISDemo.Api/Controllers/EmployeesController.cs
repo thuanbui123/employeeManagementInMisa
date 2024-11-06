@@ -31,13 +31,15 @@ namespace MISA.AMISDemo.Api.Controllers
         }
 
         /// <summary>
-        /// API tìm kiếm nhân viên theo mã nhân viên hoặc tên nhân viên
+        /// API tìm kiếm nhân viên dựa trên giá trị tìm kiếm
         /// </summary>
         /// <param name="value">Giá trị tìm kiếm</param>
         /// <param name="branch">Tìm kiếm ở chi nhánh</param>
         /// <param name="limit">Giới hạn số bản ghi nhân viên trả về</param>
         /// <param name="offset">Lấy bản ghi từ vị trí bao nhiêu</param>
-        /// <returns></returns>
+        /// <returns>
+        /// Trả về kết quả tìm kiếm dưới dạng đối tượng JSON với mã trạng thái 200 nếu thành công
+        /// </returns>
         [HttpGet("search")]
         public IActionResult Get([FromQuery(Name ="value")] string value, [FromQuery(Name = "branch")] string branch, [FromQuery(Name = "limit")] int limit, [FromQuery(Name = "offset")] int offset)
         {
@@ -49,7 +51,7 @@ namespace MISA.AMISDemo.Api.Controllers
         /// API tạo sinh ra mã nhân viên mới không bị trùng
         /// </summary>
         /// <returns>
-        ///     Trả về mã nhân viên mới
+        ///     Trả về mã nhân viên mới dưới dạng đối tượng JSON với mã trạng thái 200 nếu thành công
         /// </returns>
         [HttpGet("generate-code")]
         public IActionResult GenerateCode()

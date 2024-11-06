@@ -143,20 +143,20 @@ namespace MISA.AMISDemo.Infrastructure.Repository
         {
             var sql = $"SELECT e.EmployeeCode, e.FullName, e.DateOfBirth, e.Gender, e.Email, e.Address, e.PhoneNumber, " +
                 $"e.Landline, e.IdentityNumber, e.IdentityPlace, e.IdentityDate, e.Salary, " +
-                $"e.BankAccount, e.BankName, e.Branch, d.name as Department, p.name as Position" +
-                $" FROM Employee e " +
-                $"INNER JOIN department d ON e.departmentCode = d.departmentcode " +
-                $"INNER JOIN  position p on e.positionCode = p.positioncode " +
+                $"e.BankAccount, e.BankName, e.Branch, d.name as Department, p.name as Position " +
+                $"FROM Employee e " +
+                $"LEFT JOIN department d ON e.departmentCode = d.departmentcode " +
+                $"LEFT JOIN  position p on e.positionCode = p.positioncode " +
                 $"where e.branch = @Branch " +
                 $"ORDER BY EmployeeCode";
             if (branch == "find-all")
             {
                 sql = $"SELECT e.EmployeeCode, e.FullName, e.DateOfBirth, e.Gender, e.Email, e.Address, e.PhoneNumber, " +
                 $"e.Landline, e.IdentityNumber, e.IdentityPlace, e.IdentityDate, e.Salary, " +
-                $"e.BankAccount, e.BankName, e.Branch, d.name as Department, p.name as Position" +
-                $" FROM Employee e " +
-                $"INNER JOIN department d ON e.departmentCode = d.departmentcode " +
-                $"INNER JOIN  position p on e.positionCode = p.positioncode " +
+                $"e.BankAccount, e.BankName, e.Branch, d.name as Department, p.name as Position " +
+                $"FROM Employee e " +
+                $"LEFT JOIN department d ON e.departmentCode = d.departmentcode " +
+                $"LEFT JOIN  position p on e.positionCode = p.positioncode " +
                 $"ORDER BY EmployeeCode";
             }
             var parameters = new DynamicParameters();

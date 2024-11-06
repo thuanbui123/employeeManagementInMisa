@@ -1,9 +1,12 @@
+import { fetchNewCode } from "./popup.js";
+import { paginate } from "./service.js";
+
 let keyCache;
 
 /**
  * Hàm tạo ra html để hiện thị trang nhập khẩu nhân viên
  */
-function showImportEmployee() {
+export function showImportEmployee() {
     const importEmployeeHtml = `
         <div class="title-bar">
                 <h2>Nhập khẩu danh sách nhân viên</h2>

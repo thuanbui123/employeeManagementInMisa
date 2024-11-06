@@ -1,5 +1,16 @@
-let branch = "find-all";
+import { getLimit, setCurrentPage } from "./renderDataTable.js";
+import { paginate } from "./service.js";
+
 let branches = JSON.parse(localStorage.getItem('branches'));
+
+export const setBranch = (branch) => {
+    localStorage.setItem('branch', '');
+    localStorage.setItem('branch', branch);
+}
+
+export const getBranch = () => {
+    return localStorage.getItem('branch');
+}
 
 /**
  * Hàm hiển thị giao diện của header với các thành phần như logo website, bộ lọc theo chi nhánh,...
@@ -14,9 +25,9 @@ function loadHeader() {
             <li class="menu">
                 <select class="subnav">
                     ${
-                        branches.map((branch, index) => {
+                        branches.map((branch) => {
                             return (`
-                                <option value="${branch.value}">
+                                <option ${branch.value === getBranch() ? 'selected' : ''} value="${branch.value}">
                                     Chi nhánh ${branch.value ==='find-all' ? 'tất cả chi nhánh' : branch.value}
                                 </option>
                                 `
@@ -39,9 +50,9 @@ function loadHeader() {
 
     const subnav = document.getElementsByClassName('subnav')[0];
     subnav.addEventListener('input', function() {
-        branch = subnav.value; 
-        currentPage = 0; 
-        paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${branch}&limit=${limit}&offset=0`);
+        setBranch(subnav.value); 
+        setCurrentPage(0)
+        paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${getBranch()}&limit=${getLimit()}&offset=0`);
     });
 }
 

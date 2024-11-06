@@ -69,11 +69,5 @@ namespace MISA.AMISDemo.Infrastructure.Repository
             _dbContext.Transaction.Commit();
             return res;
         }
-
-        public int Import(T entity)
-        {
-            var res = _dbContext.Insert(entity);
-            return res;
-        }
     }
 }

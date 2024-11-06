@@ -1,3 +1,9 @@
+import { getBranch, setBranch } from "./header.js";
+import { showImportEmployee } from "./importEmployeePage.js";
+import { showPopup } from "./popup.js";
+import { getCurrentPage, getLimit, setCurrentPage } from "./renderDataTable.js";
+import { paginate } from "./service.js";
+
 let timeoutId;
 
 /**
@@ -5,7 +11,7 @@ let timeoutId;
  * tiêu đề, bảng dữ liệu và các nút chức năng(Thêm mới, refresh, nhập khẩu, xuất khẩu nhân viên)
  * Đồng thời hàm cũng thêm các sự kiện cho các nút này để xử lý các thao tác tương ứng
  */
-function LoadContainer() {
+export function LoadContainer() {
     const containerHtml = `
         <div class="sub-header">
                 <p class="title">Quản lý Nhân viên</p>
@@ -65,9 +71,10 @@ function LoadContainer() {
         }
         const subnav = document.getElementsByClassName('subnav')[0];
         subnav.value = "Hà Nội"
-        branch = "Hà Nội"
-        var offset = (currentPage)*limit;
-        paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${branch}&limit=${limit}&offset=${offset}`);
+        setBranch("Hà Nội");
+        setCurrentPage(0);
+        var offset = (getCurrentPage())*limit;
+        paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${getBranch()}&limit=${limit}&offset=${offset}`);
     });
 
     const importBtn = document.getElementsByClassName('import')[0];
@@ -82,7 +89,7 @@ function LoadContainer() {
     const exportBtn = document.querySelector('.export');
     exportBtn.addEventListener('click', async function () {
         try {
-            const response = await fetch(`https://localhost:7004/api/v1/employees/export-excel?branch=${branch}`, {
+            const response = await fetch(`https://localhost:7004/api/v1/employees/export-excel?branch=${getBranch()}`, {
                 method: "GET",
             });
             if (response.ok) {
@@ -129,11 +136,11 @@ function LoadContainer() {
     document.getElementById('search').addEventListener('input', handleInputChange);
 }
 
-function searchEmployee(query) {
-    var offset = 0*limit;
+export function searchEmployee(query) {
+    var offset = 0*getLimit();
     if (query != '') {
-        paginate(`https://localhost:7004/api/v1/employees/search?value=${query}&branch=${branch}&limit=${limit}&offset=${offset}`);
+        paginate(`https://localhost:7004/api/v1/employees/search?value=${query}&branch=${getBranch()}&limit=${getLimit()}&offset=${offset}`);
     } else {
-        paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${branch}&limit=10&offset=${offset}`);
+        paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${getBranch()}&limit=10&offset=${offset}`);
     }
 }

@@ -1,3 +1,10 @@
+import { searchEmployee } from "./employeePage.js";
+import { getBranch } from "./header.js";
+import { fetchNewCode } from "./popup.js";
+import { getCurrentPage, getData, getLimit } from "./renderDataTable.js";
+import { paginate, setPreviousApi } from "./service.js";
+import { toast } from "./toast.js";
+
 /**
  * Hiển thị một hộp thoại xác nhận và xử lý các thao tác người dùng tương tác với hộp thoại
  * Hộp thoại bao gồm tiêu đề, mô tả và các nút "Có" và "Không" để xác nhận hành động
@@ -5,7 +12,7 @@
  * @param {*} data Dữ liệu để hiển thị trên hộp thoại bao gồm title và description
  * @param {*} index Chỉ mục của dữ liệu cần xóa
  */
-function showDialog (data ={}, index) {
+export function showDialog (data ={}, index) {
     const dialogHTML = `
         <div class="dialog">
             <div class="dialog__header">
@@ -61,7 +68,7 @@ function showDialog (data ={}, index) {
      * @param {*} index Dòn dữ liệu cần xóa
      */
     function fetchDeleteData (index) {
-        var code = Data[index].employeeCode;
+        var code = getData()[index].employeeCode;
         $.ajax({
             url: `https://localhost:7004/api/v1/employees/${code}`,  
             method: 'DELETE',
@@ -77,9 +84,9 @@ function showDialog (data ={}, index) {
                     duration: 3000,
                     callback: () => {
                         var valueSearch = document.getElementById('search').value;
-                        var offset = (currentPage) * limit;
-                        previousApi =''
-                        paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${branch}&limit=${limit}&offset=${offset}`);
+                        var offset = (getCurrentPage()) * getLimit();
+                        setPreviousApi('');
+                        paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${getBranch()}&limit=${getLimit()}&offset=${offset}`);
                         fetchNewCode();
                         if (valueSearch) {
                             searchEmployee(valueSearch)
