@@ -38,7 +38,7 @@ namespace MISA.AMISDemo.Core.Interfaces
         /// <param name="limit">Số bản ghi cần lấy</param>
         /// <param name="offset">Lấy từ vị trí offset</param>
         /// <returns>Trả về tổng nhân viên của chi nhánh đó và số bản ghi nhân viên từ vị trí offset</returns>
-        /// Created by: 24/10/2024
+        /// Created by: BVThuan (24/10/2024)
         EmployeeListResponseDTO FilterByBranch(string branch, int limit, int offset);
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace MISA.AMISDemo.Core.Interfaces
         /// Created by: BVThuan(18/10/2024)
         bool ExistsByCode(string code);
         string GetMaxCode();
-        EmployeeListResponseDTO Paginate(string? branch, int limit, int offset);
+        EmployeeListResponseDTO Paginate(string? branch, int limit, int offset, bool isDesc);
         int InsertByDTO(EmployeeDTO dto);
         int UpdateByDTO(EmployeeDTO dto, string primaryKey);
         EmployeeListResponseDTO Search(string column, string value, string branchValue, int limit, int offset);

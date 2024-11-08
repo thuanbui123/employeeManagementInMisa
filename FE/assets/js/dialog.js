@@ -1,7 +1,7 @@
 import { searchEmployee } from "./employeePage.js";
 import { getBranch } from "./header.js";
 import { fetchNewCode } from "./popup.js";
-import { getCurrentPage, getData, getLimit } from "./renderDataTable.js";
+import { getCurrentPage, getData, getIsDesc, getLimit } from "./renderDataTable.js";
 import { paginate, setPreviousApi } from "./service.js";
 import { toast } from "./toast.js";
 
@@ -13,7 +13,7 @@ import { toast } from "./toast.js";
  * @param {*} index Chỉ mục của dữ liệu cần xóa
  */
 export function showDialog (data ={}, index) {
-    const dialogHTML = `
+    let dialogHTML = `
         <div class="dialog">
             <div class="dialog__header">
             <p>${data.title}</p>
@@ -32,26 +32,26 @@ export function showDialog (data ={}, index) {
     `;
 
     //Thêm hộp thoại vào vùng hiển thị và mở hộp thoại
-    const dialogArea = document.querySelector(".dialog-area");
-    dialogArea.innerHTML = dialogHTML;
-    dialogArea.classList.add('open');
+    const DIALOGAREA = document.querySelector(".dialog-area");
+    DIALOGAREA.innerHTML = dialogHTML;
+    DIALOGAREA.classList.add('open');
 
     //Xử lý đóng hộp thoại khi ấn nút đóng hoặc hủy
-    const closeDialog = document.querySelector(".close__dialog");
-    closeDialog.addEventListener('click', function() {
-        dialogArea.classList.remove('open');
+    const CLOSEDIALOG = document.querySelector(".close__dialog");
+    CLOSEDIALOG.addEventListener('click', function() {
+        DIALOGAREA.classList.remove('open');
     });
 
     const cancelDialog = document.querySelector('.cancel');
     cancelDialog.addEventListener('click', function() {
-        dialogArea.classList.remove('open')
+        DIALOGAREA.classList.remove('open')
     });
 
     // Xử lý khi nhấn "OK" để xóa dữ liệu và đóng hộp thoại
-    const okBtn = document.querySelector(".ok");
-    okBtn.addEventListener('click', function() {
+    const OKBTN = document.querySelector(".ok");
+    OKBTN.addEventListener('click', function() {
         fetchDeleteData(index);
-        dialogArea.classList.remove('open');
+        DIALOGAREA.classList.remove('open');
     });
 
     /**
@@ -86,7 +86,7 @@ export function showDialog (data ={}, index) {
                         var valueSearch = document.getElementById('search').value;
                         var offset = (getCurrentPage()) * getLimit();
                         setPreviousApi('');
-                        paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${getBranch()}&limit=${getLimit()}&offset=${offset}`);
+                        paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${getBranch()}&limit=${getLimit()}&offset=${offset}&is-desc=${getIsDesc()}`);
                         fetchNewCode();
                         if (valueSearch) {
                             searchEmployee(valueSearch)

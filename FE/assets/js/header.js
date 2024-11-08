@@ -1,14 +1,14 @@
-import { getLimit, setCurrentPage } from "./renderDataTable.js";
+import { getCurrentPage, getIsDesc, getLimit, setCurrentPage } from "./renderDataTable.js";
 import { paginate } from "./service.js";
 
 let branches = JSON.parse(localStorage.getItem('branches'));
 
-export const setBranch = (branch) => {
+export function setBranch(branch) {
     localStorage.setItem('branch', '');
     localStorage.setItem('branch', branch);
 }
 
-export const getBranch = () => {
+export function getBranch() {
     return localStorage.getItem('branch');
 }
 
@@ -16,7 +16,7 @@ export const getBranch = () => {
  * Hàm hiển thị giao diện của header với các thành phần như logo website, bộ lọc theo chi nhánh,...
  */
 function loadHeader() {
-    const headerHTML = `
+    const HEADERHTML = `
         <ul class="header-left">
             <li class="toggle-sidebar">
                 <img src="./assets/img/toggle.png" />
@@ -46,13 +46,14 @@ function loadHeader() {
         </div>
     `;
 
-    document.getElementById('header').innerHTML = headerHTML;
+    document.getElementById('header').innerHTML = HEADERHTML;
 
-    const subnav = document.getElementsByClassName('subnav')[0];
-    subnav.addEventListener('input', function() {
-        setBranch(subnav.value); 
-        setCurrentPage(0)
-        paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${getBranch()}&limit=${getLimit()}&offset=0`);
+    const SUBNAV = document.getElementsByClassName('subnav')[0];
+    SUBNAV.addEventListener('input', function() {
+        setBranch(SUBNAV.value); 
+        setCurrentPage(0);
+        var offset = getLimit()*getCurrentPage();
+        paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${getBranch()}&limit=${getLimit()}&offset=${offset}&is-desc=${getIsDesc()}`);
     });
 }
 
@@ -64,11 +65,11 @@ document.addEventListener('DOMContentLoaded', loadHeader);
  * khi người dùng nhấn vào nút 'toggle-sidebar'
  */
 document.addEventListener('DOMContentLoaded', () => {
-    const toggleSidebar = document.getElementsByClassName('toggle-sidebar')[0]; 
-    const sidebar = document.getElementById('sidebar');
-    if (toggleSidebar) {
-        toggleSidebar.addEventListener('click', () => {
-            sidebar.classList.toggle('close');
+    const TOGGLESIDEBAR = document.getElementsByClassName('toggle-sidebar')[0]; 
+    const SIDEBAR = document.getElementById('sidebar');
+    if (TOGGLESIDEBAR) {
+        TOGGLESIDEBAR.addEventListener('click', () => {
+            SIDEBAR.classList.toggle('close');
         });
     } else {
         console.error('Toggle button not found');

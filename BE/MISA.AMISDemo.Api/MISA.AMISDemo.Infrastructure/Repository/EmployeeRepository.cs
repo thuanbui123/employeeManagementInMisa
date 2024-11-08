@@ -61,7 +61,7 @@ namespace MISA.AMISDemo.Infrastructure.Repository
 
         public EmployeeListResponseDTO FilterByBranch(string branch, int limit, int offset)
         {
-            var sql = "SELECT * FROM Employee e WHERE e.Branch = @Branch ORDER BY EmployeeCode LIMIT @Limit OFFSET @Offset";
+            var sql = "SELECT * FROM Employee e WHERE e.Branch = @Branch ORDER BY CAST(SUBSTRING(EmployeeCode, 4, LENGTH(EmployeeCode)) AS UNSIGNED) LIMIT @Limit OFFSET @Offset";
             var parameters = new DynamicParameters();
             parameters.Add("@Branch", branch);
             parameters.Add("@Limit", limit);
@@ -80,17 +80,28 @@ namespace MISA.AMISDemo.Infrastructure.Repository
             return res;
         }
 
-        public EmployeeListResponseDTO Paginate(string? branch, int limit, int offset)
+        public EmployeeListResponseDTO Paginate(string? branch, int limit, int offset, bool isDesc)
         {
             var sql = "";
             var sqlSumrows = "";
-            if (branch == null || string.IsNullOrWhiteSpace(branch) || branch == "find-all")
+            bool isBranchEmptyOrFindAll = branch == null || string.IsNullOrWhiteSpace(branch) || branch == "find-all";
+            if (isBranchEmptyOrFindAll && !isDesc)
             {
-                sql = $"SELECT * FROM Employee ORDER BY EmployeeCode LIMIT @Limit OFFSET @Offset;";
+                sql = $"SELECT * FROM Employee ORDER BY Cast(SUBSTRING(EmployeeCode, 4, LENGTH(EmployeeCode)) AS UNSIGNED) LIMIT @Limit OFFSET @Offset;";
                 sqlSumrows = $"Select count(*) from employee";
+            }
+            else if (isBranchEmptyOrFindAll && isDesc) 
+            {
+                sql = $"SELECT * FROM Employee ORDER BY Cast(SUBSTRING(EmployeeCode, 4, LENGTH(EmployeeCode)) AS UNSIGNED) DESC LIMIT @Limit OFFSET @Offset;";
+                sqlSumrows = $"Select count(*) from employee";
+            }
+            else if (!isBranchEmptyOrFindAll && !isDesc)
+            {
+                sql = sql = $"SELECT * FROM Employee where branch = @Branch ORDER BY Cast(SUBSTRING(EmployeeCode, 4, LENGTH(EmployeeCode)) AS UNSIGNED) LIMIT @Limit OFFSET @Offset;";
+                sqlSumrows = $"Select count(*) from employee where branch = @Branch";
             } else
             {
-                sql = sql = $"SELECT * FROM Employee where branch = @Branch ORDER BY EmployeeCode LIMIT @Limit OFFSET @Offset;";
+                sql = sql = $"SELECT * FROM Employee where branch = @Branch ORDER BY Cast(SUBSTRING(EmployeeCode, 4, LENGTH(EmployeeCode)) AS UNSIGNED) DESC LIMIT @Limit OFFSET @Offset;";
                 sqlSumrows = $"Select count(*) from employee where branch = @Branch";
             }
             var parameters = new DynamicParameters();
@@ -110,8 +121,13 @@ namespace MISA.AMISDemo.Infrastructure.Repository
 
         public EmployeeListResponseDTO Search(string column, string value, string branchValue, int limit, int offset)
         {
-            var sql = $"SELECT * FROM Employee WHERE {column} LIKE @value AND branch = @branchValue ORDER BY EmployeeCode LIMIT @Limit OFFSET @Offset;";
+            var sql = $"SELECT * FROM Employee WHERE {column} LIKE @value AND branch = @branchValue ORDER BY CAST(SUBSTRING(EmployeeCode, 4, LENGTH(EmployeeCode)) AS UNSIGNED) LIMIT @Limit OFFSET @Offset;";
             var sqlSumrows = $"Select count(*) from employee where branch = @branchValue";
+            if (branchValue == "find-all")
+            {
+                sql = $"SELECT * FROM Employee WHERE {column} LIKE @value ORDER BY CAST(SUBSTRING(EmployeeCode, 4, LENGTH(EmployeeCode)) AS UNSIGNED) LIMIT @Limit OFFSET @Offset;";
+                sqlSumrows = $"Select count(*) from employee";
+            }
             var parameters = new DynamicParameters();
             parameters.Add("@value", $"%{value}%");
             parameters.Add("@branchValue", branchValue);
@@ -128,10 +144,10 @@ namespace MISA.AMISDemo.Infrastructure.Repository
 
         public IEnumerable<Employee> GetEmployeeByBranch(string branch)
         {
-            var sql = $"SELECT * FROM Employee WHERE branch = @branchValue ORDER BY EmployeeCode";
+            var sql = $"SELECT * FROM Employee WHERE branch = @branchValue ORDER BY CAST(SUBSTRING(EmployeeCode, 4, LENGTH(EmployeeCode)) AS UNSIGNED)";
             if (branch == "find-all")
             {
-                sql = $"SELECT * FROM Employee ORDER BY EmployeeCode";
+                sql = $"SELECT * FROM Employee ORDER BY CAST(SUBSTRING(EmployeeCode, 4, LENGTH(EmployeeCode)) AS UNSIGNED)";
             }
             var parameters = new DynamicParameters();
             parameters.Add("@branchValue", branch);
@@ -148,7 +164,7 @@ namespace MISA.AMISDemo.Infrastructure.Repository
                 $"LEFT JOIN department d ON e.departmentCode = d.departmentcode " +
                 $"LEFT JOIN  position p on e.positionCode = p.positioncode " +
                 $"where e.branch = @Branch " +
-                $"ORDER BY EmployeeCode";
+                $"ORDER BY CAST(SUBSTRING(EmployeeCode, 4, LENGTH(EmployeeCode)) AS UNSIGNED)";
             if (branch == "find-all")
             {
                 sql = $"SELECT e.EmployeeCode, e.FullName, e.DateOfBirth, e.Gender, e.Email, e.Address, e.PhoneNumber, " +
@@ -157,7 +173,7 @@ namespace MISA.AMISDemo.Infrastructure.Repository
                 $"FROM Employee e " +
                 $"LEFT JOIN department d ON e.departmentCode = d.departmentcode " +
                 $"LEFT JOIN  position p on e.positionCode = p.positioncode " +
-                $"ORDER BY EmployeeCode";
+                $"ORDER BY CAST(SUBSTRING(EmployeeCode, 4, LENGTH(EmployeeCode)) AS UNSIGNED)";
             }
             var parameters = new DynamicParameters();
             parameters.Add("@Branch", branch);

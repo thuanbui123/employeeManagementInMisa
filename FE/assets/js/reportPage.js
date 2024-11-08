@@ -14,7 +14,7 @@ let dataAge;
  */
 
 function createChart(ctx, chartType, labels, label, dataPoints, backgroundColors) {
-    const data = {
+    const DATA = {
         labels: labels, // Mỗi label tương ứng với phần tử của dataset
         datasets: [{
             label: label,// Label cho dataset
@@ -23,11 +23,11 @@ function createChart(ctx, chartType, labels, label, dataPoints, backgroundColors
             hoverOffset: 4
         }]
     };
-    const config = {
+    const CONFIG = {
         type: chartType,
-        data: data,
+        data: DATA,
     };
-    return new Chart(ctx, config);
+    return new Chart(ctx, CONFIG);
 }
 
 function fetchAgeStatistics () {
@@ -49,30 +49,30 @@ fetchAgeStatistics()
  * Tạo báo cáo thống kê nhân viên theo độ tuổi lên giao diện
  */
 function renderReport() {
-    const html = `<div class="report-container">
+    const HTML = `<div class="report-container">
             <div class="report-age">
                 <div class="title">Cơ cấu nhân viên theo độ tuổi</div>
                 <canvas id="ageChart"></canvas>
             </div>
         </div>
     `
-    document.getElementById('container').innerHTML = html;
+    document.getElementById('container').innerHTML = HTML;
 
-    const ctx = document.getElementById('ageChart');
-    const labels = [];
-    const dataPoints = [];
+    const CTX = document.getElementById('ageChart');
+    const LABELS = [];
+    const DATAPOINTS = [];
 
     dataAge.map(item => {
-        labels.push(item.ageGroup);
-        dataPoints.push(item.employeeCount)
+        LABELS.push(item.ageGroup);
+        DATAPOINTS.push(item.employeeCount)
     })
 
 
-    const backgroundColors = [
+    const BACKGROUNDCOLORS = [
         'rgb(255, 99, 132)',
         'rgb(54, 162, 235)',
         'rgb(255, 205, 86)'
     ];
 
-    createChart(ctx, 'doughnut', labels, 'Thống kê nhân viên theo độ tuổi', dataPoints, backgroundColors);
+    createChart(CTX, 'doughnut', LABELS, 'Thống kê nhân viên theo độ tuổi', DATAPOINTS, BACKGROUNDCOLORS);
 }

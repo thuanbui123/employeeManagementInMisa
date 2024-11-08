@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MISA.AMISDemo.Core.Const;
 using MISA.AMISDemo.Core.DTOs;
 using MISA.AMISDemo.Core.Entities;
 using MISA.AMISDemo.Core.Interfaces;
@@ -97,9 +98,12 @@ namespace MISA.AMISDemo.Api.Controllers
         /// <param name="offset">Lấy bản ghi từ vị trí số bao nhiêu</param>
         /// <returns>Trả về danh sách nhân viên của chi nhánh</returns>
         [HttpGet("paginate")]
-        public IActionResult Paginate([FromQuery(Name = "branch")] string? branch, [FromQuery(Name ="limit")]int limit, [FromQuery(Name = "offset")]int offset)
+        public IActionResult Paginate([FromQuery(Name = "branch")] string? branch, 
+            [FromQuery(Name ="limit")]int limit, 
+            [FromQuery(Name = "offset")]int offset, 
+            [FromQuery(Name = "is-desc")] bool isDesc = false)
         {
-            var res = _employeeRepository.Paginate(branch, limit, offset);
+            var res = _employeeRepository.Paginate(branch, limit, offset, isDesc);
             return StatusCode(200, res);
         }
 
@@ -154,12 +158,12 @@ namespace MISA.AMISDemo.Api.Controllers
 
             if (res == null)
             {
-                return NotFound("Không tìm thấy dữ liệu để xuất.");
+                return NotFound(MISAConst.NOT_FOUND_DATA);
             }
 
             // Trả về byte array dưới dạng file download
             // MIME type là "application/octet-stream"
-            //  MIME type này giúp trình duyệt hiểu rằng đây là một luồng dữ liệu nhị phân
+            // MIME type này giúp trình duyệt hiểu rằng đây là một luồng dữ liệu nhị phân
             return File(res, "application/octet-stream", "ExportedData.xlsx");
         }
 

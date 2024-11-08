@@ -88,7 +88,14 @@ namespace MISA.AMISDemo.Core.Services
                     {
                         for(int col = 1; col <= colCount; col++)
                         {
-                            outputWorksheet.Cells[row, col].Value = worksheet.Cells[row, col].Value; //Sao chép từng ô
+                            if (worksheet.Cells[row, col].Value is DateTime dateValue)
+                            {
+                                outputWorksheet.Cells[row, col].Value = dateValue.ToString("dd/MM/yyyy");
+                            }
+                            else
+                            {
+                                outputWorksheet.Cells[row, col].Value = worksheet.Cells[row, col].Value;
+                            }
                         }
                     }
 

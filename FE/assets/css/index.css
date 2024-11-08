@@ -363,6 +363,10 @@ body {
     margin-left: 8px;
 }
 
+thead tr {
+    border-radius: 4px 4px 0 0;
+}
+
 thead th {
     background-color: #f4f4f4;
     position: sticky;
@@ -379,8 +383,7 @@ tbody {
     width: 100%;
 }
 
-thead,
-tbody tr {
+thead,tbody tr {
     display: table;
     width: 100%;
     table-layout: fixed;
@@ -391,9 +394,10 @@ table {
     border: 1px solid #ccc;
 }
 
-th,
-table .row {
+th, table .row {
     border-bottom: 1px solid #ccc;
+    height: 40px;
+    line-height: 40px;
 }
 
 th,
@@ -419,8 +423,21 @@ table td:nth-child(1) {
 
 table th:nth-child(2),
 table td:nth-child(2) {
-    width: 10%;
+    width: 12%;
     /* Cột Mã nhân viên */
+}
+
+.th-code {
+    cursor: pointer;
+}
+
+.th-code i {
+    transition: all .3s ease;
+}
+
+.th-code.active i {
+    display: inline-block;
+    rotate: 180deg;
 }
 
 table th:nth-child(3),
@@ -452,7 +469,7 @@ table td:nth-child(6) {
 
 table th:nth-child(7),
 table td:nth-child(7) {
-    width: 30%;
+    width: 28%;
     border-left: none;
     /* Cột Địa chỉ */
 }
@@ -538,7 +555,7 @@ th {
 }
 
 table .row:hover {
-    background-color: #ebeaea;
+    background-color: #f5f5f5;
 }
 
 .popup {
@@ -677,7 +694,9 @@ table .row:hover {
     width: 200px;
 }
 
-.row .form-group:nth-child(3) input {
+.row .form-group:nth-child(3) #identityDate,
+.row .form-group:nth-child(3) #salary,
+.row .form-group:nth-child(3) #birthday {
     width: 188px;
 }
 
@@ -937,6 +956,10 @@ table .row:hover {
     border: 1px solid #ccc;
     border-radius: 4px;
     cursor: pointer;
+}
+
+.next-page {
+    margin-left: 16px;
 }
 
 .change-page button i {

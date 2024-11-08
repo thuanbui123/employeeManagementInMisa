@@ -1,18 +1,18 @@
 import { getBranch, setBranch } from "./header.js";
 import { showImportEmployee } from "./importEmployeePage.js";
 import { showPopup } from "./popup.js";
-import { getCurrentPage, getLimit, setCurrentPage } from "./renderDataTable.js";
+import { getCurrentPage, getIsDesc, getLimit, setCurrentPage, setIsDesc } from "./renderDataTable.js";
 import { paginate } from "./service.js";
 
 let timeoutId;
 
 /**
  * Hàm hiển thị giao diện quản lý nhân viên, bao gồm các phần tử giao diện như
- * tiêu đề, bảng dữ liệu và các nút chức năng(Thêm mới, refresh, nhập khẩu, xuất khẩu nhân viên)
+ * tiêu đề, bảng dữ liệu và các nút chức năng(Thêm mới, REFRESH, nhập khẩu, xuất khẩu nhân viên)
  * Đồng thời hàm cũng thêm các sự kiện cho các nút này để xử lý các thao tác tương ứng
  */
 export function LoadContainer() {
-    const containerHtml = `
+    const CONTAINERHTML = `
         <div class="sub-header">
                 <p class="title">Quản lý Nhân viên</p>
                 <button class="add">
@@ -42,12 +42,15 @@ export function LoadContainer() {
                 <table class="table">
                     <thead class="header">
                         <th style="width: 5%;">STT</th>
-                        <th style="width: 10%;">Mã nhân viên</th>
+                        <th style="width: 12%;" class="th-code ${getIsDesc() === 'true' ? 'active' : ''}">
+                            Mã nhân viên
+                            <i class="icofont-caret-up"></i>
+                        </th>
                         <th style="width: 15%;">Họ và tên</th>
                         <th style="width: 8%;">Giới tính</th>
                         <th style="width: 12%;">Ngày sinh</th>
                         <th style="width: 20%;">Địa chỉ email</th>
-                        <th style="width: 30%;">Địa chỉ</th>
+                        <th style="width: 28%;">Địa chỉ</th>
                     </thead>
                     <tbody class="table__body">
                     </tbody>
@@ -61,54 +64,64 @@ export function LoadContainer() {
         <div class="dialog-area"></div>
         <div class="ie-wrapper"></div>        
     `;
-    document.getElementById('container').innerHTML = containerHtml;
-    const refresh = document.getElementsByClassName('refresh')[0];
-    refresh.addEventListener('click', function () {
+    document.getElementById('container').innerHTML = CONTAINERHTML;
+    const REFRESH = document.getElementsByClassName('refresh')[0];
+    REFRESH.addEventListener('click', function () {
         let limit;
-        const savedLimit = Cookies.get('rowsPerPageLimit');
-        if (savedLimit) {
-            limit = parseInt(savedLimit);
+        const SAVEDLIMIT = Cookies.get('rowsPerPageLimit');
+        if (SAVEDLIMIT) {
+            limit = parseInt(SAVEDLIMIT);
         }
-        const subnav = document.getElementsByClassName('subnav')[0];
-        subnav.value = "Hà Nội"
-        setBranch("Hà Nội");
         setCurrentPage(0);
         var offset = (getCurrentPage())*limit;
-        paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${getBranch()}&limit=${limit}&offset=${offset}`);
+        paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${getBranch()}&limit=${limit}&offset=${offset}&is-desc=${getIsDesc()}`);
     });
 
-    const importBtn = document.getElementsByClassName('import')[0];
-    // importBtn.addEventListener('click', function() {
+    const THCODE = document.querySelector('.th-code');
+    THCODE.addEventListener('click', function() {
+        if (document.querySelector('.th-code.active')) {
+            setIsDesc(false);
+            THCODE.classList.remove('active');
+        } else {
+            setIsDesc(true);
+            THCODE.classList.add('active');
+        }
+        var offset = getCurrentPage()*getLimit();
+        paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${getBranch()}&limit=${getLimit()}&offset=${offset}&is-desc=${getIsDesc()}`);
+    })
+
+    const IMPORTBTN = document.getElementsByClassName('import')[0];
+    // IMPORTBTN.addEventListener('click', function() {
     //     document.getElementById('fileInput').click();
     // });
 
-    importBtn.addEventListener('click', function () {
+    IMPORTBTN.addEventListener('click', function () {
         showImportEmployee()
     })
 
-    const exportBtn = document.querySelector('.export');
-    exportBtn.addEventListener('click', async function () {
+    const EXPORTBTN = document.querySelector('.export');
+    EXPORTBTN.addEventListener('click', async function () {
         try {
-            const response = await fetch(`https://localhost:7004/api/v1/employees/export-excel?branch=${getBranch()}`, {
+            const RESPONSE = await fetch(`https://localhost:7004/api/v1/employees/export-excel?branch=${getBranch()}`, {
                 method: "GET",
             });
-            if (response.ok) {
+            if (RESPONSE.ok) {
                 //Đọc dữ liệu dưới dạng Blob
-                const blob = await response.blob();
+                const BLOB = await RESPONSE.blob();
 
                 // Tạo URL từ Blob để tải xuống
-                const url = window.URL.createObjectURL(blob);
+                const URL = window.URL.createObjectURL(BLOB);
 
                 // Tạo thẻ a để tải file
-                const a = document.createElement("a");
-                a.href = url;
-                a.download = "ExportData.xlsx"; // Tên file
-                document.body.appendChild(a);
-                a.click();
+                const A = document.createElement("a");
+                A.href = URL;
+                A.download = "ExportData.xlsx"; // Tên file
+                document.body.appendChild(A);
+                A.click();
 
                 // Xóa URL và thẻ a sau khi tải xuống
-                window.URL.revokeObjectURL(url);
-                document.body.removeChild(a);
+                window.URL.revokeObjectURL(URL);
+                document.body.removeChild(A);
             } else {
                 alert("Tải file không thành công");
             }
@@ -117,20 +130,20 @@ export function LoadContainer() {
         }
     });
 
-    const addBtn = document.getElementsByClassName('add')[0];
+    const ADDBTN = document.getElementsByClassName('add')[0];
 
-    // showPopup(addBtn)
-    addBtn.addEventListener('click', function () {
+    // showPopup(ADDBTN)
+    ADDBTN.addEventListener('click', function () {
         showPopup({});
     });
 
     function handleInputChange(event) {
-        const query = event.target.value;
+        const QUERY = event.target.value;
         if (timeoutId) {
             clearTimeout(timeoutId)
         }
         timeoutId = setTimeout(() => {
-            searchEmployee(query)
+            searchEmployee(QUERY)
         }, 200)
     }
     document.getElementById('search').addEventListener('input', handleInputChange);
@@ -139,8 +152,8 @@ export function LoadContainer() {
 export function searchEmployee(query) {
     var offset = 0*getLimit();
     if (query != '') {
-        paginate(`https://localhost:7004/api/v1/employees/search?value=${query}&branch=${getBranch()}&limit=${getLimit()}&offset=${offset}`);
+        paginate(`https://localhost:7004/api/v1/employees/search?value=${query}&branch=${getBranch()}&limit=${getLimit()}&offset=${offset}&is-desc=${getIsDesc()}`);
     } else {
-        paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${getBranch()}&limit=10&offset=${offset}`);
+        paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${getBranch()}&limit=10&offset=${offset}&is-desc=${getIsDesc()}`);
     }
 }

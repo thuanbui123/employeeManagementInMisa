@@ -1,7 +1,7 @@
 import { searchEmployee } from "./employeePage.js";
 import { getBranch } from "./header.js";
-import { getCurrentPage, getLimit } from "./renderDataTable.js";
-import { getPreviousApi, paginate, setPreviousApi } from "./service.js";
+import { getCurrentPage, getIsDesc, getLimit } from "./renderDataTable.js";
+import { paginate, setPreviousApi, validateBankAccountInput } from "./service.js";
 import { toast } from "./toast.js";
 import { validateIdentityNumberInput, validateEmailInput, validateNumberPhoneInput, validateSalaryInput } from "./service.js";
 
@@ -16,8 +16,8 @@ let newCode;
  * @returns Ngày với định dạng 'yyyy-MM-dd'
  */
 export function convertDate(date) {
-    const parts = date.split("/");
-    return `${parts[2]}-${parts[1]}-${parts[0]}`;
+    const PARTS = date.split("/");
+    return `${PARTS[2]}-${PARTS[1]}-${PARTS[0]}`;
 }
 
 /**
@@ -26,7 +26,8 @@ export function convertDate(date) {
  */
 function getValueForm() {
     let salary = document.getElementById('salary').value;
-    let branch = document.getElementById('branch').value;
+    let branchElement = document.querySelector('input[name="branch"]:checked');
+    let branch = branchElement ? branchElement.value : null;
     let bankName = document.getElementById('bankName').value;
     let bankAccount = document.getElementById('bankAccount').value;
     let landline = document.getElementById('landline').value;
@@ -36,7 +37,7 @@ function getValueForm() {
     let departmentCode = document.getElementById('department').value;
     let identityPlace = document.getElementById('identityPlace').value;
     let address = document.getElementById('address').value;
-    const employee = {
+    const EMPLOYEE = {
         employeeCode: document.getElementById('code').value,
         fullName: document.getElementById('name').value,
         email: document.getElementById('email').value,
@@ -55,7 +56,7 @@ function getValueForm() {
         ...(branch !== '' && {branch: branch}),
         ...(salary !== '' && {salary: formatToNumber(salary)})
     };
-    return employee;
+    return EMPLOYEE;
 }
 
 /**
@@ -81,8 +82,8 @@ export function fetchNewCode() {
  */
 async function fetchData (url) {
     try {
-        const response = await fetch(url);
-        return await response.json();
+        const RESPONSE = await fetch(url);
+        return await RESPONSE.json();
     } catch (error) {
         return console.log(error);
     }
@@ -101,14 +102,14 @@ function initPage () {
 
 initPage();
 
-const branchValues = JSON.parse(localStorage.getItem('branches'));
+let branchValues = JSON.parse(localStorage.getItem('branches'));
 
 /**
  * Định dạng số thành kiểu định dạng tiền tệ VNĐ 
  * @param {*} price Giá trị số cần định dạng
  * @returns Chuỗi định dạng giá trị VNĐ
  */
-const formatToVND = (price) => {
+function formatToVND (price) {
     const VND = new Intl.NumberFormat('vi-VN', {
         minimumFractionDigits: 0 
     });
@@ -120,7 +121,7 @@ const formatToVND = (price) => {
  * @param {*} value Chuỗi cần định dạng
  * @returns Chuỗi số không chứa dấu (.) phân cách
  */
-const formatToNumber = (value) => {
+function formatToNumber (value) {
     const formatNumber = value.replace(/\./g, '');
     return formatNumber;
 }
@@ -131,13 +132,13 @@ const formatToNumber = (value) => {
  */
 export function showPopup(data = {}) {
     code = (data !== null && data.employeeCode !== undefined) ? data.employeeCode : undefined;
-    const sex = (data !== null && data.gender !== undefined) ? data.gender : '';
-    const position = (data !== null && data.positionCode !== undefined) ? data.positionCode : '';
-    const department = (data !== null && data.departmentCode !== undefined) ? data.departmentCode : '';
-    const branchSelected = (data !== null && data.branch !== undefined) ? data.branch : '';
+    let sex = (data !== null && data.gender !== undefined) ? data.gender : '';
+    let position = (data !== null && data.positionCode !== undefined) ? data.positionCode : '';
+    let department = (data !== null && data.departmentCode !== undefined) ? data.departmentCode : '';
+    let branchSelected = (data !== null && data.branch !== undefined) ? data.branch : '';
     // Lấy ngày hiện tại
-    const today = new Date().toISOString().split('T')[0];
-    const popupHtmL = `
+    let today = new Date().toISOString().split('T')[0];
+    const POPUPHTML = `
         <div class="modal">
                 <div class="modal__header">
                     <p>Thông tin nhân viên</p>
@@ -153,14 +154,18 @@ export function showPopup(data = {}) {
                                 <p>*</p>
                             </label>
                             <input tabindex="1" type="text" oninvalid="this.setCustomValidity('Mã nhân viên không được để trống!')" oninput="setCustomValidity('')"
-                             id="code" name="code" ${data.employeeCode&&'readonly'} value="${( data !==  null && data.employeeCode !== undefined) ? data.employeeCode : newCode}"/>
+                                id="code" name="code"
+                                ${data.employeeCode&&'readonly'} 
+                                required
+                                title="Đây là trường bắt buộc!"
+                                value="${( data !==  null && data.employeeCode !== undefined) ? data.employeeCode : newCode}"/>
                         </div>
                         <div class="form-group">
                             <label for="name">
                                 Họ tên
                                 <p>*</p>
                             </label>
-                            <input tabindex="2" type="text" required oninvalid="this.setCustomValidity('Họ và tên không được để trống!')" oninput="setCustomValidity('')"
+                            <input tabindex="2" type="text" required title="Đây là trường bắt buộc!" oninvalid="this.setCustomValidity('Họ và tên không được để trống!')" oninput="setCustomValidity('')"
                              id="name" name="name" value="${(data !==  null && data.fullName !== undefined) ? data.fullName : ''}"/>
                         </div>
                         <div class="form-group">
@@ -170,11 +175,11 @@ export function showPopup(data = {}) {
                         <div class="form-group">
                             <label>Giới tính</label>
                             <div class="option">
-                                <input tabindex="4" type="radio" id="male" name="sex" checked ${sex === "Nam" ? "checked" : ''} value="Nam">
+                                <input tabindex="4" type="radio" id="male" name="sex" checked ${sex === "Nam" ? "checked" : ''} value="Nam"/>
                                 <label for="male">Nam</label><br>
-                                <input tabindex="5" type="radio" id="female" name="sex" ${sex === "Nữ" ? "checked" : ''} value="Nữ">
+                                <input tabindex="5" type="radio" id="female" name="sex" ${sex === "Nữ" ? "checked" : ''} value="Nữ"/>
                                 <label for="female">Nữ</label><br>
-                                <input tabindex="6" type="radio" id="other" name="sex" ${sex === "Khác" ? "checked" : ''} value="Khác">
+                                <input tabindex="6" type="radio" id="other" name="sex" ${sex === "Khác" ? "checked" : ''} value="Khác"/>
                                 <label for="other">Khác</label>
                             </div>
                         </div>
@@ -202,6 +207,7 @@ export function showPopup(data = {}) {
                             </label>
                             <input tabindex="8" type="text" 
                                 required
+                                title="Đây là trường bắt buộc!"
                                 oninvalid="this.setCustomValidity('Số CMTND không hợp lệ!')"
                                 id="identityNumber" name="identityNumber"
                                 ${(data !==  null && data.identityNumber !== undefined) ? `value="${data.identityNumber}"` : ""}
@@ -236,7 +242,7 @@ export function showPopup(data = {}) {
                             <label for="salary">Lương</label>
                             <input tabindex="12" type="text"
                                 oninvalid="this.setCustomValidity('Tiền lương hợp lệ!')" 
-                                oninput="validateSalaryInput(this)" id="salary" name="salary" 
+                                id="salary" name="salary" 
                                 ${(data !==  null && data.salary !== undefined && data.salary !== null)? `value="${formatToVND(data.salary)}"`: ''}
                             />
                         </div>
@@ -255,6 +261,7 @@ export function showPopup(data = {}) {
                             </label>
                             <input tabindex="14" type = "tel"
                                 required
+                                title="Đây là trường bắt buộc!"
                                 oninvalid="this.setCustomValidity('Vui lòng nhập số điện thoại hợp lệ!')"
                                 id="numberPhone" name="numberPhone" 
                                 value="${(data !==  null && data.phoneNumber !== undefined) ? data.phoneNumber : ''}" 
@@ -271,6 +278,7 @@ export function showPopup(data = {}) {
                             </label>
                             <input tabindex="16" type = "email"
                                 required
+                                title="Đây là trường bắt buộc!"
                                 oninvalid="this.setCustomValidity('Vui lòng nhập email hợp lệ!')" 
                                 oninput="validateEmailInput(this)"
                                 id="email" name="email" value="${(data !==  null && data.email !== undefined) ? data.email : ''}" 
@@ -288,20 +296,23 @@ export function showPopup(data = {}) {
                         </div>
                         <div class="form-group">
                             <label for="branch">Chi nhánh</label>
-                            <select tabindex="19" id="branch" name="branch">
+                            <div class="branch option">
                                 ${
-                                    branchValues.map(item => {
-                                        // Kiểm tra xem giá trị có phải là "find-all" hay không
-                                        if (item.value !== "find-all") {
-                                            return (
-                                                `<option ${item.value === branchSelected ? 'selected' : ''} value="${item.value}">${item.value}</option>`
-                                            );
-                                        }
-                                        return ""; 
-                                    })
+                                    branchValues
+                                    .filter(item => item.value !== "find-all")
+                                    .map(item => (
+                                        `
+                                            <input tabindex="19" 
+                                                type="radio" id="${item.value}" 
+                                                name="branch" ${item.value === branchSelected ? "checked" : ''} 
+                                                value="${item.value}"
+                                            />
+                                            <label for="${item.value}">${item.value}</label>
+                                        `
+                                    ))
+                                    .join('')
                                 }
-                            </select>
-                            
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -312,66 +323,67 @@ export function showPopup(data = {}) {
             </div>
     `
 
-    const popup = document.querySelector('.popup');
-    popup.innerHTML = ''
-    popup.innerHTML = popupHtmL;
-    popup.classList.add('open');
-    const firstInput = document.querySelectorAll('.modal input')[0];
-    firstInput.focus();
-    firstInput.select()
+    const POPUP = document.querySelector('.popup');
+    POPUP.innerHTML = ''
+    POPUP.innerHTML = POPUPHTML;
+    POPUP.classList.add('open');
+    const FIRSTINPUT = document.querySelectorAll('.modal input')[0];
+    FIRSTINPUT.focus();
+    FIRSTINPUT.select()
     close = document.querySelector(".modal__header .close");
     close.addEventListener('click', function () {
-        popup.classList.remove('open')
+        POPUP.classList.remove('open')
     })
-    const btnClose = document.querySelector(".btnClose");
-    btnClose.addEventListener('click', function () {
-        popup.classList.remove('open')
+    const BTNCLOSE = document.querySelector(".btnClose");
+    BTNCLOSE.addEventListener('click', function () {
+        POPUP.classList.remove('open')
     });
 
-    const identityNumber = document.getElementById('identityNumber');
-    identityNumber.oninput = function() {
-        validateIdentityNumberInput(identityNumber)
+    const IDENTITYNUMBER = document.getElementById('identityNumber');
+    IDENTITYNUMBER.oninput = function() {
+        validateIdentityNumberInput(IDENTITYNUMBER)
     }
 
-    const numberPhone = document.getElementById('numberPhone');
-    numberPhone.oninput = function() {
-        validateNumberPhoneInput(numberPhone);
+    const NUMBERPHONE = document.getElementById('numberPhone');
+    NUMBERPHONE.oninput = function() {
+        validateNumberPhoneInput(NUMBERPHONE);
     }
 
-    const email = document.getElementById('email');
-    email.oninput = function() {
-        validateEmailInput(email);
+    const EMAIL = document.getElementById('email');
+    EMAIL.oninput = function() {
+        validateEmailInput(EMAIL);
     }
 
-    const form = document.querySelector('.form');
+    const SALARY = document.getElementById('salary');
+    SALARY.oninput = function() {
+        validateSalaryInput(SALARY);
+    }
+
+    const BANKACCOUNT = document.getElementById('bankAccount');
+    BANKACCOUNT.oninput = function() {
+        validateBankAccountInput(BANKACCOUNT);
+    }
+
+    const FORM = document.querySelector('.form');
 
     document.onkeydown = function (e) {
         if (e.ctrlKey && e.keyCode === 119) {
             e.preventDefault();
-            // Gọi hàm submit của form để lưu thông tin
-            form.dispatchEvent(new Event('submit'));
+            // Gọi hàm submit của FORM để lưu thông tin
+            FORM.dispatchEvent(new Event('submit'));
         }
     }
 
-    form.addEventListener('submit', function (e) {
+    FORM.addEventListener('submit', function (e) {
         e.preventDefault();
-        const employee = getValueForm();
-        // thêm thuần bằng js
-        // if (data.employeeId) {
-        //     const index = fakeData.findIndex(emp => emp.employeeId === data.employeeId);
-        //     fakeData[index] = employee;
-        // } else {
-        //     fakeData.push(employee);
-        // }
-
-
+        const EMPLOYEE = getValueForm();
 
         if (code === undefined) {
             $.ajax({
                 url: 'https://localhost:7004/api/v1/employees', // Địa chỉ API
                 method: 'POST',
                 contentType: 'application/json', // Đảm bảo đúng Content-Type
-                data: JSON.stringify(employee), // Chuyển đối tượng employee thành JSON
+                data: JSON.stringify(EMPLOYEE), // Chuyển đối tượng employee thành JSON
                 success: function (response) {
                     if (response !== 1) {
                         alert("Có lỗi khi thêm nhân viên")
@@ -384,7 +396,7 @@ export function showPopup(data = {}) {
                         callback: () => {
                             var offset = (getCurrentPage()) * getLimit();
                             setPreviousApi('')
-                            paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${getBranch()}&limit=${getLimit()}&offset=${offset}`);
+                            paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${getBranch()}&limit=${getLimit()}&offset=${offset}&is-desc=${getIsDesc()}`);
                             fetchNewCode();
                         }
                     })
@@ -404,7 +416,7 @@ export function showPopup(data = {}) {
                 url: 'https://localhost:7004/api/v1/employees',
                 method: 'PUT',
                 contentType: 'application/json',
-                data: JSON.stringify(employee),
+                data: JSON.stringify(EMPLOYEE),
                 success: function (response) {
                     if (response !== 1) {
                         alert("Có lỗi khi sửa nhân viên")
@@ -417,8 +429,8 @@ export function showPopup(data = {}) {
                         callback: () => {
                             var valueSearch = document.getElementById('search').value;
                             var offset = (getCurrentPage()) * getLimit();
-                            getPreviousApi('')
-                            paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${getBranch()}&limit=${getLimit()}&offset=${offset}`);
+                            setPreviousApi('')
+                            paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${getBranch()}&limit=${getLimit()}&offset=${offset}&is-desc=${getIsDesc()}`);
                             fetchNewCode();
                             if (valueSearch) {
                                 searchEmployee(valueSearch)
@@ -436,6 +448,6 @@ export function showPopup(data = {}) {
                 }
             })
         }
-        popup.classList.remove('open');
+        POPUP.classList.remove('open');
     })
 }

@@ -1,55 +1,61 @@
 import { showDialog } from "./dialog.js";
 import { getBranch } from "./header.js";
-import { convertDate, showPopup } from "./popup.js";
+import { showPopup } from "./popup.js";
 import { paginate } from "./service.js";
 
-let Data = [];
-const savedLimit = Cookies.get('rowsPerPageLimit');
-const state = {
+let data = [];
+const STATE = {
     currentPage: 0,
-    limit: savedLimit,
-    sumRows: ''
+    sumRows: '',
 }
 
-export const setData = (value) => {
-    Data = value
-}
-export const getData = () => {
-    return Data;
-}
-export const setCurrentPage = (value) => {
-    state.currentPage = value;
+export function setData (value) {
+    data = value
 }
 
-export const getCurrentPage = () => {
-    return state.currentPage;
+export function getData () {
+    return data;
 }
 
-export const setLimit = (value) => {
-    state.limit = value;
+export function setCurrentPage (value) {
+    STATE.currentPage = value;
 }
 
-export const getLimit = () => {
-    return state.limit;
+export function getCurrentPage () {
+    return STATE.currentPage;
 }
 
-export const setSumRows = (value) => {
-    state.sumRows = value;
+export function setIsDesc (value) {
+    localStorage.setItem('isDesc', value);
 }
 
-export const getSumRows = () => {
-    return state.sumRows;
+export function getIsDesc () {
+    return localStorage.getItem('isDesc');
+}
+
+export function setLimit (value) {
+    Cookies.set('rowsPerPageLimit', value, { expires: 7 });
+}
+
+export function getLimit () {
+    return Cookies.get('rowsPerPageLimit');
+}
+
+export function setSumRows (value) {
+    STATE.sumRows = value;
+}
+
+export function getSumRows () {
+    return STATE.sumRows;
 }
 /**
  * Hàm hiển thị footer cho bảng dữ liệu nhân viên
  * @param {*} sumRows tổng số bản ghi hiện có để hiển thị trong footer
  */
 export function createRowFooter (sumRows) {
-    let branch = getBranch();
-    let limit = getLimit();
-    const rowFooter = document.createElement("tr");
-    rowFooter.innerHTML = ''
-    rowFooter.innerHTML = `
+    const ROWFOOTER = document.createElement("tr");
+    ROWFOOTER.innerHTML = ''
+    ROWFOOTER.innerHTML = `
         <td colspan="7">
             <div class="footer__content">
                 <div class="footer__left">
@@ -76,24 +82,28 @@ export function createRowFooter (sumRows) {
         </td>
     `
     
-    const tableFooter = document.querySelector('.table__footer');
-    tableFooter.innerHTML=''
-    tableFooter.appendChild(rowFooter);
-    const prevPage = document.getElementsByClassName('prev-page')[0];
-    const updateApiWithParams = (baseUrl, branch, offset, limit) => {
-        const url = new URL(baseUrl);
+    const TABLEFOOTER = document.querySelector('.table__footer');
+    TABLEFOOTER.innerHTML=''
+    TABLEFOOTER.appendChild(ROWFOOTER);
+    const PREVPAGE = document.getElementsByClassName('prev-page')[0];
+    let updateApiWithParams = (baseUrl, branch, offset, limit, isDesc) => {
+        let url = new URL(baseUrl);
         url.searchParams.set('branch', branch); 
-        url.searchParams.set('offset', offset);    // Thay đổi giá trị offset
-        url.searchParams.set('limit', limit);      // Thay đổi giá trị limit
+        url.searchParams.set('offset', offset);    
+        url.searchParams.set('limit', limit);      
+        url.searchParams.set('is-desc', isDesc);
         return url.toString();
     };
 
-    prevPage.addEventListener('click', function () {
+    PREVPAGE.addEventListener('click', function () {
         setCurrentPage(getCurrentPage() - 1);
         if (getCurrentPage() >= 0) {
+            let branch = getBranch();
+            let limit = getLimit();
             var offset = getCurrentPage() * limit;
-            const updatedApi = updateApiWithParams('https://localhost:7004/api/v1/employees/paginate', branch, offset, limit);
-            paginate(updatedApi);
+            var isDesc = getIsDesc();
+            const UPDATEDAPI = updateApiWithParams('https://localhost:7004/api/v1/employees/paginate', branch, offset, limit, isDesc);
+            paginate(UPDATEDAPI);
         } else {
             setCurrentPage(0);
         }
@@ -101,34 +111,34 @@ export function createRowFooter (sumRows) {
     
     // Xử lý khi bấm nút 'Next'
     document.querySelector('.next-page').addEventListener('click', function () {
+        let branch = getBranch();
+        let limit = getLimit();
         var totalPage = Math.ceil(getSumRows() / limit);
         setCurrentPage(getCurrentPage() + 1);
         if (getCurrentPage() < totalPage) {
             var offset = getCurrentPage() * limit;
-            const updatedApi = updateApiWithParams('https://localhost:7004/api/v1/employees/paginate', branch, offset, limit);
-            paginate(updatedApi);
+            var isDesc = getIsDesc();
+            const UPDATEDAPI = updateApiWithParams('https://localhost:7004/api/v1/employees/paginate', branch, offset, limit, isDesc);
+            paginate(UPDATEDAPI);
         } else {
             setCurrentPage(totalPage - 1);
         }
     });
 
-    const rowsPerPage = document.querySelector('#rowsPerPage');
-    
-    Cookies.get('rowsPerPageLimit');
-    if (savedLimit) {
-        limit = parseInt(savedLimit);
-    }
+    const ROWSPERPAGE = document.querySelector('#rowsPerPage');
 
     // Thiết lập giá trị cho select dựa trên cookie
-    rowsPerPage.value = getLimit();
+    ROWSPERPAGE.value = getLimit();
 
-    rowsPerPage.addEventListener('change', function() {
-        limit = rowsPerPage.value;
+    ROWSPERPAGE.addEventListener('change', function() {
+        let branch = getBranch();
+        let limit = ROWSPERPAGE.value;
         Cookies.set('rowsPerPageLimit', limit, { expires: 7 }); // Lưu vào cookie với thời gian hết hạn là 7 ngày
         // localStorage.setItem('rowsPerPageLimit', limit);
         var offset = (getCurrentPage())*limit;
-        const updatedApi = updateApiWithParams('https://localhost:7004/api/v1/employees/paginate', branch, offset, limit);
-        paginate(updatedApi)
+        var isDesc = getIsDesc();
+        const UPDATEDAPI = updateApiWithParams('https://localhost:7004/api/v1/employees/paginate', branch, offset, limit, isDesc);
+        paginate(UPDATEDAPI)
     })
 }
 
@@ -138,18 +148,18 @@ export function createRowFooter (sumRows) {
  */
 export function renderTable(data) {
 
-    const tableBody = document.querySelector('.table__body');
-    tableBody.innerHTML = '';
+    const TABLEBODY = document.querySelector('.table__body');
+    TABLEBODY.innerHTML = '';
 
     data.forEach((employee, index) => {
-        const row = document.createElement('tr');
-        row.classList.add('row');
-        row.innerHTML = `
+        const ROW = document.createElement('tr');
+        ROW.classList.add('row');
+        ROW.innerHTML = `
             <td>${index + 1}</td> 
             <td>${employee.employeeCode}</td> 
             <td>${employee.fullName}</td> 
             <td>${employee.gender}</td> 
-            <td>${(employee.dateOfBirth !== "1970-01-01T00:00:00") ? new Date(employee.dateOfBirth).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' }) : ''}</td> 
+            <td>${(employee.dateOfBirth !== "1970-01-01T00:00:00" && employee.dateOfBirth !== null) ? new Date(employee.dateOfBirth).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' }) : ''}</td> 
             <td>${employee.email}</td> 
             <td class="actions">
                 <span class="${(employee.address !== 'null' && employee.address !== null) ? '' : 'empty-address'}">
@@ -166,11 +176,11 @@ export function renderTable(data) {
             </td> 
             
                `;
-        row.addEventListener('click', () => myFunction(index))
-        row.ondblclick = function () {
-            showPopup(Data[index])    
+        ROW.addEventListener('click', () => myFunction(index))
+        ROW.ondblclick = function () {
+            showPopup(data[index])    
         }
-        tableBody.appendChild(row);
+        TABLEBODY.appendChild(ROW);
     });
 }
 
@@ -182,57 +192,57 @@ export function renderTable(data) {
  * @param {*} index 
  */
 function myFunction(index) {
-    const rows = document.getElementsByClassName('row');
+    const ROWS = document.getElementsByClassName('row');
     
-    const actionEdits = document.querySelectorAll('.actions .edit-btn');
-    actionEdits.forEach(action => {
+    const ACTIONEDITS = document.querySelectorAll('.actions .edit-btn');
+    ACTIONEDITS.forEach(action => {
         action.style.display = 'none';
     });
 
-    const currentRow = rows[index];
-    const currentActionEdit = currentRow.querySelector('.actions .edit-btn');
-    if (currentActionEdit) {
-        currentActionEdit.style.display = 'block';
+    const CURRENTROW = ROWS[index];
+    const CURRENTACTIONEDIT = CURRENTROW.querySelector('.actions .edit-btn');
+    if (CURRENTACTIONEDIT) {
+        CURRENTACTIONEDIT.style.display = 'block';
     }
 
-    const actionDeletes = document.querySelectorAll('.actions .delete-btn');
-    actionDeletes.forEach(action => {
+    const ACTIONDELETES = document.querySelectorAll('.actions .delete-btn');
+    ACTIONDELETES.forEach(action => {
         action.style.display = 'none';
     });
 
-    const currentActionDelete = currentRow.querySelector('.actions .delete-btn');
-    if (currentActionDelete) {
-        currentActionDelete.style.display = 'block';
+    const CURRENTACTIONDELETE = CURRENTROW.querySelector('.actions .delete-btn');
+    if (CURRENTACTIONDELETE) {
+        CURRENTACTIONDELETE.style.display = 'block';
     }
 
-    for (let i = 0; i < rows.length; i++) {
-        rows[i].classList.remove('active');
+    for (let i = 0; i < ROWS.length; i++) {
+        ROWS[i].classList.remove('active');
     }
 
-    currentRow.classList.add('active');
-    const editBtn = document.getElementsByClassName('edit-btn')[index];
+    CURRENTROW.classList.add('active');
+    const EDITBTN = document.getElementsByClassName('edit-btn')[index];
 
-    editBtn.addEventListener('click', function() {
-        showPopup(Data[index])
+    EDITBTN.addEventListener('click', function() {
+        showPopup(data[index])
     })
 
-    const deleteBtn = document.getElementsByClassName('delete-btn')[index];
-    deleteBtn.addEventListener('click', function() {
-        showDialog({title: 'Xác nhận xóa?', description: `Bạn có chắc chắn muốn xóa nhân viên ${Data[index].employeeCode} không?`}, index);
+    const DELETEBTN = document.getElementsByClassName('delete-btn')[index];
+    DELETEBTN.addEventListener('click', function() {
+        showDialog({title: 'Xác nhận xóa?', description: `Bạn có chắc chắn muốn xóa nhân viên ${data[index].employeeCode} không?`}, index);
     });
 
     document.onkeydown = function(e) {
         if (e.ctrlKey && e.keyCode === 113) {
             e.preventDefault();
-            showPopup(Data[index])
+            showPopup(data[index])
         } else if (e.ctrlKey && e.keyCode === 46) {
             e.preventDefault();
-            showDialog({title: 'Xác nhận xóa?', description: `Xóa nhân viên ${Data[index].employeeCode} ra khỏi hệ thống?`} ,index);
+            showDialog({title: 'Xác nhận xóa?', description: `Xóa nhân viên ${data[index].employeeCode} ra khỏi hệ thống?`} ,index);
         } else if (e.ctrlKey && e.keyCode === 118) {
-            const popup = document.querySelector('.popup');
-            popup.classList.remove('open');
-            const dialogArea = document.querySelector(".dialog-area");
-            dialogArea.classList.remove('open');
+            const POPUP = document.querySelector('.popup');
+            POPUP.classList.remove('open');
+            const DIALOGAREA = document.querySelector(".dialog-area");
+            DIALOGAREA.classList.remove('open');
         }
     }
 }

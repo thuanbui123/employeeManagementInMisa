@@ -1,12 +1,13 @@
 import { LoadContainer } from "./employeePage.js";
 import { setPreviousApi, paginate } from "./service.js";
-import { setBranch, getBranch } from "./header.js";
+import { getBranch } from "./header.js";
+import { getCurrentPage, getIsDesc, getLimit } from "./renderDataTable.js";
 
 /**
  * Hàm hiển thị sidebar với các mục điều hướng
  */
 export function loader() {
-    const sidebarHTML = `
+    const SIDEBARHTML = `
         <ul class="menu-sidebar">
             <li class="item active" data-page="Home" data-tooltip="Trang chủ">
                 <img src="./assets/icon/dashboard.png" alt="Home"/>
@@ -31,7 +32,7 @@ export function loader() {
         </button>
     `;
 
-    document.getElementById('sidebar').innerHTML = sidebarHTML;
+    document.getElementById('sidebar').innerHTML = SIDEBARHTML;
 }
 
 document.addEventListener('DOMContentLoaded', loader);
@@ -41,27 +42,28 @@ document.addEventListener('DOMContentLoaded', () => document.getElementById('con
  * Khi dom được tải xong, thiết lập các sự kiện click cho các mục trong sidebar
  */
 document.addEventListener('DOMContentLoaded', () => {
-    const items = document.getElementsByClassName('item');
-    Array.from(items).forEach(item => {
+    const ITEMS = document.getElementsByClassName('item');
+    Array.from(ITEMS).forEach(item => {
         item.addEventListener('click', function () {
             //Thêm sự kiện click cho từng mục
-            Array.from(items).forEach(i => i.classList.remove('active'));
-            const page = this.getAttribute('data-page');
-            const container = document.getElementById('container');
-            switch (page) {
+            Array.from(ITEMS).forEach(i => i.classList.remove('active'));
+            const PAGE = this.getAttribute('data-page');
+            const CONTAINER = document.getElementById('container');
+            switch (PAGE) {
                 case 'Employee':
                     LoadContainer();
                     setPreviousApi('')
                     let limit;
-                    const savedLimit = Cookies.get('rowsPerPageLimit');
-                    if (savedLimit) {
-                        limit = parseInt(savedLimit);
+                    const SAVEDLIMIT = Cookies.get('rowsPerPageLimit');
+                    if (SAVEDLIMIT) {
+                        limit = parseInt(SAVEDLIMIT);
                     }
-                    paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${getBranch()}&limit=${limit}&offset=0`);
+                    var offset = getLimit() * getCurrentPage();
+                    paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${getBranch()}&limit=${limit}&offset=${offset}&is-desc=${getIsDesc()}`);
                     break;
                 case 'Home':
                     setPreviousApi('')
-                    container.innerHTML = `<h3>Trang chủ</h3>`
+                    CONTAINER.innerHTML = `<h3>Trang chủ</h3>`
                     break;
                 case 'Report':
                     setPreviousApi('')
@@ -69,16 +71,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     break;
                 case 'Setting':
                     setPreviousApi('')
-                    container.innerHTML = `<h3>Trang cài đặt</h3>`
+                    CONTAINER.innerHTML = `<h3>Trang cài đặt</h3>`
             }
             this.classList.add('active');
         });
     });
 
     // Thiết lập sự kiện click cho nút thu nhỏ sidebar
-    const shrinks = document.querySelector('.shrink');
-    shrinks.addEventListener('click', function () {
-        const sidebar = document.getElementById('sidebar');
-        sidebar.classList.toggle('close');
+    const SHRINKS = document.querySelector('.shrink');
+    SHRINKS.addEventListener('click', function () {
+        const SIDEBAR = document.getElementById('sidebar');
+        SIDEBAR.classList.toggle('close');
     })
 });

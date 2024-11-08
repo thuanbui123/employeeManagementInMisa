@@ -14,7 +14,7 @@ namespace MISA.AMISDemo.Core.Interfaces
         /// </summary>
         /// <param name="name">Tên chức vụ cần kiểm tra</param>
         /// <returns>
-        /// Tên chức vụ nếu chức vụ đó tồn tại trong hệ thống.
+        /// Mã chức vụ nếu chức vụ đó tồn tại trong hệ thống.
         /// Ngược lại trả về null
         /// </returns>
         string? CheckExists(string name);

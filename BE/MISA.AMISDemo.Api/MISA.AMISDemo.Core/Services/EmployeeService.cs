@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
+using MISA.AMISDemo.Core.Const;
 using MISA.AMISDemo.Core.DTOs;
 using MISA.AMISDemo.Core.Entities;
 using MISA.AMISDemo.Core.Exceptions;
@@ -53,13 +54,13 @@ namespace MISA.AMISDemo.Core.Services
         private bool IsValidPhoneNumber (string phoneNumber)
         {
             return !string.IsNullOrWhiteSpace(phoneNumber) &&
-                Regex.IsMatch(phoneNumber, @"^(0(1[0-9]|9[0-9]|8[0-9]|7[0-9]|6[0-9]|5[0-9]|4[0-9]|3[0-9]|2[0-9]))\d{7}$", RegexOptions.IgnoreCase);  
+                Regex.IsMatch(phoneNumber, @"(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})$", RegexOptions.IgnoreCase);  
         }
 
         private bool IsValidLandLine(string landline)
         {
             return string.IsNullOrEmpty(landline) ||
-                Regex.IsMatch(landline, @"^(0(1[0-9]|9[0-9]|8[0-9]|7[0-9]|6[0-9]|5[0-9]|4[0-9]|3[0-9]|2[0-9]))\d{7}$", RegexOptions.IgnoreCase);
+                Regex.IsMatch(landline, @"(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})$", RegexOptions.IgnoreCase);
         }
 
         /// <summary>
@@ -194,7 +195,7 @@ namespace MISA.AMISDemo.Core.Services
                         ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
                         if (worksheet == null)
                         {
-                            errorList.Add((0, "Không đọc được file excel trống!"));
+                            errorList.Add((0, MISAConst.ERROR_CANNOT_READ_EMPTY_FILE));
                         }
                         else
                         {
@@ -221,36 +222,36 @@ namespace MISA.AMISDemo.Core.Services
                                     var bankAccount = GetCellValue(worksheet, row, 16);
                                     var bankName = GetCellValue(worksheet, row, 17);
                                     var branch = GetCellValue(worksheet, row, 18);
-                                    var departmentCode = department;
-                                    var positionCode = position;
+                                    var departmentCode = IsValidDepartment(department);
+                                    var positionCode = IsValidPosition(position);
                                     decimal? parsedSalary = null;
                                     // Thực hiện các kiểm tra và trả về false nếu gặp lỗi
                                     if (employeeCode == null)
                                     {
-                                        errorList.Add((row, "Mã nhân viên không được để trống!"));
+                                        errorList.Add((row, MISAConst.ERROR_EMPLOYEECODE_EMPTY));
                                     } else if (_employeeRepository.CheckDuplicateCode(employeeCode, codes))
                                     {
-                                        errorList.Add((row, "Mã nhân viên đã tồn tại trong hệ thống!"));
+                                        errorList.Add((row, MISAConst.ERROR_EMPLOYEECODE_ALREADY_EXISTS));
                                     }
                                     if (fullName == null)
                                     {
-                                        errorList.Add((row, "Họ và tên không được để trống!"));
+                                        errorList.Add((row, MISAConst.ERROR_EMPLOYEENAME_EMPTY));
                                     }
                                     if (!IsValidEmail(email?.Trim()))
                                     {
-                                        errorList.Add((row, "Email không đúng định dạng!"));
+                                        errorList.Add((row, MISAConst.ERROR_INVALID_EMAIL));
                                     }
                                     if (!IsValidIdentityNumber(identityNumber))
                                     {
-                                        errorList.Add((row, "Số CCCD không đúng định dạng!"));
+                                        errorList.Add((row, MISAConst.ERROR_INVALID_IDENTITY_NUMBER));
                                     }
                                     if (!IsValidPhoneNumber(phoneNumber))
                                     {
-                                        errorList.Add((row, "Số điện thoại di động không đúng định dạng!"));
+                                        errorList.Add((row, MISAConst.ERROR_INVALID_PHONENUMBER));
                                     }
                                     if (!IsValidLandLine(landline))
                                     {
-                                        errorList.Add((row, "Số điện thoại bàn không đúng định dạng!"));
+                                        errorList.Add((row, MISAConst.ERROR_INVALID_LANDLINE));
                                     }
                                     if (!string.IsNullOrEmpty(salary))
                                     {
@@ -260,7 +261,7 @@ namespace MISA.AMISDemo.Core.Services
                                         }
                                         else
                                         {
-                                            errorList.Add((row, "Tiền lương không đúng định dạng hoặc là số âm!"));
+                                            errorList.Add((row, MISAConst.ERROR_INVALID_SALARY));
                                         }
                                     }
                                     DateTime? dateOfBirth = ProcessDate(dob);
@@ -269,27 +270,35 @@ namespace MISA.AMISDemo.Core.Services
                                     {
                                         if (dateOfBirth >= DateTime.Now || (DateTime.Now.Year - dateOfBirth.Value.Year) < 18)
                                         {
-                                            errorList.Add((row, "Ngày sinh không đúng định dạng!"));
+                                            errorList.Add((row, MISAConst.ERROR_INVALID_DATEOFBIRTH));
                                         }
                                     }
                                     if (identityDate != null)
                                     {
                                         if (identityDateTime >= DateTime.Now)
                                         {
-                                            errorList.Add((row, "Ngày cấp CCCD không đúng định dạng!"));
+                                            errorList.Add((row, MISAConst.ERROR_INVALID_IDENTITYDATE));
                                         }
                                     }
                                     if (!IsValidBankAccount(bankAccount))
                                     {
-                                        errorList.Add((row, "Tài khoản ngân hàng không đúng định dạng!"));
+                                        errorList.Add((row, MISAConst.ERROR_INVALID_BANKACCOUNT));
                                     }
                                     if (!IsValidBranch(branch))
                                     {
-                                        errorList.Add((row, "Tên chi nhánh không tồn tại!"));
+                                        errorList.Add((row, MISAConst.ERROR_BRANCHNAME_NOT_EXISTS));
                                     }
                                     if (!IsValidGender(gender))
                                     {
-                                        errorList.Add((row, "Giới tính không tồn tại!"));
+                                        errorList.Add((row, MISAConst.ERROR_GENDER_NOT_EXISTS));
+                                    }
+                                    if (department != null && departmentCode == null)
+                                    {
+                                        errorList.Add((row, MISAConst.ERROR_DEPARTMENT_NOT_EXISTS));
+                                    }
+                                    if (position != null && positionCode == null)
+                                    {
+                                        errorList.Add((row, MISAConst.ERROR_POSITION_NOT_EXISTS));
                                     }
                                     // Nếu tất cả kiểm tra đều hợp lệ, tạo đối tượng Employee
                                     var employee = new Employee

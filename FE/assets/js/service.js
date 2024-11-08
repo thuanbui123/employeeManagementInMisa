@@ -13,7 +13,7 @@ export function getPreviousApi() {
  * Hàm phân trang để lấy dữ liệu từ api và cập nhật giao diện
  * @param {*} api Địa chỉ api để lấy dữ liệu
  */
-export const paginate = (api) => {
+export function paginate (api) {
     if (api !== previousApi) {
         previousApi = api;
         fetch(api)
@@ -34,7 +34,7 @@ export const paginate = (api) => {
 /**
  * Mảng chí các phần tử trong bộ lọc chi nhánh
  */
-const branchOptions = [
+const BRANCHOPTIONS = [
     {
         value: 'Hà Nội'
     },
@@ -47,14 +47,14 @@ const branchOptions = [
 ]
 
 //Lưu các các phần tử chi nhánh vào localStorage
-localStorage.setItem('branches', JSON.stringify(branchOptions));
+localStorage.setItem('branches', JSON.stringify(BRANCHOPTIONS));
 
 /**
  * Kiểm tra tính hợp lệ của email
  * @param {*} email email cần kiểm tra
  * @returns true nếu email hợp lệ, ngược lại trả về false
  */
-const validateEmail = (email) => {
+function validateEmail (email) {
     return String(email)
         .toLowerCase()
         .match(
@@ -67,12 +67,12 @@ const validateEmail = (email) => {
  * @param {*} input thẻ input chứa dữ liệu email mà người dùng nhập vào
  */
 export function validateEmailInput(input) {
-    const email = input.value;
+    const EMAIL = input.value;
 
-    // Kiểm tra nếu email không hợp lệ
-    if (!validateEmail(email)) {
+    // Kiểm tra nếu EMAIL không hợp lệ
+    if (!validateEmail(EMAIL)) {
         input.setCustomValidity('Email không hợp lệ!');
-    } else if (email === '') {
+    } else if (EMAIL === '') {
         input.setCustomValidity('Email không được để trống!')
     } else {
         input.setCustomValidity(''); // Nếu email hợp lệ, xóa thông báo lỗi
@@ -84,7 +84,7 @@ export function validateEmailInput(input) {
  * @param {*} numberPhone Số điện thoại cần kiểm tra
  * @returns true - nếu số điện thoại hợp lệ, ngược lại trả về false
  */
-const validateNumberPhone = (numberPhone) => {
+function validateNumberPhone (numberPhone) {
     return String(numberPhone)
         .toLowerCase()
         .match(
@@ -97,11 +97,11 @@ const validateNumberPhone = (numberPhone) => {
  * @param {*} input thẻ input chứa dữ liệu số điện thoại mà người dùng nhập
  */
 export function validateNumberPhoneInput (input) {
-    const numberPhone = input.value;
+    const NUMBERPHONE = input.value;
 
-    if (!validateNumberPhone(numberPhone)) {
+    if (!validateNumberPhone(NUMBERPHONE)) {
         input.setCustomValidity('Số điện thoại không hợp lệ!')
-    } else if (numberPhone === '') {
+    } else if (NUMBERPHONE === '') {
         input.setCustomValidity('Số điện thoại không được để trống!')
     } else {
         input.setCustomValidity('')
@@ -113,7 +113,7 @@ export function validateNumberPhoneInput (input) {
  * @param {*} identityNumber Số căn cước công dân cần kiểm tra
  * @returns true - nếu số CCCD hợp lệ, ngược lại trả về false
  */
-const validateIdentityNumber = (identityNumber) => {
+function validateIdentityNumber(identityNumber) {
     return String(identityNumber)
         .toLowerCase()
         .match(
@@ -126,10 +126,10 @@ const validateIdentityNumber = (identityNumber) => {
  * @param {*} input thẻ input chứa dữ liệu về số CCCD mà người dùng nhập
  */
 export function validateIdentityNumberInput (input) {
-    const identityNumber = input.value;
-    if (!validateIdentityNumber(identityNumber)) {
+    const IDENTITYNUMBER = input.value;
+    if (!validateIdentityNumber(IDENTITYNUMBER)) {
         input.setCustomValidity('Số CMTND không hợp lệ!')
-    } else if (identityNumber === '') {
+    } else if (IDENTITYNUMBER === '') {
         input.setCustomValidity('Số CMTND không được để trống!')
     } else {
         input.setCustomValidity('')
@@ -146,10 +146,10 @@ export function validateIdentityNumberInput (input) {
  * - true: nếu chuỗi hợp lệ
  * - false: nếu chuỗi không hợp lệ
  */
-const validateSalary = (salaryStr) => {
-    if (typeof salaryStr != 'string') return false;
-    const sanitizedSalary = salaryStr.replace(/\./g, '');
-    return !isNaN(sanitizedSalary) && !isNaN(parseInt(sanitizedSalary));
+function validateSalary(salaryStr) {
+    if (typeof salaryStr !== 'string') return false;
+    const SANITIZEDSALARY = salaryStr.replace(/\./g, '');
+    return !isNaN(SANITIZEDSALARY) && !isNaN(parseInt(SANITIZEDSALARY));
 }
 
 /**
@@ -168,5 +168,32 @@ export function validateSalaryInput (input) {
         input.setCustomValidity('Lương không hợp lệ!');
     } else {
         input.setCustomValidity('')
+    }
+}
+
+/**
+ * Kiểm tra giá trị của tài khoản ngân hàng có hợp lệ hay không
+ * Chỉ kiểm tra khi chuỗi khác '' và được coi là hợp lệ khi:
+ * - Nó là một chuỗi số và có độ dài từ 8 đến 15 ký tự
+ * @param {*} value 
+ * @returns 
+ */
+function validateBankAccount (value) {
+    if (value !== '') {
+        return String(value)
+            .toLowerCase()
+            .match(
+                /\d{8,15}$/
+            )
+    }
+    return true;
+}
+
+export function validateBankAccountInput (input) {
+    let value = input.value;
+    if (!validateBankAccount(value)) {
+        input.setCustomValidity('Tài khoản ngân hàng không hợp lệ!');
+    } else  {
+        input.setCustomValidity('');
     }
 }

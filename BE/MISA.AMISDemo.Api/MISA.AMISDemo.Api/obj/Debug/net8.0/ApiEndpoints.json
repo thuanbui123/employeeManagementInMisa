@@ -183,6 +183,11 @@
         "Name": "offset",
         "Type": "System.Int32",
         "IsRequired": false
+      },
+      {
+        "Name": "is-desc",
+        "Type": "System.Boolean",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
