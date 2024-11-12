@@ -108,5 +108,20 @@ namespace MISA.AMISDemo.Core.Interfaces
         /// Ngược lại trả về 0 nếu thất bại
         /// </returns>
         int DeleteAny (string[] ids);
+
+        /// <summary>
+        /// Kiểm tra xem một giá trị cụ thể có tồn tại trong một cột của bảng tương ứng với kiểu T trong cơ sở dữ liệu.
+        /// Nếu có, trả về giá trị của cột được chỉ định.
+        /// </summary>
+        /// <typeparam name="T">Kiểu đối tượng tương ứng với bảng trong cơ sở dữ liệu.</typeparam>
+        /// <param name="column">Tên cột cần kiểm tra giá trị tồn tại.</param>
+        /// <param name="value">Giá trị cần kiểm tra xem có tồn tại hay không.</param>
+        /// <param name="returnColumn">Tên cột có giá trị sẽ được trả về nếu tìm thấy bản ghi.
+        /// Nếu để `null`, trả về toàn bộ bản ghi.</param>
+        /// <returns>
+        /// Trả về giá trị của `returnColumn` nếu tồn tại bản ghi thỏa mãn, 
+        /// nếu không, trả về `null`.
+        /// </returns>
+        object? CheckExists(string column, string value, string? returnValue);
     }
 }

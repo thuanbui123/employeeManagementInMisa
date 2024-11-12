@@ -1,15 +1,10 @@
 ﻿using Dapper;
 using Microsoft.Extensions.Configuration;
-using MISA.AMISDemo.Core.Exceptions;
 using MISA.AMISDemo.Infrastructure.Interface;
 using MySqlConnector;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace MISA.AMISDemo.Infrastructure.MISADatabaseContext
 {
@@ -193,6 +188,22 @@ namespace MISA.AMISDemo.Infrastructure.MISADatabaseContext
                 return Connection.Execute(updateSql, param: parameters);
             }
             return 0;
+        }
+
+        public object? CheckExists<T>(string column, string value, string? returnValue)
+        {
+            var className = typeof(T).Name;
+            var sql = $"SELECT * FROM {className} Where {column} = @Name";
+            var parameters = new DynamicParameters();
+            parameters.Add("@Name", value);
+            var res = Connection.Query(sql, param: parameters);
+            if (res == null)
+            {
+                return null;
+            }
+
+            //Chuyển đổi res sang kiểu IDictionary<string, object> để truy cập giá trị của thuộc tính trong đó qua key
+            return returnValue != null ? ((IDictionary<string, object>)res)[returnValue] : res;
         }
     }
 }

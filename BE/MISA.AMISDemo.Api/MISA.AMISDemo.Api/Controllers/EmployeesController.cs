@@ -217,5 +217,27 @@ namespace MISA.AMISDemo.Api.Controllers
             var res = _employeeService.ImportService(keyCode);
             return StatusCode(200, res);
         }
+
+        /// <summary>
+        /// API để lọc nhân viên dựa trên điều kiện và giá trị
+        /// </summary>
+        /// <param name="filterBy">Tên cột muốn lọc</param>
+        /// <param name="filterCondition">Điều kiện lọc</param>
+        /// <param name="value">Giá trị cần lọc theo điều kiện</param>
+        /// <returns>
+        /// Trả về mã 200 và danh sách nhân viên thỏa mãn điều kiện lọc
+        /// </returns>
+        [HttpGet("filter")]
+        public IActionResult Get(
+            [FromQuery(Name ="filter-by")]string filterBy, 
+            [FromQuery(Name ="filter-condition")]string filterCondition, 
+            [FromQuery(Name ="value")]string value,
+            [FromQuery(Name ="limit")]int limit,
+            [FromQuery(Name ="offset")]int offset,
+            [FromQuery(Name ="is-desc")] bool isDesc)
+        {
+            var res = _employeeRepository.FilterEmployeeResponse(filterBy, filterCondition, value, limit, offset, isDesc);
+            return StatusCode(200, res);
+        }
     }
 }

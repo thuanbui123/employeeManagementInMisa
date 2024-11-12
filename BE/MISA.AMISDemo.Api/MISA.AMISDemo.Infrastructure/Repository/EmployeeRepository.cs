@@ -194,5 +194,61 @@ namespace MISA.AMISDemo.Infrastructure.Repository
             var data = _dbContext.Connection.Query<EmployeeStatisticsByAgeDTO>(sql);
             return data;
         }
+
+        public EmployeeListResponseDTO? FilterEmployeeResponse
+            (string filterBy, string filterCondition, string value, int limit, int offset, bool isDesc)
+        {
+            var parameters = new DynamicParameters();
+            var filterColumn = "";
+            var sort = isDesc ? "DESC" : "";
+            if (filterBy == "department")
+            {
+                filterColumn = "d.name";
+            }
+            else if (filterBy == "position")
+            {
+                filterColumn = "p.name";
+            }
+            else
+            {
+                return null;
+            }
+
+            if (filterCondition == "contain")
+            {
+                parameters.Add("@FilterByValue", $"%{value}%");
+            }
+            else if (filterCondition == "start-with")
+            {
+                parameters.Add("@FilterByValue", $"{value}%");
+            }
+            else if (filterCondition == "end-with")
+            {
+                parameters.Add("@FilterByValue", $"%{value}");
+            }
+            else
+            {
+                return null;
+            }
+
+            var sql = $"SELECT * FROM Employee e " +
+                $"LEFT JOIN department d ON e.departmentCode = d.departmentcode " +
+                $"LEFT JOIN  position p on e.positionCode = p.positioncode " +
+                $"where {filterColumn} like @FilterByValue " +
+                $"ORDER BY CAST(SUBSTRING(EmployeeCode, 4, LENGTH(EmployeeCode)) AS UNSIGNED) {sort} " +
+                $"LIMIT @Limit OFFSET @Offset";
+            var sqlSumrows = $"Select count(*) from employee e " +
+                $"LEFT JOIN department d ON e.departmentCode = d.departmentcode " +
+                $"LEFT JOIN  position p on e.positionCode = p.positioncode " +
+                $" where {filterColumn} like @FilterByValue";
+            parameters.Add("@Limit", limit);
+            parameters.Add("@Offset", offset);
+            var res = _dbContext.Connection.Query < Employee>(sql, parameters);
+            EmployeeListResponseDTO responseDTO = new EmployeeListResponseDTO();
+            responseDTO.Employees = res;
+            int sumRows = _dbContext.Connection.QueryFirstOrDefault<int>(sqlSumrows, param: parameters);
+            responseDTO.SumRows = sumRows;
+            return responseDTO;
+        }
     }
 }

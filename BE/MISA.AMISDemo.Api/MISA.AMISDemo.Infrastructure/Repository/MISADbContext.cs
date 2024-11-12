@@ -69,5 +69,11 @@ namespace MISA.AMISDemo.Infrastructure.Repository
             _dbContext.Transaction.Commit();
             return res;
         }
+
+        public object? CheckExists(string column, string value, string? returnValue)
+        {
+            object? exists = _dbContext.CheckExists<T>(column, value, returnValue);
+            return exists;
+        }
     }
 }

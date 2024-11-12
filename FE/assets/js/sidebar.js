@@ -1,4 +1,4 @@
-import { LoadContainer } from "./employeePage.js";
+import { loadContainer } from "./employeePage.js";
 import { setPreviousApi, paginate } from "./service.js";
 import { getBranch } from "./header.js";
 import { getCurrentPage, getIsDesc, getLimit } from "./renderDataTable.js";
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const CONTAINER = document.getElementById('container');
             switch (PAGE) {
                 case 'Employee':
-                    LoadContainer();
+                    loadContainer();
                     setPreviousApi('')
                     let limit;
                     const SAVEDLIMIT = Cookies.get('rowsPerPageLimit');

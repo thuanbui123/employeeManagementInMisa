@@ -11,10 +11,11 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("56a212cf-04ad-42a6-ab64-7d142b97f254")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("MISA.AMISDemo.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3b4bcc6002d6ae221b02fb0d0b54d40f0bed7fdc")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+835b8ae55b7a3865fcce94e6d99efad318b26cd8")]
 [assembly: System.Reflection.AssemblyProductAttribute("MISA.AMISDemo.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MISA.AMISDemo.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

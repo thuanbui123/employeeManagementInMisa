@@ -17,7 +17,7 @@ export function showDialog (data ={}, index) {
         <div class="dialog">
             <div class="dialog__header">
             <p>${data.title}</p>
-            <button class="close__dialog" tabindex="1">
+            <button class="close__dialog" tabindex="1" title="ESC">
                 <img src="./assets/icon/close-48.png"/>
             </button>
             </div>
@@ -25,7 +25,7 @@ export function showDialog (data ={}, index) {
                 <p>${data.description}</p>
             </div>
             <div class="dialog__footer">
-                <button class="cancel" tabindex="2">Không</button>
+                <button class="cancel" tabindex="2" title="F9">Không</button>
                 <button class="ok tabindex="3">Có</button>
             </div>
         </div>
@@ -97,7 +97,7 @@ export function showDialog (data ={}, index) {
             error: function (error) {
                 toast({
                     title: 'Thất bại!', 
-                    message:'Sửa nhân viên thất bại',
+                    message:'Xóa nhân viên thất bại',
                     type: 'error',
                     duration: 3000
                 })

@@ -111,6 +111,47 @@
   },
   {
     "ContainingType": "MISA.AMISDemo.Api.Controllers.EmployeesController",
+    "Method": "Get",
+    "RelativePath": "api/v1/employees/filter",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "filter-by",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "filter-condition",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "value",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "limit",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "offset",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "is-desc",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MISA.AMISDemo.Api.Controllers.EmployeesController",
     "Method": "FilterByBranch",
     "RelativePath": "api/v1/employees/filter-by-branch",
     "HttpMethod": "GET",

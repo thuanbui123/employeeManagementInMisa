@@ -1,14 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using MISA.AMISDemo.Core.DTOs;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Text.Json.Nodes;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace MISA.AMISDemo.Core.Exceptions
 {

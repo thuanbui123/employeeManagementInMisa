@@ -142,7 +142,7 @@ export function showPopup(data = {}) {
         <div class="modal">
                 <div class="modal__header">
                     <p>Thông tin nhân viên</p>
-                    <button class="close" tabindex="21">
+                    <button class="close" tabindex="21" title="ESC">
                         <img src="./assets/icon/close-48.png" />
                     </button>
                 </div>
@@ -175,7 +175,7 @@ export function showPopup(data = {}) {
                         <div class="form-group">
                             <label>Giới tính</label>
                             <div class="option">
-                                <input tabindex="4" type="radio" id="male" name="sex" checked ${sex === "Nam" ? "checked" : ''} value="Nam"/>
+                                <input tabindex="4" type="radio" id="male" name="sex" ${sex === "Nam" ? "checked" : ''} value="Nam"/>
                                 <label for="male">Nam</label><br>
                                 <input tabindex="5" type="radio" id="female" name="sex" ${sex === "Nữ" ? "checked" : ''} value="Nữ"/>
                                 <label for="female">Nữ</label><br>
@@ -262,6 +262,7 @@ export function showPopup(data = {}) {
                             <input tabindex="14" type = "tel"
                                 required
                                 title="Đây là trường bắt buộc!"
+                                oninput="validateNumberPhoneInput(this)" 
                                 oninvalid="this.setCustomValidity('Vui lòng nhập số điện thoại hợp lệ!')"
                                 id="numberPhone" name="numberPhone" 
                                 value="${(data !==  null && data.phoneNumber !== undefined) ? data.phoneNumber : ''}" 
@@ -279,8 +280,7 @@ export function showPopup(data = {}) {
                             <input tabindex="16" type = "email"
                                 required
                                 title="Đây là trường bắt buộc!"
-                                oninvalid="this.setCustomValidity('Vui lòng nhập email hợp lệ!')" 
-                                oninput="validateEmailInput(this)"
+                                oninvalid="this.setCustomValidity('Vui lòng nhập email hợp lệ!')"
                                 id="email" name="email" value="${(data !==  null && data.email !== undefined) ? data.email : ''}" 
                             />
                         </div>
@@ -316,8 +316,8 @@ export function showPopup(data = {}) {
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <input tabindex="21" class = "btnClose" type="button" value="Hủy"/>
-                        <input tabindex="20" class = "btnSave" data-tooltip="CTRL + F8" type="submit" value="Cất"/>
+                        <input tabindex="21" class = "btnClose" title="F9" type="button" value="Hủy"/>
+                        <input tabindex="20" class = "btnSave" title="F8" type="submit" value="Cất"/>
                     </div>
                 </form>        
             </div>
@@ -366,18 +366,24 @@ export function showPopup(data = {}) {
 
     const FORM = document.querySelector('.form');
 
-    document.onkeydown = function (e) {
-        if (e.ctrlKey && e.keyCode === 119) {
+    document.addEventListener('keyup', function (e) {
+        if (e.keyCode === 119) {
             e.preventDefault();
             // Gọi hàm submit của FORM để lưu thông tin
             FORM.dispatchEvent(new Event('submit'));
+        } else if (e.keyCode === 120 || e.keyCode === 27) {
+            e.preventDefault();
+            const POPUP = document.querySelector('.popup');
+            POPUP.classList.remove('open');
+            const DIALOGAREA = document.querySelector(".dialog-area");
+            DIALOGAREA.classList.remove('open');
         }
-    }
+    });
 
     FORM.addEventListener('submit', function (e) {
         e.preventDefault();
         const EMPLOYEE = getValueForm();
-
+        NUMBERPHONE.dispatchEvent(new Event('input'))
         if (code === undefined) {
             $.ajax({
                 url: 'https://localhost:7004/api/v1/employees', // Địa chỉ API
@@ -405,7 +411,7 @@ export function showPopup(data = {}) {
                 error: function (error) {
                     toast({
                         title: 'Thất bại!', 
-                        message:'Thêm nhân viên thất bại',
+                        message: JSON.parse(error.responseText).Errors[0],
                         type: 'error',
                         duration: 3000
                     })
@@ -441,10 +447,10 @@ export function showPopup(data = {}) {
                 error: function (error) {
                     toast({
                         title: 'Thất bại!', 
-                        message:'Sửa nhân viên thất bại',
+                        message: JSON.parse(error.responseText).Errors[0],
                         type: 'error',
                         duration: 3000
-                    })
+                    });
                 }
             })
         }

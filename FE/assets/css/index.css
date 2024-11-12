@@ -337,10 +337,11 @@ body {
 
 .content__header .header__right .import,
 .content__header .header__right .refresh,
-.content__header .header__right .export {
+.content__header .header__right .export,
+.content__header .header__right .filter-btn {
     position: relative;
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
     border-color: transparent;
     border-radius: 8px;
     cursor: pointer;
@@ -358,7 +359,12 @@ body {
     pointer-events: none;
 }
 
+.header__right .filter-btn i {
+    font-size: 20px;
+}
+
 .header__right .export,
+.header__right .filter-btn,
 .header__right .refresh {
     margin-left: 8px;
 }
@@ -412,6 +418,7 @@ td:first-child {
 
 table th,
 table td {
+    font-size: 16px;
     box-sizing: border-box;
 }
 
@@ -668,7 +675,6 @@ table .row:hover {
 .modal-footer .btnSave:hover::after,
 .row .delete-btn:hover::after,
 .row .edit-btn:hover::after {
-    content: attr(data-tooltip);
     position: absolute;
     top: 0px;
     background-color: #333;
@@ -1405,3 +1411,17 @@ table .row:hover {
 }
 
 /* end report page */
+
+/*Start filter
+*/
+
+.filter-area {
+    position: absolute;
+    top: 135px;
+    right: 20px;
+    z-index: 100;
+    border-radius: 4px;
+    box-shadow: 5px 5px 8px 10px rgba(0, 0, 0, 0.1);
+}
+
+/*End filter*/

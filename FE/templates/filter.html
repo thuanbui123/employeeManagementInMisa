@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filter</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .filter {
+            width: 312px;
+            background-color: #fff;
+            padding: 20px 0 10px 0;
+            z-index: 1000;
+        }
+        
+        .filter-content,
+        .filter-footer {
+            padding: 0px 17px 0px 15px;
+        }
+
+        .filter .filter-by .filter-by-text,
+        .filter .filter-condition .filter-condition-text{
+            color: #333;
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .filter .filter-by .filter-by-value,
+        .filter .filter-condition .filter-condition-value,
+        .filter .filter-input-value {
+            height: 36px;
+            width: 280px;
+            font-size: 16px;
+            margin-bottom: 12px;
+            border-radius: 4px;
+            padding: 0 8px;
+        }
+
+        .filter .filter-footer {
+            height: 56px;
+            border-top: 1px solid #ccc;
+            background-color: #f5f4f4;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .filter .filter-footer button {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 9px 16px;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .filter .filter-footer .apply-filter {
+            margin-left: 12px;
+            background-color: #8433FF;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="filter">
+        <div class="filter-content">
+            <div class="filter-by">
+                <p class="filter-by-text">
+                    Lọc theo
+                </p>
+                <select class="filter-by-value">
+                    <option>-------------</option>
+                    <option value="department">Phòng ban</option>
+                    <option value="position">Chức vụ</option>
+                </select>
+            </div>
+            <div class="filter-condition">
+                <p class="filter-condition-text">Điều kiện lọc</p>
+                <select class="filter-condition-value">
+                    <option>-------------</option>
+                    <option value="contain">Chứa</option>
+                    <option value="start-with">Bắt đầu bằng</option>
+                    <option value="end-with">Kết thúc bằng</option>
+                </select>
+            </div>
+            <input type="text" class="filter-input-value" placeholder="Nhập giá trị"/>
+        </div>
+        <div class="filter-footer">
+            <button class="cancel-filter">Bỏ lọc</button>
+            <button class="apply-filter">Áp dụng</button>
+        </div>
+    </div>
+</body>
+</html>

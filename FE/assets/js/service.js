@@ -115,10 +115,7 @@ export function validateNumberPhoneInput (input) {
  */
 function validateIdentityNumber(identityNumber) {
     return String(identityNumber)
-        .toLowerCase()
-        .match(
-            /^\d{12}$|^(0[1-9]{1}[0-9]{0,3}[0-9]{5})$|^(0[1-9]{1}[0-9]{0,3}[0-9]{9})$/
-        );
+        .match(/^\d{12}$/);
 }
 
 /**

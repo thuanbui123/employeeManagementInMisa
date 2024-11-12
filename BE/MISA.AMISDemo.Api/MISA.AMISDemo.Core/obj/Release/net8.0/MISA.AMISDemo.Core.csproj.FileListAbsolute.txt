@@ -1,0 +1,15 @@
+E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Core\bin\Release\net8.0\MISA.AMISDemo.Core.deps.json
+E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Core\bin\Release\net8.0\MISA.AMISDemo.Core.dll
+E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Core\bin\Release\net8.0\MISA.AMISDemo.Core.pdb
+E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Core\obj\Release\net8.0\MISA.AMISDemo.Core.csproj.AssemblyReference.cache
+E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Core\obj\Release\net8.0\MISA.AMISDemo.Core.Resource.Resource.resources
+E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Core\obj\Release\net8.0\MISA.AMISDemo.Core.csproj.GenerateResource.cache
+E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Core\obj\Release\net8.0\MISA.AMISDemo.Core.GeneratedMSBuildEditorConfig.editorconfig
+E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Core\obj\Release\net8.0\MISA.AMISDemo.Core.AssemblyInfoInputs.cache
+E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Core\obj\Release\net8.0\MISA.AMISDemo.Core.AssemblyInfo.cs
+E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Core\obj\Release\net8.0\MISA.AMISDemo.Core.csproj.CoreCompileInputs.cache
+E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Core\obj\Release\net8.0\MISA.AMISDemo.Core.sourcelink.json
+E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Core\obj\Release\net8.0\MISA.AMISDemo.Core.dll
+E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Core\obj\Release\net8.0\refint\MISA.AMISDemo.Core.dll
+E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Core\obj\Release\net8.0\MISA.AMISDemo.Core.pdb
+E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Core\obj\Release\net8.0\ref\MISA.AMISDemo.Core.dll

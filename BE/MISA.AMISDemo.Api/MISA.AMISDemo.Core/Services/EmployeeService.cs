@@ -6,6 +6,7 @@ using MISA.AMISDemo.Core.DTOs;
 using MISA.AMISDemo.Core.Entities;
 using MISA.AMISDemo.Core.Exceptions;
 using MISA.AMISDemo.Core.Interfaces;
+using MISA.AMISDemo.Core.MISAEnum;
 using OfficeOpenXml;
 using System.Text.RegularExpressions;
 
@@ -51,16 +52,35 @@ namespace MISA.AMISDemo.Core.Services
                    Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.IgnoreCase);
         }
 
+        /// <summary>
+        /// Hàm kiểm tra tính hợp lệ của số điện thoại
+        /// Số điện thoại được coi là hợp lệ khi nó khác chuỗi rỗng, không chứa khoảng trắng và thỏa mãn điều kiện sau
+        /// - Các đầu số điện thoại hợp lệ: 03, 05, 07, 08, 09, 012, 016, 018, 019
+        /// và đảm bảo phần tiếp theo là 8 chữ số bất kỳ từ 0-9
+        /// </summary>
+        /// <param name="phoneNumber">Số điện thoại cần kiểm tra tính hợp lệ</param>
+        /// <returns>
+        /// true - khi số điện thoại hợp lệ.
+        /// Ngược lại trả về false
+        /// </returns>
         private bool IsValidPhoneNumber (string phoneNumber)
         {
             return !string.IsNullOrWhiteSpace(phoneNumber) &&
-                Regex.IsMatch(phoneNumber, @"(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})$", RegexOptions.IgnoreCase);  
+                Regex.IsMatch(phoneNumber, @"(03|05|07|08|09)+([0-9]{8})$", RegexOptions.IgnoreCase);  
         }
 
+        /// <summary>
+        /// Kiểm tra tính hợp lệ của số điện thoại bàn
+        /// </summary>
+        /// <param name="landline">Số điện thoại bàn cần kiểm tra</param>
+        /// <returns>
+        /// true - nếu số điện thoại là null, rỗng hoặc khớp với định dạng hợp lệ
+        /// Ngược lại trả về false
+        /// </returns>
         private bool IsValidLandLine(string landline)
         {
             return string.IsNullOrEmpty(landline) ||
-                Regex.IsMatch(landline, @"(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})$", RegexOptions.IgnoreCase);
+                Regex.IsMatch(landline, @"(03|05|07|08|09)+([0-9]{8})$", RegexOptions.IgnoreCase);
         }
 
         /// <summary>
@@ -93,12 +113,14 @@ namespace MISA.AMISDemo.Core.Services
                 Regex.IsMatch(bankAccount, @"^\d{8,15}$", RegexOptions.IgnoreCase);
         }
 
-        private string? IsValidPosition (string  position)
-        {
-            var isCheck = _positionRepository.CheckExists(position);
-            return isCheck;
-        }
-
+        /// <summary>
+        /// Kiểm tra tính hợp lệ của tên chi nhánh
+        /// </summary>
+        /// <param name="branch">Tên chi nhánh cần kiểm tra</param>
+        /// <returns>
+        /// true - tên chi nhánh có trong hệ thống.
+        /// Ngược lại trả về false
+        /// </returns>
         private bool IsValidBranch (string branch)
         {
             if (branch == null || (branch != "Hà Nội" && branch != "TP. Hồ Chí Minh"))
@@ -108,12 +130,14 @@ namespace MISA.AMISDemo.Core.Services
             return true;
         }
 
-        private string? IsValidDepartment (string name)
-        {
-            var isCheck = _departmentRepository.CheckExists (name);
-            return isCheck;
-        }
-
+        /// <summary>
+        /// Kiểm tra tính hợp lệ của giới tính
+        /// </summary>
+        /// <param name="gender">Giới tính cần kiểm tra</param>
+        /// <returns>
+        /// true - giới tính hợp lệ.
+        /// Ngược lại trả về false
+        /// </returns>
         private bool IsValidGender (string gender)
         {
             if (gender == null || (gender.ToLower() != "nam" && gender.ToLower() != "nữ" && gender.ToLower() != "khác")) {
@@ -122,6 +146,14 @@ namespace MISA.AMISDemo.Core.Services
             return true;
         }
 
+        /// <summary>
+        /// Kiểm tra tính hợp lệ của đối tượng nhân viên
+        /// Kiểm tra xem mã nhân viên đã tồn tại trong hệ thống hay chưa
+        /// </summary>
+        /// <param name="entity">Đối tượng nhân viên cần kiểm tra</param>
+        /// <exception cref="MISAValidateException">
+        /// Ném ra một ngoại lệ nếu mã nhân viên tồn tại 
+        /// </exception>
         protected override void ValidateObject(Employee entity)
         {
             var isDuplicate = _employeeRepository.CheckDuplicateCode(entity.EmployeeCode);
@@ -143,9 +175,98 @@ namespace MISA.AMISDemo.Core.Services
 
         public int InsertByDTO(EmployeeDTO dto)
         {
+
+            if (_employeeRepository.CheckDuplicateCode(dto.EmployeeCode))
+            {
+                throw new MISAValidateException(MISAConst.ERROR_EMPLOYEECODE_ALREADY_EXISTS);
+            }
+
+            ValidateInput(dto);
             dto.EmployeeID = Guid.NewGuid();
             var res = _employeeRepository.InsertByDTO(dto);
             return res;
+        }
+
+        public void ValidateInput (EmployeeDTO dto)
+        {
+            if (!IsValidEmail(dto.Email))
+            {
+                throw new MISAValidateException(MISAConst.ERROR_INVALID_EMAIL);
+            }
+
+            if (!IsValidIdentityNumber(dto.IdentityNumber))
+            {
+                throw new MISAValidateException(MISAConst.ERROR_INVALID_IDENTITY_NUMBER);
+            }
+
+            if (!IsValidPhoneNumber(dto.PhoneNumber))
+            {
+                throw new MISAValidateException(MISAConst.ERROR_INVALID_PHONENUMBER);
+            }
+
+            if (!IsValidLandLine(dto.Landline))
+            {
+                throw new MISAValidateException(MISAConst.ERROR_INVALID_LANDLINE);
+            }
+
+            if (!string.IsNullOrEmpty(dto.Salary.ToString()))
+            {
+                if (decimal.TryParse(dto.Salary.ToString(), out var result) && result >= 0)
+                {
+                    dto.Salary = result;
+                }
+                else
+                {
+                    throw new MISAValidateException(MISAConst.ERROR_INVALID_SALARY);
+                }
+            }
+
+            if (dto.DateOfBirth != null)
+            {
+                if (dto.DateOfBirth >= DateTime.Now || (DateTime.Now.Year - dto.DateOfBirth.Value.Year) < 18)
+                {
+                    throw new MISAValidateException(MISAConst.ERROR_INVALID_DATEOFBIRTH);
+                }
+            }
+
+            if (dto.IdentityDate != null)
+            {
+                if (dto.IdentityDate >= DateTime.Now)
+                {
+                    throw new MISAValidateException (MISAConst.ERROR_INVALID_IDENTITYDATE);
+                }
+            }
+
+            if (!IsValidBankAccount(dto.BankAccount))
+            {
+                throw new MISAValidateException (MISAConst.ERROR_INVALID_BANKACCOUNT);
+            }
+
+            if (!string.IsNullOrEmpty(dto.Branch))
+            {
+                if (!IsValidBranch(dto.Branch))
+                {
+                    throw new MISAValidateException(MISAConst.ERROR_BRANCHNAME_NOT_EXISTS);
+                }
+            }
+
+            if (!string.IsNullOrEmpty(dto.Gender))
+            {
+                if (!IsValidGender(dto.Gender))
+                {
+                    throw new MISAValidateException(MISAConst.ERROR_GENDER_NOT_EXISTS);
+                }
+            }
+
+            if (dto.DepartmentCode != null && _departmentRepository.CheckExists("departmentCode", dto.DepartmentCode, null) == null)
+            {
+                throw new MISAValidateException (MISAConst.ERROR_DEPARTMENT_NOT_EXISTS);
+            }
+
+            if (dto.PositionCode != null && _positionRepository.CheckExists("positionCode", dto.PositionCode, null) == null)
+            {
+                throw new MISAValidateException (MISAConst.ERROR_POSITION_NOT_EXISTS);
+            }
         }
 
         public string GenerateNewCode ()
@@ -157,8 +278,9 @@ namespace MISA.AMISDemo.Core.Services
             return "EMP" + newNumber;
         }
 
-        public int UpdateByDTO(EmployeeDTO dto, String primaryKey)
+        public int UpdateByDTO(EmployeeDTO dto, string primaryKey)
         {
+            ValidateInput(dto);
             bool isExistsEmployee = _employeeRepository.ExistsByCode(dto.EmployeeCode);
             if (!isExistsEmployee)
             {
@@ -222,8 +344,8 @@ namespace MISA.AMISDemo.Core.Services
                                     var bankAccount = GetCellValue(worksheet, row, 16);
                                     var bankName = GetCellValue(worksheet, row, 17);
                                     var branch = GetCellValue(worksheet, row, 18);
-                                    var departmentCode = IsValidDepartment(department);
-                                    var positionCode = IsValidPosition(position);
+                                    var departmentCode = _departmentRepository.CheckExists("name", department, "departmentCode");
+                                    var positionCode = _positionRepository.CheckExists("name", position, "positionCode");
                                     decimal? parsedSalary = null;
                                     // Thực hiện các kiểm tra và trả về false nếu gặp lỗi
                                     if (employeeCode == null)
@@ -310,10 +432,10 @@ namespace MISA.AMISDemo.Core.Services
                                         DateOfBirth = dateOfBirth,
                                         Gender = gender,
                                         Address = address,
-                                        PositionCode = positionCode,
+                                        PositionCode = positionCode?.ToString(),
                                         IdentityNumber = identityNumber,
                                         IdentityDate = identityDateTime,
-                                        DepartmentCode = departmentCode,
+                                        DepartmentCode = departmentCode?.ToString(),
                                         IdentityPlace = identityPlace,
                                         Salary = parsedSalary ?? 0,
                                         PhoneNumber = phoneNumber,

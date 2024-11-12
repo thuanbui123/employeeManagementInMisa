@@ -1,3 +1,4 @@
+import { loadFilterHTML } from "./filter.js";
 import { getBranch, setBranch } from "./header.js";
 import { showImportEmployee } from "./importEmployeePage.js";
 import { showPopup } from "./popup.js";
@@ -11,11 +12,11 @@ let timeoutId;
  * tiêu đề, bảng dữ liệu và các nút chức năng(Thêm mới, REFRESH, nhập khẩu, xuất khẩu nhân viên)
  * Đồng thời hàm cũng thêm các sự kiện cho các nút này để xử lý các thao tác tương ứng
  */
-export function LoadContainer() {
+export function loadContainer() {
     const CONTAINERHTML = `
         <div class="sub-header">
                 <p class="title">Quản lý Nhân viên</p>
-                <button class="add">
+                <button class="add" title ="ins">
                     <img src="./assets/icon/add.png" alt="Thêm mới"/>
                     <p>Thêm mới</p>
                 </button>
@@ -23,7 +24,7 @@ export function LoadContainer() {
         <div class="content">
             <div class="content__header">
                 <div class="header__left">
-                    <input type="text" name="search" id="search" placeholder="Tìm kiếm theo mã, họ tên">
+                    <input type="text" name="search" id="search" placeholder="Tìm kiếm theo mã, họ tên" title="ctrl+F3">
                     <img src="./assets/icon/search.png" alt="Tìm kiếm" />
                 </div>
                 <div class="header__right">
@@ -32,6 +33,9 @@ export function LoadContainer() {
                     </button>
                     <button class="export">
                         <img src="./assets/icon/export-excel-50.png" alt="export">
+                    </button>
+                    <button class="filter-btn">
+                        <i class="icofont-filter"></i>
                     </button>
                     <button class="refresh">
                         <img src="./assets/icon/refresh.png" alt="refresh">
@@ -62,7 +66,7 @@ export function LoadContainer() {
         </div>
         <div class="popup"></div>
         <div class="dialog-area"></div>
-        <div class="ie-wrapper"></div>        
+        <div class="ie-wrapper"></div>      
     `;
     document.getElementById('container').innerHTML = CONTAINERHTML;
     const REFRESH = document.getElementsByClassName('refresh')[0];
@@ -97,7 +101,12 @@ export function LoadContainer() {
 
     IMPORTBTN.addEventListener('click', function () {
         showImportEmployee()
-    })
+    });
+
+    const FILTERBTN = document.getElementsByClassName('filter-btn')[0];
+    FILTERBTN.addEventListener('click', function () {
+        loadFilterHTML()
+    });
 
     const EXPORTBTN = document.querySelector('.export');
     EXPORTBTN.addEventListener('click', async function () {

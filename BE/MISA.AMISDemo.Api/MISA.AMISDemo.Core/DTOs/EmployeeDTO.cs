@@ -12,6 +12,8 @@ namespace MISA.AMISDemo.Core.DTOs
     public class EmployeeDTO
     {
         public Guid? EmployeeID { get; set; }
+
+        [Required(ErrorMessage = MISAConst.ERROR_EMPLOYEECODE_EMPTY)]
         public string? EmployeeCode { get; set; }
 
         [Required(ErrorMessage = MISAConst.ERROR_EMPLOYEENAME_EMPTY)]

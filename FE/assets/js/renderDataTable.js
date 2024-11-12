@@ -158,7 +158,7 @@ export function renderTable(data) {
             <td>${index + 1}</td> 
             <td>${employee.employeeCode}</td> 
             <td>${employee.fullName}</td> 
-            <td>${employee.gender}</td> 
+            <td>${employee.gender !== null ? employee.gender : ''}</td> 
             <td>${(employee.dateOfBirth !== "1970-01-01T00:00:00" && employee.dateOfBirth !== null) ? new Date(employee.dateOfBirth).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' }) : ''}</td> 
             <td>${employee.email}</td> 
             <td class="actions">
@@ -166,10 +166,10 @@ export function renderTable(data) {
                     ${(employee.address !== 'null' && employee.address !== null) ? employee.address : ''}
                 </span>
                 <div class ='act'>
-                    <button class="edit-btn" style="display: none;" data-tooltip="Ctrl + F2">
+                    <button class="edit-btn" style="display: none;" title="ctrl + F2">
                         <img src="./assets/icon/info-48.png"/>
                     </button>
-                    <button class="delete-btn" style="display: none;" data-tooltip="delete">
+                    <button class="delete-btn" style="display: none;" title="delete">
                         <img src="./assets/icon/delete-48.png"/>
                     </button>
                 </div>
@@ -181,6 +181,15 @@ export function renderTable(data) {
             showPopup(data[index])    
         }
         TABLEBODY.appendChild(ROW);
+    });
+
+    document.addEventListener('keyup', function (e) {
+        if (e.keyCode === 45) {
+            e.preventDefault();
+            showPopup({});
+        } else if (e.ctrlKey && e.keyCode === 114) {
+            document.querySelector('#search').focus();
+        }
     });
 }
 
@@ -231,18 +240,19 @@ function myFunction(index) {
         showDialog({title: 'Xác nhận xóa?', description: `Bạn có chắc chắn muốn xóa nhân viên ${data[index].employeeCode} không?`}, index);
     });
 
-    document.onkeydown = function(e) {
-        if (e.ctrlKey && e.keyCode === 113) {
+    document.addEventListener('keyup', function(e) {
+        if (e.keyCode === 113) {
             e.preventDefault();
             showPopup(data[index])
-        } else if (e.ctrlKey && e.keyCode === 46) {
+        } else if (e.keyCode === 46) {
             e.preventDefault();
             showDialog({title: 'Xác nhận xóa?', description: `Xóa nhân viên ${data[index].employeeCode} ra khỏi hệ thống?`} ,index);
-        } else if (e.ctrlKey && e.keyCode === 118) {
+        } else if (e.keyCode === 120 || e.keyCode === 27) {
+            e.preventDefault();
             const POPUP = document.querySelector('.popup');
             POPUP.classList.remove('open');
             const DIALOGAREA = document.querySelector(".dialog-area");
             DIALOGAREA.classList.remove('open');
         }
-    }
+    });
 }
