@@ -510,12 +510,35 @@ td.actions {
     white-space: nowrap;
     position: relative;
 }
+.row {
+    position: relative;
+}
 
-td.actions .act {
+.row .act {
     display: flex;
     justify-content: center;
     position: absolute;
-    right: -200px;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 10px;
+}
+
+.row .act button {
+    height: 32px;
+    width: 32px;
+    border-radius: 4px;
+    text-align: center;
+    padding: 0;
+    border: 1px solid #ccc;
+}
+
+.row .act button:last-child {
+    margin-left: 8px;
+}
+
+.row .act button img {
+    width: 24px;
+    height: 24px;
 }
 
 table .row td:last-child .edit-btn {

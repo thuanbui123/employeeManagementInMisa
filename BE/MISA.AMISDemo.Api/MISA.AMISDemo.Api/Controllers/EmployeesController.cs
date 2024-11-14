@@ -224,6 +224,10 @@ namespace MISA.AMISDemo.Api.Controllers
         /// <param name="filterBy">Tên cột muốn lọc</param>
         /// <param name="filterCondition">Điều kiện lọc</param>
         /// <param name="value">Giá trị cần lọc theo điều kiện</param>
+        /// <param name="branch">Tên chi nhánh cần lọc nhân viên</param>
+        /// <param name="limit">Số lượng bản ghi của một trang</param>
+        /// <param name="offset">Vị trí bắt đầu lấy dữ liệu</param>
+        /// <param name="isDesc">Xác định thứ tự sắp xếp giảm dần nếu isDesc = true</param>
         /// <returns>
         /// Trả về mã 200 và danh sách nhân viên thỏa mãn điều kiện lọc
         /// </returns>
@@ -234,9 +238,11 @@ namespace MISA.AMISDemo.Api.Controllers
             [FromQuery(Name ="value")]string value,
             [FromQuery(Name ="limit")]int limit,
             [FromQuery(Name ="offset")]int offset,
-            [FromQuery(Name ="is-desc")] bool isDesc)
+            [FromQuery(Name ="is-desc")] bool isDesc,
+            [FromQuery(Name ="branch")] string branch
+            )
         {
-            var res = _employeeRepository.FilterEmployeeResponse(filterBy, filterCondition, value, limit, offset, isDesc);
+            var res = _employeeRepository.FilterEmployeeResponse(filterBy, filterCondition, branch, value, limit, offset, isDesc);
             return StatusCode(200, res);
         }
     }

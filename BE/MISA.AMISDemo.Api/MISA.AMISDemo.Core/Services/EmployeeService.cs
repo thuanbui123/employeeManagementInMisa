@@ -163,9 +163,9 @@ namespace MISA.AMISDemo.Core.Services
             }
         }
 
-        public EmployeeListResponseDTO? Search(string query, string branch, int limit, int offset)
+        public EmployeeListResponseDTO<EmployeeResponseDTO>? Search(string query, string branch, int limit, int offset)
         {
-            EmployeeListResponseDTO result = _employeeRepository.Search("employeeCode", query, branch, limit, offset);
+            EmployeeListResponseDTO<EmployeeResponseDTO> result = _employeeRepository.Search("employeeCode", query, branch, limit, offset);
             if (result == null || result.Employees.Count() == 0)
             {
                 result = _employeeRepository.Search("fullName", query, branch, limit, offset);

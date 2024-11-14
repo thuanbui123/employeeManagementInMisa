@@ -1,0 +1,89 @@
+.settings-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.settings-container h2 {
+    font-size: 28px;
+    text-align: center;
+}
+
+.column-selector {
+    margin-top: 20px;
+    margin-left: 50%;
+    transform: translateX(-40%);
+}
+
+#select-all-btn,
+#deselect-all-btn {
+    font-size: 16px;
+    padding: 12px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all .3s ease;
+}
+
+#select-all-btn:hover,
+#deselect-all-btn:hover {
+    opacity: .7;
+}
+
+#select-all-btn {
+    background-color: #5e25b3;
+    border: 1px solid #7e62a8;
+    outline: none;
+    color: #fff;
+}
+
+#deselect-all-btn {
+    background-color: transparent;
+    border: 1px solid #ccc;
+    outline: none;
+    margin-left: 8px;
+}
+
+#columnSelector {
+    margin-top: 16px;
+}
+
+#columnSelector label {
+    display: block;
+    margin: 12px 0px;
+    font-size: 18px;
+}
+
+.settings-container .actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    margin-left: 50%;
+    transform: translateX(-40%);
+}
+
+.settings-container .actions button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: all .3s ease;
+}
+
+.settings-container .actions button:hover {
+    opacity: .7;
+}
+
+#saveBtn {
+    background-color: #9653fa;
+    color: white;
+}
+
+#cancelBtn {
+    background-color: #c8afee;
+    color: #111;
+    margin-left: 28px;
+}

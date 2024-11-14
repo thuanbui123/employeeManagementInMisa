@@ -59,15 +59,22 @@ namespace MISA.AMISDemo.Infrastructure.Repository
             return index >= 0;
         }
 
-        public EmployeeListResponseDTO FilterByBranch(string branch, int limit, int offset)
+        public EmployeeListResponseDTO<EmployeeResponseDTO>? FilterByBranch(string branch, int limit, int offset)
         {
-            var sql = "SELECT * FROM Employee e WHERE e.Branch = @Branch ORDER BY CAST(SUBSTRING(EmployeeCode, 4, LENGTH(EmployeeCode)) AS UNSIGNED) LIMIT @Limit OFFSET @Offset";
+            var sql = $"SELECT e.EmployeeCode, e.FullName, e.DateOfBirth, e.Gender, e.Email, e.Address, e.PhoneNumber, " +
+                $"e.Landline, e.IdentityNumber, e.IdentityPlace, e.IdentityDate, e.Salary, " +
+                $"e.BankAccount, e.BankName, e.Branch, d.name as Department, p.name as Position " +
+                $"FROM Employee e " +
+                $"LEFT JOIN department d ON e.departmentCode = d.departmentcode " +
+                $"LEFT JOIN  position p on e.positionCode = p.positioncode " +
+                "WHERE e.Branch = @Branch " +
+                "ORDER BY CAST(SUBSTRING(EmployeeCode, 4, LENGTH(EmployeeCode)) AS UNSIGNED) LIMIT @Limit OFFSET @Offset";
             var parameters = new DynamicParameters();
             parameters.Add("@Branch", branch);
             parameters.Add("@Limit", limit);
             parameters.Add("@Offset", offset);
-            var res = _dbContext.Connection.Query<Employee>(sql, param: parameters);
-            EmployeeListResponseDTO filter = new EmployeeListResponseDTO();
+            var res = _dbContext.Connection.Query<EmployeeResponseDTO>(sql, param: parameters);
+            EmployeeListResponseDTO<EmployeeResponseDTO> filter = new EmployeeListResponseDTO<EmployeeResponseDTO>();
             filter.Employees = res;
             filter.SumRows = res.ToList().Count();
             return filter;
@@ -80,28 +87,54 @@ namespace MISA.AMISDemo.Infrastructure.Repository
             return res;
         }
 
-        public EmployeeListResponseDTO Paginate(string? branch, int limit, int offset, bool isDesc)
+        public EmployeeListResponseDTO<EmployeeResponseDTO> Paginate(string? branch, int limit, int offset, bool isDesc)
         {
             var sql = "";
             var sqlSumrows = "";
             bool isBranchEmptyOrFindAll = branch == null || string.IsNullOrWhiteSpace(branch) || branch == "find-all";
             if (isBranchEmptyOrFindAll && !isDesc)
             {
-                sql = $"SELECT * FROM Employee ORDER BY Cast(SUBSTRING(EmployeeCode, 4, LENGTH(EmployeeCode)) AS UNSIGNED) LIMIT @Limit OFFSET @Offset;";
+                sql = $"SELECT e.EmployeeCode, e.FullName, e.DateOfBirth, e.Gender, e.Email, e.Address, e.PhoneNumber, " +
+                    $"e.Landline, e.IdentityNumber, e.IdentityPlace, e.IdentityDate, e.Salary, " +
+                    $"e.BankAccount, e.BankName, e.Branch, d.name as Department, p.name as Position " +
+                    $"FROM Employee e " +
+                    $"LEFT JOIN department d ON e.departmentCode = d.departmentcode " +
+                    $"LEFT JOIN  position p on e.positionCode = p.positioncode " +
+                    $"ORDER BY Cast(SUBSTRING(EmployeeCode, 4, LENGTH(EmployeeCode)) AS UNSIGNED) LIMIT @Limit OFFSET @Offset;";
                 sqlSumrows = $"Select count(*) from employee";
             }
             else if (isBranchEmptyOrFindAll && isDesc) 
             {
-                sql = $"SELECT * FROM Employee ORDER BY Cast(SUBSTRING(EmployeeCode, 4, LENGTH(EmployeeCode)) AS UNSIGNED) DESC LIMIT @Limit OFFSET @Offset;";
+                sql = $"SELECT e.EmployeeCode, e.FullName, e.DateOfBirth, e.Gender, e.Email, e.Address, e.PhoneNumber, " +
+                    $"e.Landline, e.IdentityNumber, e.IdentityPlace, e.IdentityDate, e.Salary, " +
+                    $"e.BankAccount, e.BankName, e.Branch, d.name as Department, p.name as Position " +
+                    $"FROM Employee e " +
+                    $"LEFT JOIN department d ON e.departmentCode = d.departmentcode " +
+                    $"LEFT JOIN  position p on e.positionCode = p.positioncode " +
+                    $"ORDER BY Cast(SUBSTRING(EmployeeCode, 4, LENGTH(EmployeeCode)) AS UNSIGNED) DESC LIMIT @Limit OFFSET @Offset;";
                 sqlSumrows = $"Select count(*) from employee";
             }
             else if (!isBranchEmptyOrFindAll && !isDesc)
             {
-                sql = sql = $"SELECT * FROM Employee where branch = @Branch ORDER BY Cast(SUBSTRING(EmployeeCode, 4, LENGTH(EmployeeCode)) AS UNSIGNED) LIMIT @Limit OFFSET @Offset;";
+                sql = sql = $"SELECT e.EmployeeCode, e.FullName, e.DateOfBirth, e.Gender, e.Email, e.Address, e.PhoneNumber, " +
+                    $"e.Landline, e.IdentityNumber, e.IdentityPlace, e.IdentityDate, e.Salary, " +
+                    $"e.BankAccount, e.BankName, e.Branch, d.name as Department, p.name as Position " +
+                    $"FROM Employee e " +
+                    $"LEFT JOIN department d ON e.departmentCode = d.departmentcode " +
+                    $"LEFT JOIN  position p on e.positionCode = p.positioncode " +
+                    $"where branch = @Branch " +
+                    $"ORDER BY Cast(SUBSTRING(EmployeeCode, 4, LENGTH(EmployeeCode)) AS UNSIGNED) LIMIT @Limit OFFSET @Offset;";
                 sqlSumrows = $"Select count(*) from employee where branch = @Branch";
             } else
             {
-                sql = sql = $"SELECT * FROM Employee where branch = @Branch ORDER BY Cast(SUBSTRING(EmployeeCode, 4, LENGTH(EmployeeCode)) AS UNSIGNED) DESC LIMIT @Limit OFFSET @Offset;";
+                sql = sql = $"SELECT e.EmployeeCode, e.FullName, e.DateOfBirth, e.Gender, e.Email, e.Address, e.PhoneNumber, " +
+                    $"e.Landline, e.IdentityNumber, e.IdentityPlace, e.IdentityDate, e.Salary, " +
+                    $"e.BankAccount, e.BankName, e.Branch, d.name as Department, p.name as Position " +
+                    $"FROM Employee e " +
+                    $"LEFT JOIN department d ON e.departmentCode = d.departmentcode " +
+                    $"LEFT JOIN  position p on e.positionCode = p.positioncode " +
+                    $"where branch = @Branch " +
+                    $"ORDER BY Cast(SUBSTRING(EmployeeCode, 4, LENGTH(EmployeeCode)) AS UNSIGNED) DESC LIMIT @Limit OFFSET @Offset;";
                 sqlSumrows = $"Select count(*) from employee where branch = @Branch";
             }
             var parameters = new DynamicParameters();
@@ -111,21 +144,35 @@ namespace MISA.AMISDemo.Infrastructure.Repository
             {
                 parameters.Add("@Branch", branch);
             }
-            var res = _dbContext.Connection.Query<Employee>(sql, parameters);
-            EmployeeListResponseDTO responseDTO = new EmployeeListResponseDTO();
+            var res = _dbContext.Connection.Query<EmployeeResponseDTO>(sql, parameters);
+            EmployeeListResponseDTO<EmployeeResponseDTO> responseDTO = new EmployeeListResponseDTO<EmployeeResponseDTO>();
             responseDTO.Employees = res;
             int sumRows = _dbContext.Connection.QueryFirstOrDefault<int> (sqlSumrows, param: parameters);
             responseDTO.SumRows = sumRows;
             return responseDTO;
         }
 
-        public EmployeeListResponseDTO Search(string column, string value, string branchValue, int limit, int offset)
+        public EmployeeListResponseDTO<EmployeeResponseDTO> Search(string column, string value, string branchValue, int limit, int offset)
         {
-            var sql = $"SELECT * FROM Employee WHERE {column} LIKE @value AND branch = @branchValue ORDER BY CAST(SUBSTRING(EmployeeCode, 4, LENGTH(EmployeeCode)) AS UNSIGNED) LIMIT @Limit OFFSET @Offset;";
+            var sql = $"SELECT e.EmployeeCode, e.FullName, e.DateOfBirth, e.Gender, e.Email, e.Address, e.PhoneNumber, " +
+                $"e.Landline, e.IdentityNumber, e.IdentityPlace, e.IdentityDate, e.Salary, " +
+                $"e.BankAccount, e.BankName, e.Branch, d.name as Department, p.name as Position " +
+                $"FROM Employee e " +
+                $"LEFT JOIN department d ON e.departmentCode = d.departmentcode " +
+                $"LEFT JOIN  position p on e.positionCode = p.positioncode " + 
+                $"WHERE {column} LIKE @value AND branch = @branchValue " +
+                $"ORDER BY CAST(SUBSTRING(EmployeeCode, 4, LENGTH(EmployeeCode)) AS UNSIGNED) LIMIT @Limit OFFSET @Offset;";
             var sqlSumrows = $"Select count(*) from employee where branch = @branchValue";
             if (branchValue == "find-all")
             {
-                sql = $"SELECT * FROM Employee WHERE {column} LIKE @value ORDER BY CAST(SUBSTRING(EmployeeCode, 4, LENGTH(EmployeeCode)) AS UNSIGNED) LIMIT @Limit OFFSET @Offset;";
+                sql = $"SELECT e.EmployeeCode, e.FullName, e.DateOfBirth, e.Gender, e.Email, e.Address, e.PhoneNumber, " +
+                    $"e.Landline, e.IdentityNumber, e.IdentityPlace, e.IdentityDate, e.Salary, " +
+                    $"e.BankAccount, e.BankName, e.Branch, d.name as Department, p.name as Position " +
+                    $"FROM Employee e " +
+                    $"LEFT JOIN department d ON e.departmentCode = d.departmentcode " +
+                    $"LEFT JOIN  position p on e.positionCode = p.positioncode " +
+                    $"WHERE {column} LIKE @value " +
+                    $"ORDER BY CAST(SUBSTRING(EmployeeCode, 4, LENGTH(EmployeeCode)) AS UNSIGNED) LIMIT @Limit OFFSET @Offset;";
                 sqlSumrows = $"Select count(*) from employee";
             }
             var parameters = new DynamicParameters();
@@ -134,9 +181,9 @@ namespace MISA.AMISDemo.Infrastructure.Repository
             parameters.Add("@Limit", limit);
             parameters.Add("@Offset", offset);
 
-            var data = _dbContext.Connection.Query<Employee>(sql, parameters);
+            var data = _dbContext.Connection.Query<EmployeeResponseDTO>(sql, parameters);
             int sumRows = _dbContext.Connection.QueryFirstOrDefault<int>(sqlSumrows, param: parameters);
-            EmployeeListResponseDTO responseDTO = new EmployeeListResponseDTO();
+            EmployeeListResponseDTO<EmployeeResponseDTO> responseDTO = new EmployeeListResponseDTO<EmployeeResponseDTO>();
             responseDTO.Employees = data;
             responseDTO.SumRows = sumRows;
             return responseDTO;
@@ -195,8 +242,8 @@ namespace MISA.AMISDemo.Infrastructure.Repository
             return data;
         }
 
-        public EmployeeListResponseDTO? FilterEmployeeResponse
-            (string filterBy, string filterCondition, string value, int limit, int offset, bool isDesc)
+        public EmployeeListResponseDTO<EmployeeResponseDTO>? FilterEmployeeResponse
+            (string filterBy, string filterCondition, string branch, string value, int limit, int offset, bool isDesc)
         {
             var parameters = new DynamicParameters();
             var filterColumn = "";
@@ -231,20 +278,24 @@ namespace MISA.AMISDemo.Infrastructure.Repository
                 return null;
             }
 
-            var sql = $"SELECT * FROM Employee e " +
+            var sql = $"SELECT e.EmployeeCode, e.FullName, e.DateOfBirth, e.Gender, e.Email, e.Address, e.PhoneNumber, " +
+                $"e.Landline, e.IdentityNumber, e.IdentityPlace, e.IdentityDate, e.Salary, " +
+                $"e.BankAccount, e.BankName, e.Branch, d.name as Department, p.name as Position " +
+                $"FROM Employee e " +
                 $"LEFT JOIN department d ON e.departmentCode = d.departmentcode " +
                 $"LEFT JOIN  position p on e.positionCode = p.positioncode " +
-                $"where {filterColumn} like @FilterByValue " +
+                $"where {filterColumn} like @FilterByValue and branch = @Branch " +
                 $"ORDER BY CAST(SUBSTRING(EmployeeCode, 4, LENGTH(EmployeeCode)) AS UNSIGNED) {sort} " +
                 $"LIMIT @Limit OFFSET @Offset";
             var sqlSumrows = $"Select count(*) from employee e " +
                 $"LEFT JOIN department d ON e.departmentCode = d.departmentcode " +
                 $"LEFT JOIN  position p on e.positionCode = p.positioncode " +
-                $" where {filterColumn} like @FilterByValue";
+                $" where {filterColumn} like @FilterByValue and branch = @Branch";
             parameters.Add("@Limit", limit);
             parameters.Add("@Offset", offset);
-            var res = _dbContext.Connection.Query < Employee>(sql, parameters);
-            EmployeeListResponseDTO responseDTO = new EmployeeListResponseDTO();
+            parameters.Add("@Branch", $"{branch}");
+            var res = _dbContext.Connection.Query < EmployeeResponseDTO>(sql, parameters);
+            EmployeeListResponseDTO<EmployeeResponseDTO> responseDTO = new EmployeeListResponseDTO<EmployeeResponseDTO>();
             responseDTO.Employees = res;
             int sumRows = _dbContext.Connection.QueryFirstOrDefault<int>(sqlSumrows, param: parameters);
             responseDTO.SumRows = sumRows;

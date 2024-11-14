@@ -4,6 +4,7 @@ import { showImportEmployee } from "./importEmployeePage.js";
 import { showPopup } from "./popup.js";
 import { getCurrentPage, getIsDesc, getLimit, setCurrentPage, setIsDesc } from "./renderDataTable.js";
 import { paginate } from "./service.js";
+import { filterColumnSelected } from "./settingPage.js";
 
 let timeoutId;
 
@@ -45,16 +46,8 @@ export function loadContainer() {
             <div class="content__body">
                 <table class="table">
                     <thead class="header">
-                        <th style="width: 5%;">STT</th>
-                        <th style="width: 12%;" class="th-code ${getIsDesc() === 'true' ? 'active' : ''}">
-                            Mã nhân viên
-                            <i class="icofont-caret-up"></i>
-                        </th>
-                        <th style="width: 15%;">Họ và tên</th>
-                        <th style="width: 8%;">Giới tính</th>
-                        <th style="width: 12%;">Ngày sinh</th>
-                        <th style="width: 20%;">Địa chỉ email</th>
-                        <th style="width: 28%;">Địa chỉ</th>
+                        <th>STT</th>
+                        ${renderTableHeader()}
                     </thead>
                     <tbody class="table__body">
                     </tbody>
@@ -68,6 +61,7 @@ export function loadContainer() {
         <div class="dialog-area"></div>
         <div class="ie-wrapper"></div>      
     `;
+    document.getElementById('container').innerHTML = '';
     document.getElementById('container').innerHTML = CONTAINERHTML;
     const REFRESH = document.getElementsByClassName('refresh')[0];
     REFRESH.addEventListener('click', function () {
@@ -82,17 +76,19 @@ export function loadContainer() {
     });
 
     const THCODE = document.querySelector('.th-code');
-    THCODE.addEventListener('click', function() {
-        if (document.querySelector('.th-code.active')) {
-            setIsDesc(false);
-            THCODE.classList.remove('active');
-        } else {
-            setIsDesc(true);
-            THCODE.classList.add('active');
-        }
-        var offset = getCurrentPage()*getLimit();
-        paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${getBranch()}&limit=${getLimit()}&offset=${offset}&is-desc=${getIsDesc()}`);
-    })
+    if (THCODE) {
+        THCODE.addEventListener('click', function() {
+            if (document.querySelector('.th-code.active')) {
+                setIsDesc(false);
+                THCODE.classList.remove('active');
+            } else {
+                setIsDesc(true);
+                THCODE.classList.add('active');
+            }
+            var offset = getCurrentPage()*getLimit();
+            paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${getBranch()}&limit=${getLimit()}&offset=${offset}&is-desc=${getIsDesc()}`);
+        });
+    }
 
     const IMPORTBTN = document.getElementsByClassName('import')[0];
     // IMPORTBTN.addEventListener('click', function() {
@@ -155,14 +151,29 @@ export function loadContainer() {
             searchEmployee(QUERY)
         }, 200)
     }
+    
     document.getElementById('search').addEventListener('input', handleInputChange);
 }
 
 export function searchEmployee(query) {
     var offset = 0*getLimit();
-    if (query != '') {
+    if (query !== '') {
         paginate(`https://localhost:7004/api/v1/employees/search?value=${query}&branch=${getBranch()}&limit=${getLimit()}&offset=${offset}&is-desc=${getIsDesc()}`);
     } else {
         paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${getBranch()}&limit=10&offset=${offset}&is-desc=${getIsDesc()}`);
     }
+}
+
+/**
+ * Hàm tạo các cột tiêu đề các cột trong bảng
+ * Dựa trên mảng các cột được chọn
+ */
+function renderTableHeader () {
+    let columns = filterColumnSelected();
+    return columns.map (column => {
+        return `<th class="${column.key === 'employeeCode' ? 'th-code' : ''} ${getIsDesc() === 'true' ? 'active' : ''}">
+              ${column.label}
+              ${column.key === 'employeeCode' ? '<i class="icofont-caret-up"></i>' : ''}
+            </th>`;
+    }).join('');
 }

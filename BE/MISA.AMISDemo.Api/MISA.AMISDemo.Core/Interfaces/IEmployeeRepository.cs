@@ -1,11 +1,5 @@
 ﻿using MISA.AMISDemo.Core.DTOs;
 using MISA.AMISDemo.Core.Entities;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MISA.AMISDemo.Core.Interfaces
 {
@@ -39,7 +33,7 @@ namespace MISA.AMISDemo.Core.Interfaces
         /// <param name="offset">Lấy từ vị trí offset</param>
         /// <returns>Trả về tổng nhân viên của chi nhánh đó và số bản ghi nhân viên từ vị trí offset</returns>
         /// Created by: BVThuan (24/10/2024)
-        EmployeeListResponseDTO FilterByBranch(string branch, int limit, int offset);
+        EmployeeListResponseDTO<EmployeeResponseDTO>? FilterByBranch(string branch, int limit, int offset);
 
         /// <summary>
         /// Hàm kiểm tra đối tượng có tồn tại trong hệ thống hay không
@@ -68,7 +62,7 @@ namespace MISA.AMISDemo.Core.Interfaces
         /// <returns>
         /// Danh sách nhân viên được phân trang dưới dạng EmployeeListResponseDTO
         /// </returns>
-        EmployeeListResponseDTO Paginate(string? branch, int limit, int offset, bool isDesc);
+        EmployeeListResponseDTO<EmployeeResponseDTO> Paginate(string? branch, int limit, int offset, bool isDesc);
 
         /// <summary>
         /// Chèn thông tin nhân viên vào cơ sở dữ liệu
@@ -98,7 +92,7 @@ namespace MISA.AMISDemo.Core.Interfaces
         /// <returns>
         /// Danh sách nhân viên phù hợp với điều kiện tìm kiếm dưới dạng EmployeeListResponseDTO
         /// </returns>
-        EmployeeListResponseDTO Search(string column, string value, string branchValue, int limit, int offset);
+        EmployeeListResponseDTO<EmployeeResponseDTO> Search(string column, string value, string branchValue, int limit, int offset);
 
         /// <summary>
         /// Lấy danh sách nhân viên theo chi nhánh
@@ -123,8 +117,9 @@ namespace MISA.AMISDemo.Core.Interfaces
         /// <param name="limit">Số lượng bản ghi của một trang</param>
         /// <param name="offset">Vị trí bắt đầu lấy dữ liệu</param>
         /// <param name="isDesc">Xác định thứ tự sắp xếp giảm dần nếu là true</param>
+        /// <param name="branch">Tên chi nhánh cần lọc</param>
         /// <returns>IEnumerable chứa danh sách nhân viên đáp ứng được cách điều kiện lọc dưới dạng EmployeeResponseDTO</returns>
-        EmployeeListResponseDTO? FilterEmployeeResponse(string filterBy, string filterCondition, string value, int limit, int offset, bool isDesc);
+        EmployeeListResponseDTO<EmployeeResponseDTO>? FilterEmployeeResponse(string filterBy, string filterCondition, string branch, string value, int limit, int offset, bool isDesc);
 
         /// <summary>
         /// Lấy danh sách mã code của nhân viên

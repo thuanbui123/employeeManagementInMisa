@@ -2,6 +2,7 @@ import { loadContainer } from "./employeePage.js";
 import { setPreviousApi, paginate } from "./service.js";
 import { getBranch } from "./header.js";
 import { getCurrentPage, getIsDesc, getLimit } from "./renderDataTable.js";
+import { loadSettingPage } from "./settingPage.js";
 
 /**
  * Hàm hiển thị sidebar với các mục điều hướng
@@ -71,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     break;
                 case 'Setting':
                     setPreviousApi('')
-                    CONTAINER.innerHTML = `<h3>Trang cài đặt</h3>`
+                    loadSettingPage();
             }
             this.classList.add('active');
         });

@@ -37,13 +37,15 @@ function getValueForm() {
     let departmentCode = document.getElementById('department').value;
     let identityPlace = document.getElementById('identityPlace').value;
     let address = document.getElementById('address').value;
+    let genderElement = document.querySelector('input[name="sex"]:checked');
+    let gender = genderElement ? genderElement.value : null;
     const EMPLOYEE = {
         employeeCode: document.getElementById('code').value,
         fullName: document.getElementById('name').value,
         email: document.getElementById('email').value,
         identityNumber: document.getElementById('identityNumber').value,
         PhoneNumber: document.getElementById('numberPhone').value,
-        gender: document.querySelector('input[name="sex"]:checked').value,
+        ...(gender !== '' && {gender: gender}),
         ...(dateOfBirth !== '' && {dateOfBirth: dateOfBirth}),
         ...(positionCode !== '' && {positionCode: positionCode}),
         ...(identityDate !== '' && {identityDate: identityDate}),
@@ -133,8 +135,8 @@ function formatToNumber (value) {
 export function showPopup(data = {}) {
     code = (data !== null && data.employeeCode !== undefined) ? data.employeeCode : undefined;
     let sex = (data !== null && data.gender !== undefined) ? data.gender : '';
-    let position = (data !== null && data.positionCode !== undefined) ? data.positionCode : '';
-    let department = (data !== null && data.departmentCode !== undefined) ? data.departmentCode : '';
+    let position = (data !== null && data.position !== undefined) ? data.position : '';
+    let department = (data !== null && data.department !== undefined) ? data.department : '';
     let branchSelected = (data !== null && data.branch !== undefined) ? data.branch : '';
     // Lấy ngày hiện tại
     let today = new Date().toISOString().split('T')[0];
@@ -186,14 +188,14 @@ export function showPopup(data = {}) {
                     </div>
                     <div class="row">
                         <div class="form-group">
-                            <label for="position">Vị trí</label>
+                            <label for="position">Chức vụ</label>
                             <select tabindex="7" id="position" name="position">
                                 <option disabled selected></option>
                                 ${
                                     positions.map(item => {
                                         return (
                                             `
-                                                <option value="${item.positionCode}" ${position === item.positionCode ? "selected" : ""} >${item.name}</option>
+                                                <option value="${item.positionCode}" ${position === item.name ? "selected" : ""} >${item.name}</option>
                                             `
                                         )
                                     })
@@ -227,7 +229,7 @@ export function showPopup(data = {}) {
                                     departments.map(item => {
                                         return (
                                             `
-                                                <option value="${item.departmentCode}" ${department === item.departmentCode ?"selected" : ""}>Phòng ${item.name}</option>
+                                                <option value="${item.departmentCode}" ${department === item.name ?"selected" : ""}>${item.name}</option>
                                             `
                                         )
                                     })
@@ -365,8 +367,10 @@ export function showPopup(data = {}) {
     }
 
     const FORM = document.querySelector('.form');
+    
+    document.addEventListener('keyup', handleKeyUp);   
 
-    document.addEventListener('keyup', function (e) {
+    function handleKeyUp (e) {
         if (e.keyCode === 119) {
             e.preventDefault();
             // Gọi hàm submit của FORM để lưu thông tin
@@ -378,12 +382,12 @@ export function showPopup(data = {}) {
             const DIALOGAREA = document.querySelector(".dialog-area");
             DIALOGAREA.classList.remove('open');
         }
-    });
+    }
 
     FORM.addEventListener('submit', function (e) {
         e.preventDefault();
         const EMPLOYEE = getValueForm();
-        NUMBERPHONE.dispatchEvent(new Event('input'))
+        NUMBERPHONE.dispatchEvent(new Event('input'));
         if (code === undefined) {
             $.ajax({
                 url: 'https://localhost:7004/api/v1/employees', // Địa chỉ API

@@ -195,15 +195,16 @@ namespace MISA.AMISDemo.Infrastructure.MISADatabaseContext
             var className = typeof(T).Name;
             var sql = $"SELECT * FROM {className} Where {column} = @Name";
             var parameters = new DynamicParameters();
-            parameters.Add("@Name", value);
-            var res = Connection.Query(sql, param: parameters);
-            if (res == null)
+            parameters.Add("@Name", $"{value}");
+            var res = Connection.Query(sql, param: parameters).ToList();
+            if (res == null || res.Count() == 0)
             {
                 return null;
+            } else
+            {
+                //Chuyển đổi res sang kiểu IDictionary<string, object> để truy cập giá trị của thuộc tính trong đó qua key
+                return returnValue != null ? ((IDictionary<string, object>)res[0])[returnValue] : res;
             }
-
-            //Chuyển đổi res sang kiểu IDictionary<string, object> để truy cập giá trị của thuộc tính trong đó qua key
-            return returnValue != null ? ((IDictionary<string, object>)res)[returnValue] : res;
         }
     }
 }

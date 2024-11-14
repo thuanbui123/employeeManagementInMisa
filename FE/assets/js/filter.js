@@ -1,3 +1,4 @@
+import { getBranch } from "./header.js";
 import { getCurrentPage, getLimit } from "./renderDataTable.js";
 import { paginate } from "./service.js";
 
@@ -61,7 +62,7 @@ function initAction () {
         var filterBy = document.querySelector('.filter-by-value').value;
         var filterCondition = document.querySelector('.filter-condition-value').value;
         var value = document.querySelector('.filter-input-value').value;
-        paginate(`https://localhost:7004/api/v1/employees/filter?filter-by=${filterBy}&filter-condition=${filterCondition}&value=${value}&limit=${getLimit()}&offset=${offset}&is-desc=false`);
+        paginate(`https://localhost:7004/api/v1/employees/filter?filter-by=${filterBy}&filter-condition=${filterCondition}&value=${value}&limit=${getLimit()}&offset=${offset}&is-desc=false&branch=${getBranch()}`);
         document.querySelector('.filter-area').remove();
     });
 }

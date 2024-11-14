@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace MISA.AMISDemo.Core.DTOs
 {
-    public class EmployeeListResponseDTO
+    public class EmployeeListResponseDTO<T>
     {
         public int SumRows { get; set; }
-        public IEnumerable<Employee> Employees { get; set; }
+        public IEnumerable<T>? Employees { get; set; }
     }
 }

@@ -2,6 +2,7 @@ import { showDialog } from "./dialog.js";
 import { getBranch } from "./header.js";
 import { showPopup } from "./popup.js";
 import { paginate } from "./service.js";
+import { filterColumnSelected, getColumns, getColumnSelected } from "./settingPage.js";
 
 let data = [];
 const STATE = {
@@ -150,32 +151,46 @@ export function renderTable(data) {
 
     const TABLEBODY = document.querySelector('.table__body');
     TABLEBODY.innerHTML = '';
-
     data.forEach((employee, index) => {
         const ROW = document.createElement('tr');
         ROW.classList.add('row');
-        ROW.innerHTML = `
-            <td>${index + 1}</td> 
-            <td>${employee.employeeCode}</td> 
-            <td>${employee.fullName}</td> 
-            <td>${employee.gender !== null ? employee.gender : ''}</td> 
-            <td>${(employee.dateOfBirth !== "1970-01-01T00:00:00" && employee.dateOfBirth !== null) ? new Date(employee.dateOfBirth).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' }) : ''}</td> 
-            <td>${employee.email}</td> 
-            <td class="actions">
-                <span class="${(employee.address !== 'null' && employee.address !== null) ? '' : 'empty-address'}">
-                    ${(employee.address !== 'null' && employee.address !== null) ? employee.address : ''}
-                </span>
-                <div class ='act'>
-                    <button class="edit-btn" style="display: none;" title="ctrl + F2">
-                        <img src="./assets/icon/info-48.png"/>
-                    </button>
-                    <button class="delete-btn" style="display: none;" title="delete">
-                        <img src="./assets/icon/delete-48.png"/>
-                    </button>
-                </div>
-            </td> 
+        // ROW.innerHTML = `
+        //     <td>${index + 1}</td> 
+        //     <td>${employee.employeeCode}</td> 
+        //     <td>${employee.fullName}</td> 
+        //     <td>${employee.gender !== null ? employee.gender : ''}</td> 
+        //     <td>${(employee.dateOfBirth !== "1970-01-01T00:00:00" && employee.dateOfBirth !== null) ? new Date(employee.dateOfBirth).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' }) : ''}</td> 
+        //     <td>${employee.email}</td> 
+        //     <td class="actions">
+        //         <span class="${(employee.address !== 'null' && employee.address !== null) ? '' : 'empty-address'}">
+        //             ${(employee.address !== 'null' && employee.address !== null) ? employee.address : ''}
+        //         </span>
+        //         <div class ='act'>
+        //             <button class="edit-btn" style="display: none;" title="ctrl + F2">
+        //                 <img src="./assets/icon/info-48.png"/>
+        //             </button>
+        //             <button class="delete-btn" style="display: none;" title="delete">
+        //                 <img src="./assets/icon/delete-48.png"/>
+        //             </button>
+        //         </div>
+        //     </td> 
             
-               `;
+        //        `;
+        const FILTEREDDATA = filterColumnSelected();
+        ROW.innerHTML = `
+                        <td>${index + 1}</td> 
+                        ${getColumnContent(FILTEREDDATA, employee)} 
+                        <div class='actions'>
+                            <div class="act">
+                                <button class="edit-btn" style="display: none;" title="ctrl + F2">
+                                    <img src="./assets/icon/info-48.png"/>
+                                </button>
+                                <button class="delete-btn" style="display: none;" title="delete">
+                                    <img src="./assets/icon/delete-48.png"/>
+                                </button>
+                            </div>
+                        </div>
+                    `;
         ROW.addEventListener('click', () => myFunction(index))
         ROW.ondblclick = function () {
             showPopup(data[index])    
@@ -190,7 +205,7 @@ export function renderTable(data) {
         } else if (e.ctrlKey && e.keyCode === 114) {
             document.querySelector('#search').focus();
         }
-    });
+    });// { once: true } đảm bảo chỉ chạy một lần
 }
 
 /**
@@ -243,7 +258,7 @@ function myFunction(index) {
     document.addEventListener('keyup', function(e) {
         if (e.keyCode === 113) {
             e.preventDefault();
-            showPopup(data[index])
+            showPopup(data[index]);
         } else if (e.keyCode === 46) {
             e.preventDefault();
             showDialog({title: 'Xác nhận xóa?', description: `Xóa nhân viên ${data[index].employeeCode} ra khỏi hệ thống?`} ,index);
@@ -256,3 +271,60 @@ function myFunction(index) {
         }
     });
 }
+
+/**
+ * Trả về nội dung HTML cho một ô bảng (<td>) dựa trên khóa cột (columns) và thông tin nhân viên.
+ * @param {Array} COLUMNSELECTED Các cột được chọn để hiển thị
+ * @param {Object} employee Dữ liệu nhân viên
+ */
+function getColumnContent(col, employee) {
+    return col.map(item => {
+        switch (item.key) {
+            case 'employeeCode': 
+                return `<td class="employeeCode">${employee.employeeCode}</td>`;
+            case 'fullName': 
+                return `<td class="fullName">${employee.fullName}</td>`;
+            case 'gender': 
+                return `<td>${employee.gender !== null ? employee.gender : ''}</td>`;
+            case 'dateOfBirth': 
+                return `<td>${(employee.dateOfBirth !== "1970-01-01T00:00:00" && employee.dateOfBirth !== null) 
+                    ? new Date(employee.dateOfBirth).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' }) 
+                    : ''}</td>`;
+            case 'email': 
+                return `<td class="email" style="overflow: hidden">${employee.email}</td>`;
+            case 'address': 
+                return `<td class="${(employee.address !== null && employee.address !== 'null') ? '' : 'empty-address'}">
+                    ${(employee.address !== null && employee.address !== 'null') ? employee.address : ''}</td>`;
+            case 'identityNumber': 
+                return `<td>${employee.identityNumber !== null ? employee.identityNumber : ''}</td>`;
+            case 'phoneNumber': 
+                return `<td>${employee.phoneNumber !== null ? employee.phoneNumber : ''}</td>`;
+            case 'position': 
+                return `<td>${employee.position !== null ? employee.position : ''}</td>`;
+            case 'identityDate': 
+                return `<td>${employee.identityDate !== null ? new Date(employee.identityDate).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' }) : ''}</td>`;
+            case 'department': 
+                return `<td>${employee.department !== null ? employee.department : ''}</td>`;
+            case 'identityPlace': 
+                return `<td>${employee.identityPlace !== null ? employee.identityPlace : ''}</td>`;
+            case 'landline': 
+                return `<td>${employee.landline !== null ? employee.landline : ''}</td>`;
+            case 'bankAccount': 
+                return `<td>${employee.bankAccount !== null ? employee.bankAccount : ''}</td>`;
+            case 'bankName': 
+                return `<td>${employee.bankName !== null ? employee.bankName : ''}</td>`;
+            case 'branch': 
+                return `<td>${employee.branch !== null ? employee.branch : ''}</td>`;
+            case 'salary': 
+                return `<td>${employee.salary !== null ? employee.salary : ''}</td>`;
+            case 'actions': 
+                return `<td class="actions">
+                    <button class="edit-btn">Sửa</button>
+                    <button class="delete-btn">Xóa</button>
+                </td>`;
+            default: 
+                return `<td>${employee[col.key]}</td>`;
+        }
+    }).join('');
+}
+

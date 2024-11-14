@@ -50,3 +50,8 @@ E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo
 E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Api\obj\Release\net8.0\MISA.AMISDemo.Api.pdb
 E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Api\obj\Release\net8.0\MISA.AMISDemo.Api.genruntimeconfig.cache
 E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Api\obj\Release\net8.0\ref\MISA.AMISDemo.Api.dll
+E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Api\bin\Release\net8.0\publish\web.config
+E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Api\bin\Release\net8.0\publish\appsettings.Development.json
+E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Api\bin\Release\net8.0\publish\appsettings.json
+E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Api\bin\Release\net8.0\publish\MISA.AMISDemo.Api.deps.json
+E:\workspace\projectInMisa\employeeManagement\BE\MISA.AMISDemo.Api\MISA.AMISDemo.Api\bin\Release\net8.0\publish\MISA.AMISDemo.Api.runtimeconfig.json

@@ -32,7 +32,7 @@ namespace MISA.AMISDemo.Core.Interfaces
         /// Đối tượng EmployeeListResponseDTO chứa danh sách nhân viên phù hợp với tiêu chí tìm kiếm 
         /// Nếu không tìm thấy nhân viên nào phù hợp sẽ trả về null
         /// </returns>
-        EmployeeListResponseDTO? Search(string query, string branch, int limit, int offset);
+        EmployeeListResponseDTO<EmployeeResponseDTO>? Search(string query, string branch, int limit, int offset);
 
         /// <summary>
         /// Thêm một nhân viên mới vào cơ sở dữ liệu dựa trên đối tượng EmployeeDTO
