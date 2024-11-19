@@ -193,7 +193,7 @@ export function renderTable(data) {
                     `;
         ROW.addEventListener('click', () => myFunction(index))
         ROW.ondblclick = function () {
-            showPopup(data[index])    
+            showPopup(data[index].employeeCode)    
         }
         TABLEBODY.appendChild(ROW);
     });
@@ -201,7 +201,7 @@ export function renderTable(data) {
     document.addEventListener('keyup', function (e) {
         if (e.keyCode === 45) {
             e.preventDefault();
-            showPopup({});
+            showPopup(null);
         } else if (e.ctrlKey && e.keyCode === 114) {
             document.querySelector('#search').focus();
         }
@@ -247,7 +247,7 @@ function myFunction(index) {
     const EDITBTN = document.getElementsByClassName('edit-btn')[index];
 
     EDITBTN.addEventListener('click', function() {
-        showPopup(data[index])
+        showPopup(data[index].employeeCode)
     })
 
     const DELETEBTN = document.getElementsByClassName('delete-btn')[index];
@@ -258,7 +258,7 @@ function myFunction(index) {
     document.addEventListener('keyup', function(e) {
         if (e.keyCode === 113) {
             e.preventDefault();
-            showPopup(data[index]);
+            showPopup(data[index].employeeCode);
         } else if (e.keyCode === 46) {
             e.preventDefault();
             showDialog({title: 'Xác nhận xóa?', description: `Xóa nhân viên ${data[index].employeeCode} ra khỏi hệ thống?`} ,index);

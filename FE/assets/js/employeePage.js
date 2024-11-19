@@ -139,7 +139,7 @@ export function loadContainer() {
 
     // showPopup(ADDBTN)
     ADDBTN.addEventListener('click', function () {
-        showPopup({});
+        showPopup(null);
     });
 
     function handleInputChange(event) {

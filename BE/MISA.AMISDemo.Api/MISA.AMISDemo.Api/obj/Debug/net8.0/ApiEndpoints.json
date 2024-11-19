@@ -193,6 +193,22 @@
   },
   {
     "ContainingType": "MISA.AMISDemo.Api.Controllers.EmployeesController",
+    "Method": "GetOne",
+    "RelativePath": "api/v1/employees/get-one-by-code",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "code",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MISA.AMISDemo.Api.Controllers.EmployeesController",
     "Method": "Import",
     "RelativePath": "api/v1/employees/import",
     "HttpMethod": "POST",

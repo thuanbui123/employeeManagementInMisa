@@ -17,6 +17,7 @@ namespace MISA.AMISDemo.Core.Interfaces
         /// Một tập hợp các đối tượng kiểu T.
         /// </returns>
         IEnumerable<T> Get();
+
         /// <summary>
         /// Lấy danh sách đối tượng của loại T dựa trên giá trị của một cột cụ thể
         /// Phương thức này trả về tất cả các phần tử có giá trị trong cột trùng với giá trị đầu vào

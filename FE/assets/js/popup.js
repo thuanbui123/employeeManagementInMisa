@@ -7,9 +7,7 @@ import { validateIdentityNumberInput, validateEmailInput, validateNumberPhoneInp
 
 let positions;
 let departments;
-let code;
 let newCode;
-
 /**
  * Chuyển đổi định dạng ngày từ 'dd/MM/yyyy' sang 'yyyy-MM-dd'
  * @param {*} date Ngày với định dạng 'dd/MM/yyyy'
@@ -132,12 +130,31 @@ function formatToNumber (value) {
  * Tạo ra một poup để hiển thị khi thêm hoặc sửa dữ liệu
  * @param {*} data dữ liệu truyền vào để hiển thị khi sửa dữ liệu
  */
-export function showPopup(data = {}) {
-    code = (data !== null && data.employeeCode !== undefined) ? data.employeeCode : undefined;
-    let sex = (data !== null && data.gender !== undefined) ? data.gender : '';
-    let position = (data !== null && data.position !== undefined) ? data.position : '';
-    let department = (data !== null && data.department !== undefined) ? data.department : '';
-    let branchSelected = (data !== null && data.branch !== undefined) ? data.branch : '';
+export async function showPopup(code) {
+    const POPUP = document.querySelector('.popup');
+    POPUP.innerHTML = '';
+    POPUP.classList.add('open');
+
+    // Hiển thị trạng thái loading ban đầu
+    POPUP.innerHTML = `<div class="loading">Đang tải dữ liệu...</div>`;
+    if (code !== null) {
+        console.log(code)
+        setPreviousApi('');
+        await fetchData(`https://localhost:7004/api/v1/employees/get-one-by-code?code=${code}`)
+            .then(data => {
+                renderPopup(data)
+            });
+    } else {
+        renderPopup({});
+    }
+    
+}
+
+function renderPopup (employee) {
+    let sex = (employee !== null && employee.gender !== undefined) ? employee.gender : '';
+    let position = (employee !== null && employee.position !== undefined) ? employee.position : '';
+    let department = (employee !== null && employee.department !== undefined) ? employee.department : '';
+    let branchSelected = (employee !== null && employee.branch !== undefined) ? employee.branch : '';
     // Lấy ngày hiện tại
     let today = new Date().toISOString().split('T')[0];
     const POPUPHTML = `
@@ -157,10 +174,11 @@ export function showPopup(data = {}) {
                             </label>
                             <input tabindex="1" type="text" oninvalid="this.setCustomValidity('Mã nhân viên không được để trống!')" oninput="setCustomValidity('')"
                                 id="code" name="code"
-                                ${data.employeeCode&&'readonly'} 
+                                ${employee.employeeCode&&'readonly'} 
                                 required
                                 title="Đây là trường bắt buộc!"
-                                value="${( data !==  null && data.employeeCode !== undefined) ? data.employeeCode : newCode}"/>
+                                placeholder="Nhập mã nhân viên"
+                                value="${( employee !==  null && employee.employeeCode !== undefined) ? employee.employeeCode : newCode}"/>
                         </div>
                         <div class="form-group">
                             <label for="name">
@@ -168,11 +186,12 @@ export function showPopup(data = {}) {
                                 <p>*</p>
                             </label>
                             <input tabindex="2" type="text" required title="Đây là trường bắt buộc!" oninvalid="this.setCustomValidity('Họ và tên không được để trống!')" oninput="setCustomValidity('')"
-                             id="name" name="name" value="${(data !==  null && data.fullName !== undefined) ? data.fullName : ''}"/>
+                             id="name" name="name" value="${(employee !==  null && employee.fullName !== undefined) ? employee.fullName : ''}"
+                             placeholder="Nhập họ tên"/>
                         </div>
                         <div class="form-group">
                             <label for="birthday">Ngày sinh</label>
-                            <input tabindex="3" type="date" id="birthday" max='${today}' name="birthday" ${(data !==  null && data.dateOfBirth !== undefined && data.dateOfBirth !== "1970-01-01T00:00:00" && data.dateOfBirth !== null) && `value="${convertDate(new Date(data.dateOfBirth).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' }))}"`}/>
+                            <input tabindex="3" type="date" id="birthday" max='${today}' name="birthday" ${(employee !==  null && employee.dateOfBirth !== undefined && employee.dateOfBirth !== "1970-01-01T00:00:00" && employee.dateOfBirth !== null) && `value="${convertDate(new Date(employee.dateOfBirth).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' }))}"`}/>
                         </div>
                         <div class="form-group">
                             <label>Giới tính</label>
@@ -190,7 +209,7 @@ export function showPopup(data = {}) {
                         <div class="form-group">
                             <label for="position">Chức vụ</label>
                             <select tabindex="7" id="position" name="position">
-                                <option disabled selected></option>
+                                <option disabled selected>Chọn chức vụ</option>
                                 ${
                                     positions.map(item => {
                                         return (
@@ -212,19 +231,20 @@ export function showPopup(data = {}) {
                                 title="Đây là trường bắt buộc!"
                                 oninvalid="this.setCustomValidity('Số CMTND không hợp lệ!')"
                                 id="identityNumber" name="identityNumber"
-                                ${(data !==  null && data.identityNumber !== undefined) ? `value="${data.identityNumber}"` : ""}
+                                placeholder="Nhập chứng minh thư nhân dân"
+                                ${(employee !==  null && employee.identityNumber !== undefined) ? `value="${employee.identityNumber}"` : ""}
                             />
                         </div>
                         <div class="form-group">
                             <label for="identityDate">Ngày cấp</label>
-                            <input tabindex="9" type="date" id="identityDate" max='${today}' name="identityDate" ${(data !==  null && data.identityDate !== undefined && data.identityDate !== "1970-01-01T00:00:00" && data.dateOfBirth !== null) && `value="${convertDate(new Date(data.identityDate).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' }))}"`}/>
+                            <input tabindex="9" type="date" id="identityDate" max='${today}' name="identityDate" ${(employee !==  null && employee.identityDate !== undefined && employee.identityDate !== "1970-01-01T00:00:00" && employee.dateOfBirth !== null) && `value="${convertDate(new Date(employee.identityDate).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' }))}"`}/>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group">
                             <label for="department">Phòng ban</label>
                             <select tabindex="10" id="department" name="department">
-                                <option disabled selected></option>
+                                <option disabled selected>Chọn phòng ban</option>
                                 ${
                                     departments.map(item => {
                                         return (
@@ -238,21 +258,21 @@ export function showPopup(data = {}) {
                         </div>
                         <div class="form-group">
                             <label for="identityPlace">Nơi cấp</label>
-                            <input tabindex="11" type="text" id="identityPlace" name="identityPlace" ${(data !== null && data.identityPlace !== undefined && data.identityPlace !== 'null' && data.identityPlace !== null) && `value="${data.identityPlace}"`}/>
+                            <input tabindex="11" type="text" id="identityPlace" name="identityPlace" ${(employee !== null && employee.identityPlace !== undefined && employee.identityPlace !== 'null' && employee.identityPlace !== null) && `value="${employee.identityPlace}"`}/>
                         </div>
                         <div class="form-group">
                             <label for="salary">Lương</label>
                             <input tabindex="12" type="text"
                                 oninvalid="this.setCustomValidity('Tiền lương hợp lệ!')" 
                                 id="salary" name="salary" 
-                                ${(data !==  null && data.salary !== undefined && data.salary !== null)? `value="${formatToVND(data.salary)}"`: ''}
+                                ${(employee !==  null && employee.salary !== undefined && employee.salary !== null)? `value="${formatToVND(employee.salary)}"`: ''}
                             />
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group">
                             <label for="address">Địa chỉ</label>
-                            <input tabindex="13" type = "text" id="address" name="address" value = "${(data !==  null && data.address !== undefined && data.address !== null && data.address !== 'null') ? data.address : ''}" />
+                            <input tabindex="13" type = "text" id="address" name="address" value = "${(employee !==  null && employee.address !== undefined && employee.address !== null && employee.address !== 'null') ? employee.address : ''}" />
                         </div>
                     </div>
                     <div class="row">
@@ -267,12 +287,12 @@ export function showPopup(data = {}) {
                                 oninput="validateNumberPhoneInput(this)" 
                                 oninvalid="this.setCustomValidity('Vui lòng nhập số điện thoại hợp lệ!')"
                                 id="numberPhone" name="numberPhone" 
-                                value="${(data !==  null && data.phoneNumber !== undefined) ? data.phoneNumber : ''}" 
+                                value="${(employee !==  null && employee.phoneNumber !== undefined) ? employee.phoneNumber : ''}" 
                             />
                         </div>
                         <div class="form-group">
                             <label for="landline">ĐT Cố định</label>
-                            <input tabindex="15" type = "tel" id="landline" name="landline" ${(data !==  null && data.landline !== undefined && data.landline !== 'null' && data.landline !== null) ? `value=${data.landline}`: ''} />
+                            <input tabindex="15" type = "tel" id="landline" name="landline" ${(employee !==  null && employee.landline !== undefined && employee.landline !== 'null' && employee.landline !== null) ? `value=${employee.landline}`: ''} />
                         </div>
                         <div class="form-group">
                             <label for="email">
@@ -283,18 +303,18 @@ export function showPopup(data = {}) {
                                 required
                                 title="Đây là trường bắt buộc!"
                                 oninvalid="this.setCustomValidity('Vui lòng nhập email hợp lệ!')"
-                                id="email" name="email" value="${(data !==  null && data.email !== undefined) ? data.email : ''}" 
+                                id="email" name="email" value="${(employee !==  null && employee.email !== undefined) ? employee.email : ''}" 
                             />
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group">
                             <label for="bankAccount">Tài khoản ngân hàng</label>
-                            <input tabindex="17" type = "number" pattern="\d{10,20}" id="bankAccount" name="bankAccount" value="${(data !==  null && data.bankAccount !== undefined) ? data.bankAccount : ''}" />
+                            <input tabindex="17" type = "number" pattern="\d{10,20}" id="bankAccount" name="bankAccount" value="${(employee !==  null && employee.bankAccount !== undefined) ? employee.bankAccount : ''}" />
                         </div>
                         <div class="form-group">
                             <label for="bankName">Tên ngân hàng</label>
-                            <input tabindex="18" type = "text" id="bankName" name="bankName" value = "${(data !==  null && data.bankName !== undefined && data.bankName !== 'null' && data.bankName !== null) ? data.bankName : ''}"/>
+                            <input tabindex="18" type = "text" id="bankName" name="bankName" value = "${(employee !==  null && employee.bankName !== undefined && employee.bankName !== 'null' && employee.bankName !== null) ? employee.bankName : ''}"/>
                         </div>
                         <div class="form-group">
                             <label for="branch">Chi nhánh</label>
@@ -326,7 +346,7 @@ export function showPopup(data = {}) {
     `
 
     const POPUP = document.querySelector('.popup');
-    POPUP.innerHTML = ''
+    POPUP.innerHTML = '';
     POPUP.innerHTML = POPUPHTML;
     POPUP.classList.add('open');
     const FIRSTINPUT = document.querySelectorAll('.modal input')[0];
@@ -388,7 +408,7 @@ export function showPopup(data = {}) {
         e.preventDefault();
         const EMPLOYEE = getValueForm();
         NUMBERPHONE.dispatchEvent(new Event('input'));
-        if (code === undefined) {
+        if (employee.employeeCode === undefined) {
             $.ajax({
                 url: 'https://localhost:7004/api/v1/employees', // Địa chỉ API
                 method: 'POST',
@@ -459,5 +479,5 @@ export function showPopup(data = {}) {
             })
         }
         POPUP.classList.remove('open');
-    })
+    });
 }

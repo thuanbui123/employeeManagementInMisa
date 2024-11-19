@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MISA.AMISDemo.Core.Const;
 using MISA.AMISDemo.Core.DTOs;
-using MISA.AMISDemo.Core.Entities;
 using MISA.AMISDemo.Core.Interfaces;
 
 namespace MISA.AMISDemo.Api.Controllers
@@ -28,6 +27,20 @@ namespace MISA.AMISDemo.Api.Controllers
         public IActionResult Get()
         {
             var data = _employeeRepository.Get();
+            return StatusCode(200, data);
+        }
+
+        /// <summary>
+        /// API lấy một nhân viên duy nhất dựa trên mã 
+        /// </summary>
+        /// <param name="code">Mã nhân viên để xác định đối tượng cần lấy</param>
+        /// <returns>
+        /// Trả về đối tượng nhân viên cần lấy dưới dạng đối tượng JSON với mã trạng thái 200 nếu thành công
+        /// </returns>
+        [HttpGet("get-one-by-code")]
+        public IActionResult GetOne([FromQuery(Name = "code")] string code) 
+        {
+            var data = _employeeRepository.GetOne(code);
             return StatusCode(200, data);
         }
 

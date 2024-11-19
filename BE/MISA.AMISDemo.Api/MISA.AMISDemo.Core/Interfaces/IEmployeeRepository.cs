@@ -128,6 +128,15 @@ namespace MISA.AMISDemo.Core.Interfaces
         List<string> GetListCode ();
 
         /// <summary>
+        /// Lấy một đối tượng dựa trên mã code
+        /// </summary>
+        /// <param name="code">Mã của đối tượng cần lấy</param>
+        /// <returns>
+        /// Trả về đối tượng hoặc null nếu không tìm thấy
+        /// </returns>
+        EmployeeResponseDTO? GetOne(string code);
+
+        /// <summary>
         /// Thống kê nhân viên theo độ tuổi
         /// </summary>
         /// <returns>IEnumerable chứa thông tin thống kê danh sách nhân viên theo độ tuổi dưới dạng EmployeeStatisticsByAgeDTO</returns>
