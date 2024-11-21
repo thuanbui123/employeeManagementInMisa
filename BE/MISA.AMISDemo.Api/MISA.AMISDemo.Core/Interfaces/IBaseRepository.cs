@@ -54,6 +54,7 @@ namespace MISA.AMISDemo.Core.Interfaces
         /// <typeparam name="K">Kiểu dữ liệu của đối tượng obj chứa thông tin cần sửa</typeparam>
         /// <param name="obj">Đối tượng chứa dữ liệu cần sửa</param>
         /// <param name="primaryKeyColumn">Tên cột khóa chính dùng để xác định bản ghi cần cập nhật</param>
+        /// <param name="primaryValue">Giá trị khóa chính để xác định bản ghi cần cập nhật</param>
         /// <param name="parameters">
         /// Đối tượng 'DynamicParameters' chứa các tham số tương ứng với câu lệnh SQL
         /// Được trả về dưới dạng out và có thể là null nếu không có tham số
@@ -61,7 +62,7 @@ namespace MISA.AMISDemo.Core.Interfaces
         /// <returns>
         /// Chuỗi SQL dạng 'UPDATE' để cập nhật dữ liệu từ 'obj' vào cơ sở dữ liệu
         /// </returns>
-        string GenerateUpdateSql<K>(K obj, string primaryKeyColumn, out DynamicParameters? parameters);
+        string GenerateUpdateSql<K>(K obj, string primaryKeyColumn, string primaryValue, out DynamicParameters? parameters);
        
         /// <summary>
         /// Lấy tổng số bản trong cơ sở dữ liệu
@@ -84,11 +85,12 @@ namespace MISA.AMISDemo.Core.Interfaces
         /// </summary>
         /// <param name="entity">Đối tượng cần cập nhật thông tin</param>
         /// <param name="primaryKey">Giá trị của khóa chính dùng để xác định đối tượng cần cập nhật</param>
+        /// <param name="primaryValue">Giá trị của khóa chính để xác định đối tượng cần cập nhật</param>
         /// <returns>
         /// Trả về số dòng bị ảnh hưởng bởi câu lệnh SQL `UPDATE`. Nếu cập nhật thành công, giá trị trả về là 1.
         /// Ngược lại nếu thất bại sẽ trả về 0
         /// </returns>
-        int Update(T entity, string primaryKey);
+        int Update(T entity, string primaryKey, string primaryValue);
 
         /// <summary>
         /// Phương thức này thực hiện việc xóa một đối tượng dựa trên mã id

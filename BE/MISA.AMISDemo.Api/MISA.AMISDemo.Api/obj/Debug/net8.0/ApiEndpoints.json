@@ -37,22 +37,6 @@
   },
   {
     "ContainingType": "MISA.AMISDemo.Api.Controllers.EmployeesController",
-    "Method": "Update",
-    "RelativePath": "api/v1/employees",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "employee",
-        "Type": "MISA.AMISDemo.Core.DTOs.EmployeeDTO",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "MISA.AMISDemo.Api.Controllers.EmployeesController",
     "Method": "Delete",
     "RelativePath": "api/v1/employees/{code}",
     "HttpMethod": "DELETE",
@@ -62,6 +46,27 @@
       {
         "Name": "code",
         "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MISA.AMISDemo.Api.Controllers.EmployeesController",
+    "Method": "Update",
+    "RelativePath": "api/v1/employees/{employeeCode}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "employeeCode",
+        "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "employee",
+        "Type": "MISA.AMISDemo.Core.DTOs.EmployeeDTO",
         "IsRequired": true
       }
     ],

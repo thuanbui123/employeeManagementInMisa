@@ -76,10 +76,11 @@ namespace MISA.AMISDemo.Core.Interfaces
         /// </summary>
         /// <param name="dto">Đối tượng dto chứa thông tin nhân viên cần cập nhật</param>
         /// <param name="primaryKey">Khóa chính của nhân viên cần cập nhật</param>
+        /// <param name="primaryValue">Giá trị khóa chính của nhân viên cần cập nhật</param>
         /// <returns>
         /// Số lượng bản ghi được cập nhật
         /// </returns>
-        int UpdateByDTO(EmployeeDTO dto, string primaryKey);
+        int UpdateByDTO(EmployeeDTO dto, string primaryKey, string primaryValue);
 
         /// <summary>
         /// Tìm kiếm danh sách nhân viên theo cột giá trị cụ thể, lọc theo chi nhánh và phân trang

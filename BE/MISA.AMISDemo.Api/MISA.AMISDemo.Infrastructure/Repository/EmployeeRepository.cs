@@ -23,9 +23,9 @@ namespace MISA.AMISDemo.Infrastructure.Repository
             return res;
         }
 
-        public int UpdateByDTO(EmployeeDTO dto, string primaryKey)
+        public int UpdateByDTO(EmployeeDTO dto, string primaryKey, string primaryValue)
         {
-            var sqlQuery = GenerateUpdateSql(dto, primaryKey, out DynamicParameters? parameters);
+            var sqlQuery = GenerateUpdateSql(dto, primaryKey, primaryValue, out DynamicParameters? parameters);
             var res = _dbContext.Connection.Execute(sqlQuery, param: parameters);
             return res;
         }

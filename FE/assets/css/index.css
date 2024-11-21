@@ -530,6 +530,7 @@ td.actions {
     text-align: center;
     padding: 0;
     border: 1px solid #ccc;
+    cursor: pointer;
 }
 
 .row .act button:last-child {
@@ -891,7 +892,7 @@ table .row:hover {
 }
 
 .dialog__footer button {
-    font-size: 16px;
+    font-size: 16px;    
     height: 32px;
     line-height: 32px;
     min-width: 56px;

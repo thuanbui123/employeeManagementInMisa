@@ -85,7 +85,7 @@ namespace MISA.AMISDemo.Infrastructure.MISADatabaseContext
             return string.Empty;
         }
 
-        public string GenerateUpdateSql<T>(T obj, string primaryKeyColumn, out DynamicParameters? parameters)
+        public string GenerateUpdateSql<T>(T obj, string primaryKeyColumn, string primaryValue, out DynamicParameters? parameters)
         {
             Type type = typeof(T);
             if (type == null)
@@ -99,7 +99,6 @@ namespace MISA.AMISDemo.Infrastructure.MISADatabaseContext
             string tableName = type.Name.Replace("DTO", string.Empty);  // Lấy tên bảng là tên của class, có thể tùy chỉnh.
 
             parameters = new DynamicParameters();
-            object? primaryKeyValue = null;
 
             foreach (var prop in properties)
             {
@@ -111,7 +110,6 @@ namespace MISA.AMISDemo.Infrastructure.MISADatabaseContext
                     // Nếu là khóa chính thì bỏ qua, không cập nhật.
                     if (prop.Name.Equals(primaryKeyColumn, StringComparison.OrdinalIgnoreCase))
                     {
-                        primaryKeyValue = value;
                         continue;
                     }
 
@@ -124,7 +122,7 @@ namespace MISA.AMISDemo.Infrastructure.MISADatabaseContext
             }
 
             // Đảm bảo khóa chính không null
-            if (primaryKeyValue == null)
+            if (primaryValue == null)
             {
                 return string.Empty;
             }
@@ -136,12 +134,11 @@ namespace MISA.AMISDemo.Infrastructure.MISADatabaseContext
             }
 
             // Thêm khóa chính vào tham số
-            parameters.Add($"@{primaryKeyColumn}", primaryKeyValue);
+            parameters.Add($"@{primaryKeyColumn}", $"{primaryValue}");
 
             // Tạo câu lệnh UPDATE
             return $"UPDATE {tableName} SET {setClause} WHERE {primaryKeyColumn} = @{primaryKeyColumn};";
         }
-
 
         public int Insert<T>(T entity) 
         {
@@ -180,9 +177,9 @@ namespace MISA.AMISDemo.Infrastructure.MISADatabaseContext
             return res;
         }
 
-        public int Update<T>(T entity, string primaryKey)
+        public int Update<T>(T entity, string primaryKey, string primaryValue)
         {
-            string updateSql = GenerateUpdateSql(entity, primaryKey, out DynamicParameters? parameters);
+            string updateSql = GenerateUpdateSql(entity, primaryKey, primaryValue, out DynamicParameters? parameters);
             if (updateSql != null)
             {
                 return Connection.Execute(updateSql, param: parameters);

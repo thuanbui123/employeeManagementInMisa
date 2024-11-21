@@ -55,17 +55,17 @@ namespace MISA.AMISDemo.Infrastructure.Repository
             return _dbContext.GenerateInsertSql<K>(entity, out parameters);
         }
 
-        public string GenerateUpdateSql<K>(K obj, string primaryKeyColumn, out DynamicParameters? parameters)
+        public string GenerateUpdateSql<K>(K obj, string primaryKeyColumn, string primaryValue, out DynamicParameters? parameters)
         {
-            return _dbContext.GenerateUpdateSql<K>(obj, primaryKeyColumn, out parameters);
+            return _dbContext.GenerateUpdateSql<K>(obj, primaryKeyColumn, primaryValue, out parameters);
         }
 
-        public int Update(T entity, string primaryKey)
+        public int Update(T entity, string primaryKey, string primaryValue)
         {
             _dbContext.Connection.Open();
             _dbContext.Transaction = _dbContext.Connection.BeginTransaction();
             var transaction = _dbContext.Connection.BeginTransaction();
-            var res = _dbContext.Update(entity, primaryKey);
+            var res = _dbContext.Update(entity, primaryKey, primaryValue);
             _dbContext.Transaction.Commit();
             return res;
         }

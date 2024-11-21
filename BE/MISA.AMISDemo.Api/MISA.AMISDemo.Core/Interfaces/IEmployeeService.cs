@@ -48,12 +48,13 @@ namespace MISA.AMISDemo.Core.Interfaces
         /// Cập nhật thông tin nhân viên dựa trên đối tượng EmployeeDTO
         /// </summary>
         /// <param name="dto">Đối tượng chứa thông tin nhân viên cần cập nhật</param>
-        /// <param name="primaryKey">Giá trị để xác định đối tượng cần cập nhật</param>
+        /// <param name="primaryKey">Tên cột để xác định đối tượng cần cập nhật</param>
+        /// <param name="primaryValue">Giá trị để xác định đối tượng cần cập nhật</param>
         /// <returns>
         /// 1 - nếu cập nhật thành công
         /// Ngược lại, trả về 0
         /// </returns>
-        int UpdateByDTO(EmployeeDTO dto, string primaryKey);
+        int UpdateByDTO(EmployeeDTO dto, string primaryKey, string primaryValue);
 
         /// <summary>
         /// Xóa thông tin nhân viên dựa trên code

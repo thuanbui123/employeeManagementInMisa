@@ -195,12 +195,13 @@ namespace MISA.AMISDemo.Api.Controllers
         /// <summary>
         /// API sửa thông tin nhân viên
         /// </summary>
+        /// <param name="employeeCode">Mã nhân viên để xác định đối tượng cần cập nhật</param>
         /// <param name="employee">Đối tượng chứa thông tin nhân viên cần sửa đổi (EmployeeDTO)</param>
         /// <returns>Trả về mã trạng thái 200 và số lượng bản ghi được cập nhật</returns>
-        [HttpPut]
-        public IActionResult Update(EmployeeDTO employee)
+        [HttpPut("{employeeCode}")]
+        public IActionResult Update([FromRoute] string employeeCode, [FromBody]EmployeeDTO employee)
         {
-            var res = _employeeService.UpdateByDTO(employee, "EmployeeCode");
+            var res = _employeeService.UpdateByDTO(employee, "EmployeeCode", employeeCode);
             return StatusCode(200, res);
         }
 

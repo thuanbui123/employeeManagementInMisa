@@ -17,7 +17,7 @@ export function showDialog (data ={}, index) {
         <div class="dialog">
             <div class="dialog__header">
             <p>${data.title}</p>
-            <button class="close__dialog" tabindex="1" title="ESC">
+            <button class="close__dialog" tabindex="2" title="ESC">
                 <img src="./assets/icon/close-48.png"/>
             </button>
             </div>
@@ -25,8 +25,8 @@ export function showDialog (data ={}, index) {
                 <p>${data.description}</p>
             </div>
             <div class="dialog__footer">
-                <button class="cancel" tabindex="2" title="F9">Không</button>
-                <button class="ok tabindex="3">Có</button>
+                <button class="cancel" tabindex="3" title="F9">Không</button>
+                <button class="ok" tabindex="1">Có</button>
             </div>
         </div>
     `;
@@ -62,7 +62,19 @@ export function showDialog (data ={}, index) {
         fakeData.splice(index, 1);
         renderTable(fakeData);
     }
+    // Focus vào nút đầu tiên trong hộp thoại
+    const focusableElements = DIALOGAREA.querySelectorAll('[tabindex], [tabindex]:not([tabindex="-1"])');
+    const firstElement = focusableElements[0];
+    const lastElement = focusableElements[focusableElements.length - 1];
 
+    firstElement.focus();
+
+    document.addEventListener('focus', (event) => {
+        if (!DIALOGAREA.contains(event.target)) {
+            event.stopPropagation();
+            lastElement.focus();
+        }
+    }, true);
     /**
      * Gọi api xóa dữ liệu từ server
      * @param {*} index Dòn dữ liệu cần xóa

@@ -161,7 +161,7 @@ function renderPopup (employee) {
         <div class="modal">
                 <div class="modal__header">
                     <p>Thông tin nhân viên</p>
-                    <button class="close" tabindex="21" title="ESC">
+                    <button class="close" tabindex="22" title="ESC">
                         <img src="./assets/icon/close-48.png" />
                     </button>
                 </div>
@@ -177,7 +177,6 @@ function renderPopup (employee) {
                                 ${employee.employeeCode&&'readonly'} 
                                 required
                                 title="Đây là trường bắt buộc!"
-                                placeholder="Nhập mã nhân viên"
                                 value="${( employee !==  null && employee.employeeCode !== undefined) ? employee.employeeCode : newCode}"/>
                         </div>
                         <div class="form-group">
@@ -186,8 +185,8 @@ function renderPopup (employee) {
                                 <p>*</p>
                             </label>
                             <input tabindex="2" type="text" required title="Đây là trường bắt buộc!" oninvalid="this.setCustomValidity('Họ và tên không được để trống!')" oninput="setCustomValidity('')"
-                             id="name" name="name" value="${(employee !==  null && employee.fullName !== undefined) ? employee.fullName : ''}"
-                             placeholder="Nhập họ tên"/>
+                                id="name" name="name" value="${(employee !==  null && employee.fullName !== undefined) ? employee.fullName : ''}"
+                            />
                         </div>
                         <div class="form-group">
                             <label for="birthday">Ngày sinh</label>
@@ -209,7 +208,7 @@ function renderPopup (employee) {
                         <div class="form-group">
                             <label for="position">Chức vụ</label>
                             <select tabindex="7" id="position" name="position">
-                                <option disabled selected>Chọn chức vụ</option>
+                                <option disabled selected></option>
                                 ${
                                     positions.map(item => {
                                         return (
@@ -231,7 +230,6 @@ function renderPopup (employee) {
                                 title="Đây là trường bắt buộc!"
                                 oninvalid="this.setCustomValidity('Số CMTND không hợp lệ!')"
                                 id="identityNumber" name="identityNumber"
-                                placeholder="Nhập chứng minh thư nhân dân"
                                 ${(employee !==  null && employee.identityNumber !== undefined) ? `value="${employee.identityNumber}"` : ""}
                             />
                         </div>
@@ -244,7 +242,7 @@ function renderPopup (employee) {
                         <div class="form-group">
                             <label for="department">Phòng ban</label>
                             <select tabindex="10" id="department" name="department">
-                                <option disabled selected>Chọn phòng ban</option>
+                                <option disabled selected></option>
                                 ${
                                     departments.map(item => {
                                         return (
@@ -258,7 +256,10 @@ function renderPopup (employee) {
                         </div>
                         <div class="form-group">
                             <label for="identityPlace">Nơi cấp</label>
-                            <input tabindex="11" type="text" id="identityPlace" name="identityPlace" ${(employee !== null && employee.identityPlace !== undefined && employee.identityPlace !== 'null' && employee.identityPlace !== null) && `value="${employee.identityPlace}"`}/>
+                            <input tabindex="11"
+                                type="text" id="identityPlace" 
+                                name="identityPlace" ${(employee !== null && employee.identityPlace !== undefined && employee.identityPlace !== 'null' && employee.identityPlace !== null) && 
+                                `value="${employee.identityPlace}"`}/>
                         </div>
                         <div class="form-group">
                             <label for="salary">Lương</label>
@@ -272,7 +273,11 @@ function renderPopup (employee) {
                     <div class="row">
                         <div class="form-group">
                             <label for="address">Địa chỉ</label>
-                            <input tabindex="13" type = "text" id="address" name="address" value = "${(employee !==  null && employee.address !== undefined && employee.address !== null && employee.address !== 'null') ? employee.address : ''}" />
+                            <input tabindex="13" 
+                            type = "text" 
+                            id="address" 
+                            name="address" 
+                            value = "${(employee !==  null && employee.address !== undefined && employee.address !== null && employee.address !== 'null') ? employee.address : ''}" />
                         </div>
                     </div>
                     <div class="row">
@@ -442,8 +447,9 @@ function renderPopup (employee) {
                 }
             });
         } else {
+            console.log(employee)
             $.ajax({
-                url: 'https://localhost:7004/api/v1/employees',
+                url: `https://localhost:7004/api/v1/employees/${employee.employeeCode}`,
                 method: 'PUT',
                 contentType: 'application/json',
                 data: JSON.stringify(EMPLOYEE),

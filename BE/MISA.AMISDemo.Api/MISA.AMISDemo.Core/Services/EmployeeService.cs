@@ -257,15 +257,19 @@ namespace MISA.AMISDemo.Core.Services
                     throw new MISAValidateException(MISAConst.ERROR_GENDER_NOT_EXISTS);
                 }
             }
-
-            if (dto.DepartmentCode != null && _departmentRepository.CheckExists("departmentCode", dto.DepartmentCode, null) == null)
+            if (!string.IsNullOrEmpty(dto.DepartmentCode))
             {
-                throw new MISAValidateException (MISAConst.ERROR_DEPARTMENT_NOT_EXISTS);
+                if (_departmentRepository.CheckExists("departmentCode", dto.DepartmentCode, null) == null)
+                {
+                    throw new MISAValidateException(MISAConst.ERROR_DEPARTMENT_NOT_EXISTS);
+                }
             }
-
-            if (dto.PositionCode != null && _positionRepository.CheckExists("positionCode", dto.PositionCode, null) == null)
+            if (!string.IsNullOrEmpty(dto.PositionCode))
             {
-                throw new MISAValidateException (MISAConst.ERROR_POSITION_NOT_EXISTS);
+                if (_positionRepository.CheckExists("positionCode", dto.PositionCode, null) == null)
+                {
+                    throw new MISAValidateException(MISAConst.ERROR_POSITION_NOT_EXISTS);
+                }
             }
         }
 
@@ -278,15 +282,15 @@ namespace MISA.AMISDemo.Core.Services
             return "EMP" + newNumber;
         }
 
-        public int UpdateByDTO(EmployeeDTO dto, string primaryKey)
+        public int UpdateByDTO(EmployeeDTO dto, string primaryKey, string primaryValue)
         {
             ValidateInput(dto);
-            bool isExistsEmployee = _employeeRepository.ExistsByCode(dto.EmployeeCode);
+            bool isExistsEmployee = _employeeRepository.ExistsByCode(primaryValue);
             if (!isExistsEmployee)
             {
                 throw new MISAValidateException(MISA.AMISDemo.Core.Resource.Resource.ValidateMsg_Employee_NotExists);
             }
-            var res = _employeeRepository.UpdateByDTO(dto, primaryKey);
+            var res = _employeeRepository.UpdateByDTO(dto, primaryKey, primaryValue);
             return res;
         }
 
