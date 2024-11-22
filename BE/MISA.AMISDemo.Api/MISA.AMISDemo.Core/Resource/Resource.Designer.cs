@@ -70,6 +70,15 @@ namespace MISA.AMISDemo.Core.Resource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Phòng ban không tồn tại trong hệ thống!.
+        /// </summary>
+        internal static string ValidateMsg_Department_NotExists {
+            get {
+                return ResourceManager.GetString("ValidateMsg_Department_NotExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mã nhân viên đã tồn tại trong hệ thống!.
         /// </summary>
         internal static string ValidateMsg_Employee_EmployeeCode_Empty {

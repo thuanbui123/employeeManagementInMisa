@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MISA.AMISDemo.Core.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -34,5 +35,10 @@ namespace MISA.AMISDemo.Core.Const
         public const string ERROR_CANNOT_READ_EMPTY_FILE = "Không đọc được file excel trống!";
 
         public const string NOT_FOUND_DATA = "Không tìm thấy dữ liệu!";
+
+        public const string ERROR_DEPARTMENTCODE_EMPTY = "Mã phòng ban không được phép để trống!";
+        public const string ERROR_DEPARTMENTNAME_EMPTY = "Tên phòng ban không được phép để trống!";
+        public const string ERROR_DEPARTMENTCODE_ALREADY_EXISTS = "Mã phòng ban đã tồn tại trong hệ thống!";
+        public const string ERROR_ASSOCIATED_DEPARTMENTCODE = "Mã phòng ban đã được liên kết trong bảng nhân viên!";
     }
 }

@@ -16,7 +16,7 @@ let timeoutId;
 export function loadContainer() {
     const CONTAINERHTML = `
         <div class="sub-header">
-                <p class="title">Quản lý Nhân viên</p>
+                <p class="title">Quản Lý Nhân viên</p>
                 <button class="add" title ="ins">
                     <img src="./assets/icon/add.png" alt="Thêm mới"/>
                     <p>Thêm mới</p>

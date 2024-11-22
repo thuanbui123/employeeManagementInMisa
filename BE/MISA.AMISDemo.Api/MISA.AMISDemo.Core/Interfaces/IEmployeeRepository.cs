@@ -142,5 +142,11 @@ namespace MISA.AMISDemo.Core.Interfaces
         /// </summary>
         /// <returns>IEnumerable chứa thông tin thống kê danh sách nhân viên theo độ tuổi dưới dạng EmployeeStatisticsByAgeDTO</returns>
         IEnumerable<EmployeeStatisticsByAgeDTO> GetEmployeeStatisticsByAge();
+
+        /// <summary>
+        /// Lấy danh sách mã phòng ban được liên kết trong bảng nhân viên
+        /// </summary>
+        /// <returns>IEnumerable chứa danh sách mã phòng ban</returns>
+        IEnumerable<string> GetDepartmentCodeInEmployee();
     }
 }

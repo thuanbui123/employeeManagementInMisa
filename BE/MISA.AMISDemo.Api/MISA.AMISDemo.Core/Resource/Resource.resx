@@ -129,4 +129,7 @@
   <data name="ValidateMsg_Employee_EmployeName_NotEmpty" xml:space="preserve">
     <value>Họ tên nhân viên không được để trống</value>
   </data>
+  <data name="ValidateMsg_Department_NotExists" xml:space="preserve">
+    <value>Phòng ban không tồn tại trong hệ thống!</value>
+  </data>
 </root>

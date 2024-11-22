@@ -18,10 +18,10 @@ namespace MISA.AMISDemo.Api.Controllers
         }
 
         /// <summary>
-        /// API lấy tất cả các nhân viên
+        /// Xử lý yêu cầu HTTP GET lấy danh sách nhân viên 
         /// </summary>
         /// <returns>
-        ///     Danh sách nhân viên trong cơ sở dữ liệu
+        /// IActionResult có mã trạng thái HTTP 200 và danh sách nhân viên 
         /// </returns>
         [HttpGet]
         public IActionResult Get()
@@ -31,11 +31,11 @@ namespace MISA.AMISDemo.Api.Controllers
         }
 
         /// <summary>
-        /// API lấy một nhân viên duy nhất dựa trên mã 
+        /// Xử lý yêu cầu HTTP GET để lấy một nhân viên cụ thể dựa trên mã nhân viên
         /// </summary>
         /// <param name="code">Mã nhân viên để xác định đối tượng cần lấy</param>
         /// <returns>
-        /// Trả về đối tượng nhân viên cần lấy dưới dạng đối tượng JSON với mã trạng thái 200 nếu thành công
+        /// IActionResult có mã trạng thái HTTP 200 và đối tượng nhân viên có mã tương ứng
         /// </returns>
         [HttpGet("get-one-by-code")]
         public IActionResult GetOne([FromQuery(Name = "code")] string code) 
@@ -45,14 +45,14 @@ namespace MISA.AMISDemo.Api.Controllers
         }
 
         /// <summary>
-        /// API tìm kiếm nhân viên dựa trên giá trị tìm kiếm
+        /// Xử lý yêu cầu HTTP GET tìm kiếm nhân viên dựa trên các tiêu chí đã chỉ định
         /// </summary>
         /// <param name="value">Giá trị tìm kiếm</param>
         /// <param name="branch">Tìm kiếm ở chi nhánh</param>
         /// <param name="limit">Giới hạn số bản ghi nhân viên trả về</param>
         /// <param name="offset">Lấy bản ghi từ vị trí bao nhiêu</param>
         /// <returns>
-        /// Trả về kết quả tìm kiếm dưới dạng đối tượng JSON với mã trạng thái 200 nếu thành công
+        /// IActionResult với mã trạng thái HTTP 200 và danh sách nhân viên phù hợp với tiêu chí tìm kiếm
         /// </returns>
         [HttpGet("search")]
         public IActionResult Get([FromQuery(Name ="value")] string value, [FromQuery(Name = "branch")] string branch, [FromQuery(Name = "limit")] int limit, [FromQuery(Name = "offset")] int offset)
@@ -62,10 +62,10 @@ namespace MISA.AMISDemo.Api.Controllers
         }
 
         /// <summary>
-        /// API tạo sinh ra mã nhân viên mới không bị trùng
+        /// Xử lý yêu cầu HTTP GET để lấy mã nhân viên mới chưa có trong cơ sở dữ liệu
         /// </summary>
         /// <returns>
-        ///     Trả về mã nhân viên mới dưới dạng đối tượng JSON với mã trạng thái 200 nếu thành công
+        /// IActionResult với mã trạng thái HTTP 200 và mã nhân viên mới
         /// </returns>
         [HttpGet("generate-code")]
         public IActionResult GenerateCode()
@@ -75,10 +75,10 @@ namespace MISA.AMISDemo.Api.Controllers
         }
 
         /// <summary>
-        /// API lấy tổng số bản ghi của bảng nhân viên trong cơ sở dữ liệu
+        /// Xử lý HTTP GET để lấy tổng số bản ghi trong cơ sở dữ liệu
         /// </summary>
         /// <returns>
-        ///     Trả về số bản ghi của bảng nhân viên trong cơ sở dữ liệu
+        /// IActionResult với mã trạng thái HTTP 200 và tổng số bản ghi
         /// </returns>
         [HttpGet("sum-rows")]
         public IActionResult GetSumRows()
@@ -88,13 +88,14 @@ namespace MISA.AMISDemo.Api.Controllers
         }
 
         /// <summary>
-        /// API dùng để lọc danh sách nhân viên theo chi nhánh
-        /// API này được tạo sau khi tách bảng nhân viên ra thêm bảng chức vụ và phòng ban
+        /// Xử lý HTTP GET để lọc danh sách nhân viên theo các tiêu chí chỉ định
         /// </summary>
         /// <param name="branch">Chi nhánh cần lọc</param>
         /// <param name="limit">Giới hạn số bản ghi nhân viên trả về</param>
         /// <param name="offset">Lấy bản ghi từ vị trí số bao nhiêu</param>
-        /// <returns>Trả về danh sách nhân viên của chi nhánh</returns>
+        /// <returns>
+        /// IActionResult với mã trạng thái HTTP 200 và danh sách nhân viên phù hợp với các tiêu chí lọc
+        /// </returns>
         [HttpGet("filter-by-branch")]
         public IActionResult FilterByBranch([FromQuery(Name = "branch")]string branch, [FromQuery(Name = "limit")] int limit, [FromQuery(Name ="offset")] int offset)
         {
@@ -103,13 +104,14 @@ namespace MISA.AMISDemo.Api.Controllers
         }
 
         /// <summary>
-        /// API dùng để lọc danh sách nhân viên theo chi nhánh
-        /// API này được tạo trước khi tách bảng nhân viên ra thêm bảng chức vụ và phòng ban
+        /// Xử lý yêu cầu HTTP GET để phân trang danh sách nhân viên bằng cách sắp xếp và lọc tùy chọn.
         /// </summary>
         /// <param name="branch">Chi nhánh cần lọc</param>
         /// <param name="limit">Giới hạn số bản ghi nhân viên trả về</param>
         /// <param name="offset">Lấy bản ghi từ vị trí số bao nhiêu</param>
-        /// <returns>Trả về danh sách nhân viên của chi nhánh</returns>
+        /// <returns>
+        /// IActionResult với mã trạng thái HTTP 200 và danh sách nhân viên phù hợp với các tiêu chí
+        /// </returns>
         [HttpGet("paginate")]
         public IActionResult Paginate([FromQuery(Name = "branch")] string? branch, 
             [FromQuery(Name ="limit")]int limit, 
@@ -121,10 +123,10 @@ namespace MISA.AMISDemo.Api.Controllers
         }
 
         /// <summary>
-        /// API thống kê số lượng nhân viên theo độ tuổi
+        /// Xử lý HTTP GET để thống kê danh sách nhân viên theo độ tuổi
         /// </summary>
         /// <returns>
-        /// Trả về một danh sách thống kê nhân viên theo độ tuổi
+        /// IActionResult với mã trạng thái 200 và danh sách số lượng nhân viên theo:
         /// - Dưới 30 tuổi
         /// - Từ 30 đến 40 tuổi
         /// - Trên 40 tuổi
@@ -137,13 +139,13 @@ namespace MISA.AMISDemo.Api.Controllers
         }
 
         /// <summary>
-        /// API kiểm tra file excel trước khi nhập khẩu nhân viên với điều kiện
-        /// - dữ liệu trong file excel là đúng định dạng
+        /// Xử lý yêu cầu HTTP POST để kiểm tra dữ liệu trong file Excel trước khi nhập khẩu
         /// </summary>
         /// <param name="file">File excel chứa danh sách nhân viên cần kiểm tra</param>
         /// <returns>
-        /// Mảng byte[] nếu có dòng dữ liệu bị lỗi
-        /// Null khi dữ liệu trong file nhập khẩu hợp lệ
+        /// Trả về IActionResult với 
+        /// - Nếu có lỗi trong tệp, server trả về tệp lỗi định dạng Excel với nội dung lỗi.
+        /// - Nếu không có lỗi, trả về trạng thái 204, nghĩa là không có nội dung.
         /// </returns>
         [HttpPost("check-file-import")]
         public IActionResult CheckFileImport (IFormFile file)
@@ -155,12 +157,12 @@ namespace MISA.AMISDemo.Api.Controllers
                 return File(fileBytes, "application/octet-stream", "LogError.xlsx");
             } else
             {
-                return StatusCode(201, errorLogFile);
+                return StatusCode(204);
             }
         }
 
         /// <summary>
-        /// API để xuất file excel danh sách nhân viên của một chi nhánh
+        /// Xử lý HTTP GET để xuất danh sách nhân viên ra file excel
         /// </summary>
         /// <param name="branch">Tên chi nhánh muốn xuất danh sách nhân viên</param>
         /// <returns>Trả về file Excel dưới dạng byte array để tải xuống</returns>
@@ -181,10 +183,12 @@ namespace MISA.AMISDemo.Api.Controllers
         }
 
         /// <summary>
-        /// API thêm mới thông tin nhân viên
+        /// Xử lý HTTP POST để thêm mới nhân viên
         /// </summary>
         /// <param name="employee">Đối tượng chứa thông tin nhân viên cần thêm mới (EmployeeDTO)</param>
-        /// <returns>Trả về mã trạng thái 201 và số lượng bản ghi được thêm vào </returns>
+        /// <returns>
+        /// IActionResult với mã trạng thái HTTP 201 và số nhân viên được thêm mới
+        /// </returns>
         [HttpPost]
         public IActionResult Insert(EmployeeDTO employee)
         {
@@ -193,11 +197,13 @@ namespace MISA.AMISDemo.Api.Controllers
         }
 
         /// <summary>
-        /// API sửa thông tin nhân viên
+        /// Xử lý yêu cầu HTTP PUT để cập nhật thông tin nhân viên
         /// </summary>
         /// <param name="employeeCode">Mã nhân viên để xác định đối tượng cần cập nhật</param>
         /// <param name="employee">Đối tượng chứa thông tin nhân viên cần sửa đổi (EmployeeDTO)</param>
-        /// <returns>Trả về mã trạng thái 200 và số lượng bản ghi được cập nhật</returns>
+        /// <returns>
+        /// IActionResult với mã trạng thái HTTP 200 và số lượng bản ghi được cập nhật
+        /// </returns>
         [HttpPut("{employeeCode}")]
         public IActionResult Update([FromRoute] string employeeCode, [FromBody]EmployeeDTO employee)
         {
@@ -206,10 +212,10 @@ namespace MISA.AMISDemo.Api.Controllers
         }
 
         /// <summary>
-        /// API xóa thông tin nhân viên
+        /// Xử lý yêu cầu HTTP DELETE để xóa thông tin nhân viên
         /// </summary>
         /// <param name="code">Mã nhân viên để xóa thông tin</param>
-        /// <returns>Trả về mã trạng thái 200 và số lượng bản ghi bị xóa</returns>
+        /// <returns>IActionResult với mã trạng thái HTTP 200 và số lượng bản ghi bị xóa</returns>
         [HttpDelete("{code}")]
         public IActionResult Delete(string code)
         {
@@ -218,12 +224,10 @@ namespace MISA.AMISDemo.Api.Controllers
         }
 
         /// <summary>
-        /// API để nhập khẩu danh sách nhân viên
-        /// Danh sách nhân viên được lưu trong bộ nhớ cache
+        /// Xử lý HTTP POST để nhập khẩu nhân viên
         /// </summary>
-        /// <returns>Trả về mã trạng thái 200 và
-        /// true - nhập khẩu thành công
-        /// false - nhập khẩu thất bại
+        /// <returns>
+        /// IActionResult với mã trạng thái HTTP 200 và true nếu nhập khẩu thành công ngược lại trả về false nếu nhập khẩu thất bại
         /// </returns>
         [HttpPost("import")]
         public IActionResult Import([FromQuery(Name ="key-code")]string keyCode)
@@ -233,7 +237,7 @@ namespace MISA.AMISDemo.Api.Controllers
         }
 
         /// <summary>
-        /// API để lọc nhân viên dựa trên điều kiện và giá trị
+        /// Xử lý HTTP GET để lọc danh sách nhân viên theo các tiêu chí
         /// </summary>
         /// <param name="filterBy">Tên cột muốn lọc</param>
         /// <param name="filterCondition">Điều kiện lọc</param>
@@ -243,7 +247,7 @@ namespace MISA.AMISDemo.Api.Controllers
         /// <param name="offset">Vị trí bắt đầu lấy dữ liệu</param>
         /// <param name="isDesc">Xác định thứ tự sắp xếp giảm dần nếu isDesc = true</param>
         /// <returns>
-        /// Trả về mã 200 và danh sách nhân viên thỏa mãn điều kiện lọc
+        /// IAcitonResult với mã trạng thái HTTP 200 và danh sách nhân viên phù hợp với các tiêu chí chỉ định
         /// </returns>
         [HttpGet("filter")]
         public IActionResult Get(

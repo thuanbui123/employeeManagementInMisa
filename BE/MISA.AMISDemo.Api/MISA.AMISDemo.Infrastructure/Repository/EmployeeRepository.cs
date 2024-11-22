@@ -316,5 +316,12 @@ namespace MISA.AMISDemo.Infrastructure.Repository
             var res = _dbContext.Connection.QueryFirstOrDefault<EmployeeResponseDTO>(sql, parameters);
             return res;
         }
+
+        public IEnumerable<string> GetDepartmentCodeInEmployee()
+        {
+            var sql = "SELECT DepartmentCode FROM Employee";
+            var res = _dbContext.Connection.Query<string>(sql);
+            return res;
+        }
     }
 }

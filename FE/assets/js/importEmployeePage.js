@@ -411,7 +411,7 @@ export function showImportEmployee() {
             
             // Xử lý khi yêu cầu hoàn thành
             XHR.onload = function () {
-                if (XHR.status === 201) {
+                if (XHR.status === 204) {
                     let data = XHR.response;
 
                     // Sử dụng TextDecoder để chuyển đổi ArrayBuffer thành text

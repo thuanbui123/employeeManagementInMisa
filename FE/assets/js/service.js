@@ -10,6 +10,20 @@ export function getPreviousApi() {
 }
 
 /**
+ * Gọi api để lấy dữ liệu từ backend
+ * @param {*} url Địa chỉ url của Api
+ * @returns Dữ liệu Json trả về từ api
+ */
+export async function fetchData (url) {
+    try {
+        const RESPONSE = await fetch(url);
+        return await RESPONSE.json();
+    } catch (error) {
+        return console.log(error);
+    }
+}
+
+/**
  * Hàm phân trang để lấy dữ liệu từ api và cập nhật giao diện
  * @param {*} api Địa chỉ api để lấy dữ liệu
  */

@@ -14,6 +14,12 @@ namespace MISA.AMISDemo.Api.Controllers
             _repository = repository;
         }
 
+        /// <summary>
+        /// Xử lý yêu cầu HTTP GET để lấy danh sách nhân viên
+        /// </summary>
+        /// <returns>
+        /// IActionResult với mã trạng thái HTTP 200 và danh sách chức vụ
+        /// </returns>
         [HttpGet]        
         public IActionResult Get()
         {

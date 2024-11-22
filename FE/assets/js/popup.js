@@ -1,7 +1,7 @@
 import { searchEmployee } from "./employeePage.js";
 import { getBranch } from "./header.js";
 import { getCurrentPage, getIsDesc, getLimit } from "./renderDataTable.js";
-import { paginate, setPreviousApi, validateBankAccountInput } from "./service.js";
+import { fetchData, paginate, setPreviousApi, validateBankAccountInput } from "./service.js";
 import { toast } from "./toast.js";
 import { validateIdentityNumberInput, validateEmailInput, validateNumberPhoneInput, validateSalaryInput } from "./service.js";
 
@@ -76,17 +76,11 @@ export function fetchNewCode() {
 }
 
 /**
- * Gọi api để lấy dữ liệu từ backend
- * @param {*} url Địa chỉ url của Api
- * @returns Dữ liệu Json trả về từ api
+ * Gọi api lấy danh sách thông tin phòng ban
  */
-async function fetchData (url) {
-    try {
-        const RESPONSE = await fetch(url);
-        return await RESPONSE.json();
-    } catch (error) {
-        return console.log(error);
-    }
+export function fetchDepartment () {
+    fetchData('https://localhost:7004/api/v1/departments')
+        .then(data => departments = data);
 }
 
 /**
@@ -95,8 +89,7 @@ async function fetchData (url) {
 function initPage () {
     fetchData('https://localhost:7004/api/v1/positions')
         .then(data => positions = data);
-    fetchData('https://localhost:7004/api/v1/departments')
-        .then(data => departments = data);
+    fetchDepartment();
     fetchNewCode();
 }
 
@@ -393,9 +386,9 @@ function renderPopup (employee) {
 
     const FORM = document.querySelector('.form');
     
-    document.addEventListener('keyup', handleKeyUp);   
+    document.addEventListener('keyup', h);   
 
-    function handleKeyUp (e) {
+    function h (e) {
         if (e.keyCode === 119) {
             e.preventDefault();
             // Gọi hàm submit của FORM để lưu thông tin
@@ -447,7 +440,6 @@ function renderPopup (employee) {
                 }
             });
         } else {
-            console.log(employee)
             $.ajax({
                 url: `https://localhost:7004/api/v1/employees/${employee.employeeCode}`,
                 method: 'PUT',

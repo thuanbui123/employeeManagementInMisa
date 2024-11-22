@@ -3,6 +3,8 @@ import { setPreviousApi, paginate } from "./service.js";
 import { getBranch } from "./header.js";
 import { getCurrentPage, getIsDesc, getLimit } from "./renderDataTable.js";
 import { loadSettingPage } from "./settingPage.js";
+import { loadDepartment } from "./departmentPage.js";
+import { renderDepartmentTable } from "./renderTableDepartment.js";
 
 /**
  * Hàm hiển thị sidebar với các mục điều hướng
@@ -15,15 +17,19 @@ export function loader() {
                 <p>Trang chủ</p>
             </li>
             <li class="item" data-page="Report" data-tooltip="Báo cáo">
-                <img src="./assets/icon/report.png" alt="Home"/>
+                <img src="./assets/icon/report.png" alt="Report"/>
                 <p>Báo cáo</p>
             </li>
+            <li class="item" data-page="Department" data-tooltip="Phòng ban">
+                <img src="./assets/icon/document-online.png" alt="Department"/>
+                <p>Phòng ban</p>
+            </li>
             <li class="item" data-page="Employee" data-tooltip="Nhân viên">
-                <img src="./assets/icon/dic-employee.png" alt="Home"/>
+                <img src="./assets/icon/dic-employee.png" alt="Employee"/>
                 <p>Nhân viên</p>
             </li>
             <li class="item" data-page="Setting" data-tooltip="Cài đặt">
-                <img src="./assets/icon/setting.png" alt="Home"/>
+                <img src="./assets/icon/setting.png" alt="Setting"/>
                 <p>Cài đặt</p>
             </li>
         </ul>
@@ -61,6 +67,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                     var offset = getLimit() * getCurrentPage();
                     paginate(`https://localhost:7004/api/v1/employees/paginate?branch=${getBranch()}&limit=${limit}&offset=${offset}&is-desc=${getIsDesc()}`);
+                    break;
+                case 'Department':
+                    loadDepartment();
+                    fetch('https://localhost:7004/api/v1/departments')
+                        .then(res => res.json())
+                        .then(data => {
+                            renderDepartmentTable(data)
+                        })
+                        .catch(err => console.log(err))
                     break;
                 case 'Home':
                     setPreviousApi('')

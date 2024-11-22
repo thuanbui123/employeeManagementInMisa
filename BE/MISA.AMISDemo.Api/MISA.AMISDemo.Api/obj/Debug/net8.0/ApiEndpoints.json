@@ -10,6 +10,101 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "MISA.AMISDemo.Api.Controllers.DepartmentsController",
+    "Method": "Insert",
+    "RelativePath": "api/v1/departments",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "department",
+        "Type": "MISA.AMISDemo.Core.Entities.Department",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MISA.AMISDemo.Api.Controllers.DepartmentsController",
+    "Method": "Delete",
+    "RelativePath": "api/v1/departments/{code}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "code",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MISA.AMISDemo.Api.Controllers.DepartmentsController",
+    "Method": "Update",
+    "RelativePath": "api/v1/departments/{departmentCode}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "departmentCode",
+        "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "department",
+        "Type": "MISA.AMISDemo.Core.Entities.Department",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MISA.AMISDemo.Api.Controllers.DepartmentsController",
+    "Method": "GenerateCode",
+    "RelativePath": "api/v1/departments/generate-code",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MISA.AMISDemo.Api.Controllers.DepartmentsController",
+    "Method": "GetByCode",
+    "RelativePath": "api/v1/departments/get-by-code",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "code",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MISA.AMISDemo.Api.Controllers.DepartmentsController",
+    "Method": "Search",
+    "RelativePath": "api/v1/departments/search",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "key",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "MISA.AMISDemo.Api.Controllers.EmployeesController",
     "Method": "Get",
     "RelativePath": "api/v1/employees",
