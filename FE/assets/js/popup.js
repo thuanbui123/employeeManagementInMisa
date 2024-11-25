@@ -234,8 +234,8 @@ function renderPopup (employee) {
                     <div class="row">
                         <div class="form-group">
                             <label for="department">Phòng ban</label>
-                            <select tabindex="10" id="department" name="department">
-                                <option disabled selected></option>
+                            <input type="text" id="departmentSearch" list="department">
+                            <datalist tabindex="10" id="department" name="department">
                                 ${
                                     departments.map(item => {
                                         return (
@@ -245,7 +245,7 @@ function renderPopup (employee) {
                                         )
                                     })
                                 }
-                            </select>
+                            </datalist>
                         </div>
                         <div class="form-group">
                             <label for="identityPlace">Nơi cấp</label>
